@@ -1,0 +1,349 @@
+/* TripMozy.com - Official Theme & UI/UX Styling */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --primary: #1967d2;
+  --primary-hover: #1251a8;
+  --primary-gradient: linear-gradient(135deg, #1967d2 0%, #3b82f6 50%, #4f46e5 100%);
+  --dark-navy: #0e1c2e;
+  --text-dark: #1a2b49;
+  --text-muted: #5e6d77;
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --border-light: #eaeeef;
+  --safe-bottom: env(safe-area-inset-bottom, 16px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+/* Base & Universal Mobile Resets */
+*, *::before, *::after {
+  box-sizing: border-box;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8fafc;
+  color: #1a2b49;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #1a2b49;
+  letter-spacing: -0.02em;
+}
+
+/* Fast-touch manipulation for zero click-delay on mobile browsers */
+button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
+  touch-action: manipulation;
+}
+
+/* CRITICAL MOBILE BROWSER COMPATIBILITY: Prevent iOS Safari Auto-Zoom on Input Focus */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="number"],
+  input[type="search"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Eye-Catching Travel Atmospheric Background Mesh */
+.travel-hero-mesh {
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 70%),
+    radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.05) 0%, rgba(248, 250, 252, 0) 50%),
+    radial-gradient(circle at 90% 30%, rgba(16, 185, 129, 0.05) 0%, rgba(248, 250, 252, 0) 50%),
+    linear-gradient(180deg, #f0f7ff 0%, #f8fafc 100%);
+}
+
+/* TripMozy Topbar */
+.bravo_topbar {
+  background-color: #0e1c2e;
+  color: #c5d0db;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.bravo_topbar a {
+  color: #c5d0db;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.bravo_topbar a:hover {
+  color: #ffffff;
+}
+
+/* TripMozy Header */
+.bravo_header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #eaeeef;
+}
+
+/* Eye-Catching Gradient Button */
+.btn-gradient {
+  background: linear-gradient(135deg, #1967d2 0%, #2563eb 50%, #4338ca 100%);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(25, 103, 210, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #1251a8 0%, #1d4ed8 50%, #3730a3 100%);
+  box-shadow: 0 8px 24px rgba(25, 103, 210, 0.45);
+  transform: translateY(-1.5px);
+}
+.btn-gradient:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgba(25, 103, 210, 0.3);
+}
+
+/* Shimmer Highlight on Action Buttons */
+.btn-gradient::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(25deg);
+  animation: buttonShimmer 5s infinite;
+}
+
+@keyframes buttonShimmer {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  30%, 100% { transform: translateX(100%) rotate(25deg); }
+}
+
+.btn-blue {
+  background-color: #1967d2;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 8px rgba(25, 103, 210, 0.25);
+}
+.btn-blue:hover {
+  background-color: #1251a8;
+  transform: translateY(-1px);
+}
+.btn-blue:active {
+  transform: translateY(0);
+}
+
+.btn-white {
+  background-color: #ffffff;
+  border: 1px solid #eaeeef;
+  color: #1a2b49;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  transition: all 0.15s ease;
+}
+.btn-white:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+.btn-white:active {
+  transform: translateY(0);
+}
+
+/* Elevated Clean Modern Cards */
+.ui-card {
+  background: #ffffff;
+  border: 1px solid #eaeeef;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.ui-card-hover {
+  transition: all 0.25s ease;
+}
+.ui-card-hover:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Custom Eye-Catching Inputs */
+.ui-input {
+  background-color: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  color: #1a2b49;
+  border-radius: 12px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+.ui-input:focus {
+  outline: none;
+  border-color: #1967d2;
+  box-shadow: 0 0 0 4px rgba(25, 103, 210, 0.12);
+  background-color: #ffffff;
+}
+
+/* Interactive Chips (Companions & Budget Tiers) */
+.chip {
+  cursor: pointer;
+  background-color: #ffffff;
+  border: 1.5px solid #eaeeef;
+  color: #1a2b49;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  min-height: 44px; /* Mobile touch accessibility target */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chip:hover {
+  border-color: #cbd5e1;
+  background-color: #f8fafc;
+  transform: translateY(-1px);
+}
+.chip.active {
+  background-color: #eff6ff !important;
+  border-color: #1967d2 !important;
+  color: #1967d2 !important;
+  box-shadow: 0 2px 10px rgba(25, 103, 210, 0.15);
+  font-weight: 700;
+}
+.chip.active i, .chip.active span {
+  color: #1967d2 !important;
+}
+
+/* Mobile-Friendly Range Slider */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 8px;
+  background: #e2e8f0;
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1967d2;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(25, 103, 210, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+input[type=range]::-webkit-slider-thumb:hover,
+input[type=range]::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+  background: #1251a8;
+}
+input[type=range]::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1967d2;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(25, 103, 210, 0.4);
+  cursor: pointer;
+}
+
+/* Leaflet Map Responsive Viewport */
+#mapContainer {
+  z-index: 10;
+  border-radius: 16px;
+  width: 100%;
+}
+.leaflet-popup-content-wrapper {
+  background: #ffffff !important;
+  color: #1a2b49 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid #eaeeef !important;
+  font-family: 'Poppins', sans-serif !important;
+  padding: 2px !important;
+}
+.leaflet-popup-tip {
+  background: #ffffff !important;
+}
+
+/* Hide number spin buttons */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Smooth Touch-Scroll Utilities for Horizontal Carousels */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom scrollbars on desktop */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Pulse Glow Animation */
+@keyframes pulseRing {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 0.4; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+.pulse-glow {
+  animation: pulseRing 2.5s infinite ease-in-out;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+  .no-print, nav, header, #heroSection, #promoBar, footer {
+    display: none !important;
+  }
+  #itineraryDashboard {
+    display: block !important;
+  }
+}

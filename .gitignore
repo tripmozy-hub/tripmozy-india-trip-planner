@@ -1,0 +1,10 @@
+# Dependencies & Archives
+*.zip
+*.log
+.DS_Store
+Thumbs.db
+
+# Local server scripts
+server.ps1
+deploy-vercel.ps1
+check-token.ps1

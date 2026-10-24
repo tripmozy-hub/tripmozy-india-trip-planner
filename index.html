@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1967d2" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>Tripmozy.com — Incredible India AI Trip Planner & Nearby Tourist Attractions Map</title>
+  <meta name="description" content="India's dedicated AI travel planner. Discover tourist attractions nearby any Indian city, with interactive GPS route maps, day-by-day itineraries, and manual INR (₹) budgets." />
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Leaflet CSS & JS for Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Chart.js for Budget Breakdown -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom Clean Light CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen travel-hero-mesh flex flex-col justify-between selection:bg-blue-600 selection:text-white">
+
+  <!-- TOP PROMO & TRUST BAR (100% INCREDIBLE INDIA) -->
+  <div id="promoBar" class="bg-blue-50 border-b border-blue-100 py-2 px-4 text-center text-xs text-blue-900 font-medium flex items-center justify-center gap-3 sm:gap-6 flex-wrap">
+    <span class="flex items-center gap-1.5 font-bold">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
+      🇮🇳 Incredible India AI Planner — Dedicated to All Indian Tourist Destinations
+    </span>
+    <span class="hidden sm:inline text-blue-300">•</span>
+    <span>Live Geographic GPS Routing &amp; Nearby Tourist Place Finder</span>
+    <span class="hidden md:inline text-blue-300">•</span>
+    <span class="text-amber-800 font-semibold flex items-center gap-1">
+      <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-500 text-amber-500"></i>
+      Covering 28 States &amp; 8 UTs Across India
+    </span>
+  </div>
+
+  <!-- MAIN NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="javascript:void(0)" onclick="window.location.reload()" class="flex items-center space-x-2 no-underline group py-0.5" title="TripMozy - Memories Begin With a Booking">
+        <img src="logo.png" alt="TripMozy - Memories Begin With a Booking" class="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105" />
+      </a>
+
+      <!-- Quick Indian Tourist Circuits Navigation -->
+      <nav class="hidden lg:flex items-center space-x-5 text-sm font-semibold text-slate-700">
+        <a href="#plannerForm" class="text-blue-600 hover:text-blue-700 transition flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4 text-blue-600"></i> Plan Trip
+        </a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('goa')" class="hover:text-blue-600 transition">Goa &amp; Beaches</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('kerala')" class="hover:text-blue-600 transition">Kerala Backwaters</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('manali')" class="hover:text-blue-600 transition">Himachal &amp; Manali</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('kashmir')" class="hover:text-blue-600 transition">Kashmir Valley</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('rajasthan')" class="hover:text-blue-600 transition">Rajasthan Forts</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('varanasi')" class="hover:text-blue-600 transition">Varanasi Ghats</a>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <!-- Currency Badge -->
+        <div class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 shadow-sm">
+          <span>🇮🇳</span>
+          <span>INR (₹) Only</span>
+        </div>
+
+        <!-- Sample India Itineraries Dropdown -->
+        <div class="relative group hidden sm:block">
+          <button class="px-3 py-1.5 rounded-lg text-xs font-semibold btn-white flex items-center space-x-1.5">
+            <i data-lucide="map" class="w-3.5 h-3.5 text-blue-600"></i>
+            <span>Indian Circuits</span>
+            <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
+          </button>
+          <div class="absolute right-0 mt-2 w-72 rounded-xl bg-white shadow-xl border border-slate-200 py-2 hidden group-hover:block z-50">
+            <div class="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">North &amp; Himalayas</div>
+            <button onclick="loadIndianCircuit('manali')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🏔️ Manali &amp; Solang Valley</span>
+              <span class="text-blue-600 font-bold">₹18,500</span>
+            </button>
+            <button onclick="loadIndianCircuit('kashmir')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>❄️ Kashmir: Srinagar &amp; Gulmarg</span>
+              <span class="text-blue-600 font-bold">₹26,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('ladakh')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🏍️ Ladakh: Leh &amp; Pangong Lake</span>
+              <span class="text-blue-600 font-bold">₹32,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('rishikesh')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🕉️ Rishikesh &amp; Mussoorie</span>
+              <span class="text-blue-600 font-bold">₹15,000</span>
+            </button>
+            <div class="my-1 border-t border-slate-100"></div>
+            <div class="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">South &amp; Coastal</div>
+            <button onclick="loadIndianCircuit('goa')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🏖️ Goa Coastal Tour</span>
+              <span class="text-blue-600 font-bold">₹22,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('kerala')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🌴 Kerala Backwaters &amp; Munnar</span>
+              <span class="text-blue-600 font-bold">₹28,500</span>
+            </button>
+            <button onclick="loadIndianCircuit('ooty')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>☕ Ooty &amp; Coonoor Tea Estates</span>
+              <span class="text-blue-600 font-bold">₹16,500</span>
+            </button>
+            <div class="my-1 border-t border-slate-100"></div>
+            <div class="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">Heritage &amp; Royal</div>
+            <button onclick="loadIndianCircuit('rajasthan')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🏰 Jaipur &amp; Royal Forts</span>
+              <span class="text-blue-600 font-bold">₹24,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('varanasi')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🛕 Varanasi Ghats &amp; Ganga Aarti</span>
+              <span class="text-blue-600 font-bold">₹14,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('darjeeling')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🫖 Darjeeling &amp; Gangtok</span>
+              <span class="text-blue-600 font-bold">₹25,000</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE TOUCH-FRIENDLY CIRCUITS BAR (INSTANT TAP FOR PHONES & TABLETS) -->
+  <div class="lg:hidden bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-3 py-2.5 overflow-x-auto scrollbar-none flex items-center gap-2 text-xs shadow-2xs">
+    <span class="text-blue-900 font-bold uppercase text-[10px] tracking-wider shrink-0 flex items-center gap-1 pl-1">
+      <i data-lucide="compass" class="w-3.5 h-3.5 text-blue-600"></i>
+      <span>Popular:</span>
+    </span>
+    <button type="button" onclick="loadIndianCircuit('manali')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🏔️ Manali</button>
+    <button type="button" onclick="loadIndianCircuit('goa')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🏖️ Goa</button>
+    <button type="button" onclick="loadIndianCircuit('kerala')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🌴 Kerala</button>
+    <button type="button" onclick="loadIndianCircuit('kashmir')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">❄️ Kashmir</button>
+    <button type="button" onclick="loadIndianCircuit('rajasthan')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🏰 Jaipur</button>
+    <button type="button" onclick="loadIndianCircuit('varanasi')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🛕 Varanasi</button>
+    <button type="button" onclick="loadIndianCircuit('ladakh')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🏍️ Ladakh</button>
+    <button type="button" onclick="loadIndianCircuit('rishikesh')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🕉️ Rishikesh</button>
+    <button type="button" onclick="loadIndianCircuit('ooty')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">☕ Ooty</button>
+    <button type="button" onclick="loadIndianCircuit('darjeeling')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🫖 Darjeeling</button>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-5xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10">
+
+    <!-- HERO & PLANNER SECTION -->
+    <div id="heroSection" class="space-y-6 sm:space-y-8">
+      
+      <!-- Clear Hero Headline with Eye-Catching Gradient & Badges -->
+      <div class="text-center max-w-3xl mx-auto px-1 sm:px-2">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50/90 border border-blue-200/80 text-blue-700 text-xs font-bold mb-3.5 shadow-xs backdrop-blur-sm">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-600 animate-spin-slow"></i>
+          <span>Dedicated AI Travel Engine Across Incredible India</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        </div>
+        
+        <h1 class="text-3xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 leading-[1.15]">
+          SEARCH YOUR DREAM DESTINATION &amp; <span class="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 bg-clip-text text-transparent">UNLOCK ADVENTURE</span>
+        </h1>
+        
+        <p class="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+          Type any destination in India. Our AI maps the location, identifies all popular tourist spots nearby, clusters them logically by road distance, and drafts a day-by-day timetable in Indian Rupees (₹).
+        </p>
+
+        <!-- Eye-Catching Feature Badges (Mobile Responsive) -->
+        <div class="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 text-xs text-slate-600">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-slate-200/90 shadow-2xs font-semibold text-slate-700">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-600"></i>
+            <span>Live GPS Radar</span>
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-slate-200/90 shadow-2xs font-semibold text-slate-700">
+            <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span>Instant Schedule</span>
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-slate-200/90 shadow-2xs font-semibold text-slate-700">
+            <i data-lucide="wallet" class="w-3.5 h-3.5 text-indigo-600"></i>
+            <span>Exact ₹ INR Budget</span>
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-slate-200/90 shadow-2xs font-semibold text-slate-700">
+            <i data-lucide="hotel" class="w-3.5 h-3.5 text-amber-600"></i>
+            <span>Instant Stays</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- MAIN PLANNER CARD (ELEVATED & EYE-CATCHING) -->
+      <div id="plannerForm" class="ui-card p-4 sm:p-8 bg-white border border-slate-200/90 shadow-xl shadow-blue-500/5 relative overflow-hidden rounded-2xl sm:rounded-3xl">
+        <!-- Top Gradient Accent Bar -->
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400"></div>
+        
+        <form id="tripPlannerForm" onsubmit="handleFormSubmit(event)" class="space-y-7">
+          
+          <!-- FIELD 1: Search Indian Destination -->
+          <div>
+            <label class="block text-sm font-bold text-slate-800 mb-1.5 flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <i data-lucide="search" class="w-4 h-4 text-blue-600"></i>
+                Enter your dream Location / City / Hill Station in India:
+              </span>
+              <span class="text-xs text-blue-600 font-semibold flex items-center gap-1">
+                <i data-lucide="crosshair" class="w-3.5 h-3.5"></i> Auto-identifies nearby attractions
+              </span>
+            </label>
+            
+            <div class="relative">
+              <input 
+                type="text" 
+                id="destinationInput" 
+                required
+                placeholder="e.g. Manali, Goa, Munnar, Jaipur, Rishikesh, Udaipur, Ooty, Hampi, Varanasi, Leh..." 
+                class="w-full px-4 py-3.5 sm:py-4 rounded-xl ui-input text-base text-slate-900 font-bold pl-11 pr-28 sm:pr-44 shadow-2xs"
+                autocomplete="off"
+              />
+              <i data-lucide="map-pin" class="w-5 h-5 text-blue-600 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+              <button 
+                type="button" 
+                onclick="setRandomIndianDestination()" 
+                class="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-xs font-bold rounded-lg btn-white flex items-center gap-1.5 shadow-xs border border-slate-200"
+                title="Pick a random Indian destination"
+              >
+                <i data-lucide="dices" class="w-3.5 h-3.5 text-blue-600"></i>
+                <span class="hidden sm:inline">Random Place</span>
+                <span class="sm:hidden">Surprise</span>
+              </button>
+            </div>
+
+            <!-- Indian Tourist Hubs Categorized Quick Chips (Smooth Mobile Swipe Carousel) -->
+            <div class="mt-3 flex overflow-x-auto scrollbar-none pb-1 gap-1.5 sm:gap-2 text-xs items-center">
+              <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider shrink-0 mr-1">Trending:</span>
+              <button type="button" onclick="setDestination('Manali, Himachal Pradesh')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">🏔️ Manali</button>
+              <button type="button" onclick="setDestination('Goa, India')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">🏖️ Goa</button>
+              <button type="button" onclick="setDestination('Munnar, Kerala')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">🌴 Munnar</button>
+              <button type="button" onclick="setDestination('Jaipur, Rajasthan')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">🏰 Jaipur</button>
+              <button type="button" onclick="setDestination('Rishikesh, Uttarakhand')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">🕉️ Rishikesh</button>
+              <button type="button" onclick="setDestination('Srinagar, Kashmir')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">❄️ Srinagar</button>
+              <button type="button" onclick="setDestination('Ooty, Tamil Nadu')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">☕ Ooty</button>
+              <button type="button" onclick="setDestination('Varanasi, Uttar Pradesh')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">🛕 Varanasi</button>
+              <button type="button" onclick="setDestination('Darjeeling, West Bengal')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">🫖 Darjeeling</button>
+              <button type="button" onclick="setDestination('Hampi, Karnataka')" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 text-slate-700 font-medium whitespace-nowrap transition">🏛️ Hampi</button>
+            </div>
+          </div>
+
+          <!-- FIELD 2: Duration & Map Radius Exploration -->
+          <div class="pt-2 border-t border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-5">
+            <!-- Duration -->
+            <div class="md:col-span-7">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                  <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
+                  Trip Duration (Days)
+                </label>
+                <span id="durationLabel" class="text-xs sm:text-sm font-black text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200 shadow-2xs">4 Days</span>
+              </div>
+              
+              <div class="bg-slate-50/90 rounded-2xl p-3.5 border border-slate-200/90">
+                <input 
+                  type="range" 
+                  id="durationRange" 
+                  min="1" 
+                  max="10" 
+                  value="4" 
+                  oninput="updateDurationLabel(this.value)"
+                  class="w-full accent-blue-600 cursor-pointer"
+                />
+                <!-- Quick 1-Tap Shortcut Pills for Mobile Touch Browsers -->
+                <div class="grid grid-cols-4 gap-1.5 mt-2.5 pt-2 border-t border-slate-200/80 text-center">
+                  <button type="button" onclick="setTripDays(2)" class="px-1.5 py-1.5 rounded-lg text-[11px] font-bold bg-white hover:bg-blue-50 active:bg-blue-600 active:text-white text-slate-700 border border-slate-200 shadow-2xs transition">2d Weekend</button>
+                  <button type="button" onclick="setTripDays(4)" class="px-1.5 py-1.5 rounded-lg text-[11px] font-bold bg-white hover:bg-blue-50 active:bg-blue-600 active:text-white text-slate-700 border border-slate-200 shadow-2xs transition">4d Short</button>
+                  <button type="button" onclick="setTripDays(6)" class="px-1.5 py-1.5 rounded-lg text-[11px] font-bold bg-white hover:bg-blue-50 active:bg-blue-600 active:text-white text-slate-700 border border-slate-200 shadow-2xs transition">6d Week</button>
+                  <button type="button" onclick="setTripDays(8)" class="px-1.5 py-1.5 rounded-lg text-[11px] font-bold bg-white hover:bg-blue-50 active:bg-blue-600 active:text-white text-slate-700 border border-slate-200 shadow-2xs transition">8d+ Grand</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nearby Exploration Radius on Map -->
+            <div class="md:col-span-5">
+              <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
+                <i data-lucide="radar" class="w-4 h-4 text-emerald-600"></i>
+                Nearby Places Map Radius
+              </label>
+              <select id="mapRadiusSelect" class="w-full px-3 py-3 rounded-xl ui-input text-sm sm:text-base text-slate-800 font-semibold">
+                <option value="15">Within 15 km (City Center &amp; Local Sights)</option>
+                <option value="35" selected>Within 35 km (Standard Day Excursions)</option>
+                <option value="60">Within 60 km (Deep Excursions &amp; Neighboring Valleys)</option>
+              </select>
+              <p class="text-[11px] text-slate-500 mt-1">Our map algorithm clusters nearby spots within this driving radius.</p>
+            </div>
+          </div>
+
+          <!-- FIELD 3: MANUAL BUDGET COLUMN / TARGET BUDGET (₹ INR) -->
+          <div class="pt-2 border-t border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-5">
+            
+            <!-- Manual Budget Input -->
+            <div class="md:col-span-7 bg-blue-50/60 rounded-xl p-4 border border-blue-100">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-bold text-blue-900 flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">₹</span>
+                  <span>Target Budget (Per Person in INR)</span>
+                </label>
+                <span class="text-[11px] text-blue-700 font-semibold">Optional / Editable</span>
+              </div>
+              
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-base">₹</span>
+                <input 
+                  type="number" 
+                  id="manualTargetBudgetInput" 
+                  placeholder="e.g. 15000, 25000, 40000" 
+                  step="1000"
+                  class="w-full pl-8 pr-4 py-2.5 rounded-lg ui-input text-base text-slate-900 font-bold"
+                />
+              </div>
+
+              <!-- Quick INR Presets -->
+              <div class="mt-2.5 flex flex-wrap gap-1.5 text-xs">
+                <span class="text-blue-900 self-center text-[11px] font-semibold">Presets:</span>
+                <button type="button" onclick="setManualBudget(12000)" class="px-2 py-0.5 rounded bg-white hover:bg-blue-100 text-blue-900 border border-blue-200 transition font-semibold">₹12,000</button>
+                <button type="button" onclick="setManualBudget(20000)" class="px-2 py-0.5 rounded bg-white hover:bg-blue-100 text-blue-900 border border-blue-200 transition font-semibold">₹20,000</button>
+                <button type="button" onclick="setManualBudget(35000)" class="px-2 py-0.5 rounded bg-white hover:bg-blue-100 text-blue-900 border border-blue-200 transition font-semibold">₹35,000</button>
+                <button type="button" onclick="setManualBudget(60000)" class="px-2 py-0.5 rounded bg-white hover:bg-blue-100 text-blue-900 border border-blue-200 transition font-semibold">₹60,000</button>
+              </div>
+            </div>
+
+            <!-- Travel Tier -->
+            <div class="md:col-span-5 flex flex-col justify-between">
+              <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i>
+                Travel Tier
+              </label>
+              <div class="grid grid-cols-3 gap-2">
+                <label class="chip px-3 py-2.5 rounded-xl text-center flex flex-col items-center justify-center gap-0.5" data-group="budget" data-val="Economy">
+                  <input type="radio" name="budget" value="Economy" class="hidden" />
+                  <span class="text-xs font-bold">Budget</span>
+                  <span class="text-[10px] opacity-75">Backpacker / Bus</span>
+                </label>
+                <label class="chip px-3 py-2.5 rounded-xl text-center flex flex-col items-center justify-center gap-0.5 active" data-group="budget" data-val="Moderate">
+                  <input type="radio" name="budget" value="Moderate" checked class="hidden" />
+                  <span class="text-xs font-bold">Standard</span>
+                  <span class="text-[10px] opacity-75">3★ / Private Cab</span>
+                </label>
+                <label class="chip px-3 py-2.5 rounded-xl text-center flex flex-col items-center justify-center gap-0.5" data-group="budget" data-val="Luxury">
+                  <input type="radio" name="budget" value="Luxury" class="hidden" />
+                  <span class="text-xs font-bold">Luxury</span>
+                  <span class="text-[10px] opacity-75">5★ Heritage Resorts</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- FIELD 4: Companions & Indian Dining Habits -->
+          <div class="pt-2 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Companions -->
+            <div>
+              <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                Traveling Party
+              </label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+                <label class="chip px-2.5 py-3 rounded-xl text-center flex flex-col items-center justify-center gap-1 active" data-group="companion" data-val="Solo">
+                  <input type="radio" name="companion" value="Solo" checked class="hidden" />
+                  <i data-lucide="user" class="w-4 h-4"></i>
+                  <span class="text-xs font-bold">Solo</span>
+                </label>
+                <label class="chip px-2.5 py-3 rounded-xl text-center flex flex-col items-center justify-center gap-1" data-group="companion" data-val="Couple">
+                  <input type="radio" name="companion" value="Couple" class="hidden" />
+                  <i data-lucide="heart" class="w-4 h-4 text-pink-500"></i>
+                  <span class="text-xs font-bold">Couple</span>
+                </label>
+                <label class="chip px-2.5 py-3 rounded-xl text-center flex flex-col items-center justify-center gap-1" data-group="companion" data-val="Family">
+                  <input type="radio" name="companion" value="Family" class="hidden" />
+                  <i data-lucide="baby" class="w-4 h-4 text-amber-500"></i>
+                  <span class="text-xs font-bold">Family</span>
+                </label>
+                <label class="chip px-2.5 py-3 rounded-xl text-center flex flex-col items-center justify-center gap-1" data-group="companion" data-val="Friends">
+                  <input type="radio" name="companion" value="Friends" class="hidden" />
+                  <i data-lucide="sparkles" class="w-4 h-4 text-indigo-500"></i>
+                  <span class="text-xs font-bold">Friends</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Food Preferences -->
+            <div>
+              <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <i data-lucide="utensils" class="w-4 h-4 text-blue-600"></i>
+                Dining &amp; Dietary Preferences
+              </label>
+              <select id="dietaryPref" class="w-full px-3 py-2.5 rounded-lg ui-input text-sm text-slate-800 font-medium">
+                <option value="Pure Vegetarian" selected>Pure Vegetarian (Shuddh Shakahari)</option>
+                <option value="Jain Food">Jain Friendly (No Onion, Garlic, Root Veg)</option>
+                <option value="Multi-Cuisine / Non-Veg">Standard / Multi-Cuisine &amp; Non-Veg</option>
+                <option value="Local Regional Thali">Regional Authentic Specialties &amp; Thalis</option>
+                <option value="Halal">Halal Certified Dining</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- FIELD 5: Indian Trip Styles -->
+          <div class="pt-2 border-t border-slate-100">
+            <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <i data-lucide="compass" class="w-4 h-4 text-blue-600"></i>
+                Trip Interests (Select Any)
+              </span>
+            </label>
+            <div class="flex flex-wrap gap-2" id="interestChipsContainer">
+              <button type="button" class="interest-chip active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-blue-600 bg-blue-600 text-white flex items-center gap-1.5 shadow-sm transition" data-interest="Temples &amp; Spirituality">
+                <span>🛕</span> Temples &amp; Ghats
+              </button>
+              <button type="button" class="interest-chip active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-blue-600 bg-blue-600 text-white flex items-center gap-1.5 shadow-sm transition" data-interest="Forts &amp; Royal Heritage">
+                <span>🏰</span> Forts &amp; Palaces
+              </button>
+              <button type="button" class="interest-chip active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-blue-600 bg-blue-600 text-white flex items-center gap-1.5 shadow-sm transition" data-interest="Scenic Valleys &amp; Waterfalls">
+                <span>🏔️</span> Scenic Valleys &amp; Snow
+              </button>
+              <button type="button" class="interest-chip px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-slate-300 bg-white text-slate-700 hover:border-slate-400 flex items-center gap-1.5 transition" data-interest="Beaches &amp; Backwaters">
+                <span>🏖️</span> Beaches &amp; Houseboats
+              </button>
+              <button type="button" class="interest-chip px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-slate-300 bg-white text-slate-700 hover:border-slate-400 flex items-center gap-1.5 transition" data-interest="Trekking &amp; Adventure">
+                <span>🧗</span> River Rafting &amp; Treks
+              </button>
+              <button type="button" class="interest-chip px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-slate-300 bg-white text-slate-700 hover:border-slate-400 flex items-center gap-1.5 transition" data-interest="Local Bazaars &amp; Crafts">
+                <span>🛍️</span> Local Bazaars &amp; Spices
+              </button>
+              <button type="button" class="interest-chip px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-slate-300 bg-white text-slate-700 hover:border-slate-400 flex items-center gap-1.5 transition" data-interest="Wildlife &amp; Safari">
+                <span>🐅</span> Tiger Safari &amp; National Parks
+              </button>
+            </div>
+          </div>
+
+          <!-- PRIMARY SUBMIT BUTTON -->
+          <div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100">
+            <div class="text-xs text-slate-500 flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+              <span>Live geocoding of location + nearby tourist attractions plotted with exact km</span>
+            </div>
+
+            <button 
+              type="submit" 
+              id="generateBtn"
+              class="w-full sm:w-auto px-8 py-4 rounded-xl btn-gradient text-white font-black flex items-center justify-center gap-2.5 text-base shadow-lg shadow-blue-600/30 active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <i data-lucide="sparkles" class="w-5 h-5 text-amber-300 animate-pulse"></i>
+              <span>Locate on Map &amp; Build Itinerary</span>
+              <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div id="loadingSection" class="hidden my-12 sm:my-16 text-center max-w-md mx-auto ui-card p-6 sm:p-8 bg-white border border-slate-200/90 shadow-xl rounded-2xl sm:rounded-3xl relative overflow-hidden">
+      <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-50 to-indigo-100 text-blue-600 border border-blue-200/80 flex items-center justify-center mx-auto mb-4 pulse-glow">
+        <i data-lucide="compass" class="w-10 h-10 animate-spin-slow"></i>
+      </div>
+      <h3 id="loadingTitle" class="text-xl sm:text-2xl font-black font-heading text-slate-900 mb-1.5">Tripmozy is Scanning India's Map</h3>
+      <p id="loadingSubtitle" class="text-xs sm:text-sm text-slate-600 mb-5 min-h-[20px]">Pinpointing location and finding nearby tourist places...</p>
+      
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200/80 mb-2.5 p-0.5">
+        <div id="progressBar" class="h-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400 transition-all duration-300 w-12 shadow-xs"></div>
+      </div>
+      <div class="flex justify-between text-xs text-slate-500 font-bold">
+        <span id="loadingStep">Step 1 of 4</span>
+        <span id="loadingPercent" class="text-blue-600 font-black">25%</span>
+      </div>
+    </div>
+
+    <!-- RESULTS ITINERARY DASHBOARD -->
+    <div id="itineraryDashboard" class="hidden space-y-6">
+      
+      <!-- SUMMARY HERO CARD -->
+      <div class="ui-card p-6 sm:p-7 bg-white border border-slate-200 shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-2.5">
+              <span id="dashDestinationBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3 h-3"></i>
+                <span id="badgeCity">Manali, Himachal Pradesh</span>
+              </span>
+              <span id="dashDaysBadge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">4 Days</span>
+              <span id="dashStyleBadge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">Standard Tier</span>
+              <span id="dashPartyBadge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">Couple</span>
+              <span id="dashNearbyCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">12 Nearby Places Mapped</span>
+            </div>
+
+            <h2 id="dashTripTitle" class="text-2xl sm:text-3xl font-black font-heading text-slate-900 mb-1">
+              Himalayan Peaks & Valleys: 4 Days in Manali
+            </h2>
+            <p id="dashTripSubtitle" class="text-slate-600 text-xs sm:text-sm max-w-2xl leading-relaxed">
+              Explore snow-capped Solang Valley, historic Hadimba Devi Temple, hot springs of Vashisht, and serene Old Manali cafes.
+            </p>
+          </div>
+
+          <!-- Total Budget & Action Buttons -->
+          <div class="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-3 shrink-0">
+            <div class="bg-blue-50/80 px-4 py-2.5 rounded-xl border border-blue-100 text-right w-full sm:w-auto">
+              <span class="text-[11px] text-slate-500 block font-medium">Estimated Budget (per person)</span>
+              <span id="dashTotalBudget" class="text-2xl font-black text-blue-700 font-heading">₹18,500</span>
+            </div>
+
+            <div class="grid grid-cols-3 sm:flex items-center gap-2 w-full sm:w-auto">
+              <button onclick="window.print()" class="btn-white px-2.5 sm:px-3 py-2 sm:py-1.5 text-xs font-semibold flex items-center justify-center gap-1.5 rounded-xl shadow-2xs">
+                <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-600"></i>
+                <span>Print</span>
+              </button>
+              <button onclick="shareTrip()" class="btn-white px-2.5 sm:px-3 py-2 sm:py-1.5 text-xs font-semibold flex items-center justify-center gap-1.5 rounded-xl shadow-2xs">
+                <i data-lucide="share-2" class="w-3.5 h-3.5 text-slate-600"></i>
+                <span>Share</span>
+              </button>
+              <button onclick="resetToPlanner()" class="btn-blue px-2.5 sm:px-3.5 py-2 sm:py-1.5 text-xs font-semibold flex items-center justify-center gap-1.5 rounded-xl shadow-2xs">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                <span>Edit</span>
+              </button>
+            </div>
+            <!-- BOOK NOW BUTTON -->
+            <button
+              id="bookNowHeroBtn"
+              onclick="openBookNowOnTripmozy()"
+              class="w-full px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2.5 shadow-lg active:scale-[0.98] transition-all"
+              style="background: linear-gradient(135deg, #16a34a, #15803d); color: white; box-shadow: 0 4px 14px rgba(22,163,74,0.35);"
+            >
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              <span>Book Now on Tripmozy.com</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS BAR (MAP & NEARBY PLACES ARE ELEVATED TO FRONT) -->
+      <div class="flex border-b border-slate-200 overflow-x-auto space-x-2 py-1.5 scrollbar-none bg-white px-2.5 rounded-2xl shadow-xs" style="-webkit-overflow-scrolling: touch;">
+        <button onclick="switchTab('map')" id="tab-map" class="tab-btn px-4 py-2.5 text-sm font-bold text-blue-600 border-b-2 border-blue-600 flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="map" class="w-4 h-4 text-blue-600"></i>
+          <span>GPS Map &amp; Nearby Tourist Places</span>
+          <span id="tabNearbyPill" class="text-[11px] bg-blue-100 text-blue-800 font-extrabold px-1.5 py-0.2 rounded-full">12</span>
+        </button>
+        <button onclick="switchTab('itinerary')" id="tab-itinerary" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="calendar" class="w-4 h-4 text-slate-600"></i>
+          <span>Day-by-Day Schedule</span>
+        </button>
+        <button onclick="switchTab('hotels')" id="tab-hotels" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="building-2" class="w-4 h-4 text-green-600"></i>
+          <span>Hotels &amp; Stays</span>
+          <span id="tabHotelsPill" class="text-[11px] bg-green-100 text-green-800 font-extrabold px-1.5 py-0.5 rounded-full">Live</span>
+        </button>
+        <button onclick="switchTab('budget')" id="tab-budget" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i>
+          <span>Budget &amp; Manual Column (₹)</span>
+        </button>
+        <button onclick="switchTab('packing')" id="tab-packing" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="check-square" class="w-4 h-4 text-purple-600"></i>
+          <span>Packing List</span>
+        </button>
+        <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="book-open" class="w-4 h-4 text-amber-600"></i>
+          <span>Travel Guide &amp; Transits</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: GPS ROUTE MAP & NEARBY ATTRACTIONS RADAR (MAIN MAP TAB) -->
+      <div id="view-map" class="tab-view space-y-4">
+        
+        <!-- Controls & Route Filter -->
+        <div class="ui-card p-4 bg-white border border-slate-200">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="navigation" class="w-4 h-4 text-blue-600"></i>
+                <span>Map Route &amp; Nearby Tourist Attractions</span>
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">
+                Stops are chronologically routed on the map with real driving distances from <span id="mapCenterCityText" class="font-bold text-slate-800">your searched location</span>.
+              </p>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <button onclick="fitMapBounds()" class="btn-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1.5">
+                <i data-lucide="maximize-2" class="w-3.5 h-3.5 text-slate-600"></i>
+                <span>Fit All Pins</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Day Route Filter Buttons on Map -->
+          <div class="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none border-t border-slate-100 pt-3" id="mapDayFilterButtons">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- 2-Column Map Layout: Map on Left, Nearby Attractions Explorer on Right -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3">
+            
+            <!-- Map Viewport -->
+            <div class="lg:col-span-8">
+              <div id="mapContainer" class="w-full h-[320px] sm:h-[420px] lg:h-[540px] rounded-xl sm:rounded-2xl shadow-inner border border-slate-200"></div>
+            </div>
+
+            <!-- Nearby Tourist Attractions List (With Distance in km) -->
+            <div class="lg:col-span-4 flex flex-col h-[340px] sm:h-[420px] lg:h-[540px] bg-slate-50/90 border border-slate-200 rounded-xl sm:rounded-2xl p-3.5 overflow-hidden">
+              <div class="pb-2 border-b border-slate-200 mb-2 flex items-center justify-between">
+                <div>
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-600"></i>
+                    <span>Nearby Tourist Places</span>
+                  </h4>
+                  <span class="text-[10px] text-slate-500">Sorted by distance from base</span>
+                </div>
+                <span id="nearbyCountPill" class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">12 Spots</span>
+              </div>
+
+              <!-- Scrollable Attractions List -->
+              <div class="flex-grow overflow-y-auto space-y-2 pr-1" id="nearbyAttractionsList">
+                <!-- Dynamically rendered nearby places cards -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Daily Distance Summary Banner -->
+          <div class="mt-3 p-3 rounded-xl bg-blue-50/70 border border-blue-100 flex flex-wrap items-center justify-between text-xs text-blue-900 gap-2">
+            <div class="flex items-center gap-2">
+              <i data-lucide="route" class="w-4 h-4 text-blue-600"></i>
+              <span id="routeDistanceSummary">Calculated transit: Geographically clustered daily loops to minimize travel time in hills and cities.</span>
+            </div>
+            <span class="font-bold text-blue-800">🇮🇳 Verified Indian Roads & Scenic Byways</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 2: DAY-BY-DAY SCHEDULE TIMELINE -->
+      <div id="view-itinerary" class="tab-view hidden space-y-6">
+        <!-- Day filter pills -->
+        <div class="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none" id="dayFilterChips">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Days timeline container -->
+        <div id="itineraryDaysContainer" class="space-y-6">
+          <!-- Days rendered here -->
+        </div>
+      </div>
+      <!-- TAB HOTELS: LIVE TRIPMOZY HOTELS & TOURS -->
+      <div id="view-hotels" class="tab-view hidden space-y-6">
+
+        <!-- Hotels Section Header -->
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-xs">🏨</span>
+              <span>Live Hotels from Tripmozy.com — Book Instantly</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Real-time hotel prices for <strong id="hotelsCityLabel">this destination</strong> from tripmozy.com. Click any hotel to book directly.
+            </p>
+          </div>
+          <a href="https://tripmozy.com/hotel" target="_blank" class="btn-blue px-4 py-2 text-xs font-bold flex items-center gap-1.5 shrink-0 rounded-xl no-underline">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            View All Hotels
+          </a>
+        </div>
+
+        <!-- Hotels Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="hotelsGridContainer">
+          <!-- Dynamically populated by renderHotelsTab() -->
+        </div>
+
+        <!-- Tour Packages Section -->
+        <div class="mt-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="map" class="w-4 h-4 text-blue-600"></i>
+              <span>Latest Tripmozy Tour Packages &amp; Treks</span>
+            </h3>
+            <a href="https://tripmozy.com/tour" target="_blank" class="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1">
+              All Tours <i data-lucide="external-link" class="w-3 h-3"></i>
+            </a>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="toursGridContainer">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Big Book Now Banner -->
+        <div class="mt-4 p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4" style="background: linear-gradient(135deg, #16a34a, #15803d);">
+          <div class="text-white">
+            <h3 class="text-lg font-black">Ready to Book Your Dream Trip?</h3>
+            <p class="text-sm text-green-100 mt-0.5">Your full itinerary + budget summary will be carried to Tripmozy checkout.</p>
+          </div>
+          <button onclick="openBookNowOnTripmozy()" class="px-6 py-3 rounded-xl bg-white font-black text-green-800 text-sm flex items-center gap-2 shadow-lg whitespace-nowrap hover:scale-105 transition-transform">
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            Book Now on Tripmozy
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- TAB 3: BUDGET & MANUAL BUDGET COLUMN -->
+      <div id="view-budget" class="tab-view hidden space-y-6">
+        
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">₹</span>
+              <span>Indian Rupee (₹ INR) Expense Forecast & Manual Budget Column</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Edit the <strong>Manual Budget Column</strong> to set your own spending targets for hotels, food, local transport, and tickets.
+            </p>
+          </div>
+          <button onclick="resetManualBudgetToAI()" class="btn-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1.5 shrink-0">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-blue-600"></i>
+            Reset to AI Estimate
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Doughnut Chart Column -->
+          <div class="lg:col-span-5 ui-card p-6 bg-white border border-slate-200 flex flex-col items-center justify-center">
+            <h4 class="text-sm font-bold text-slate-800 mb-3 w-full flex items-center gap-2">
+              <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
+              Expense Share
+            </h4>
+            <div class="w-full max-w-[260px] h-[260px] relative">
+              <canvas id="budgetChartCanvas"></canvas>
+            </div>
+            
+            <!-- Variance Box -->
+            <div id="budgetVarianceBanner" class="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs w-full text-center">
+              <span class="text-slate-500">Manual Budget Variance: </span>
+              <span id="varianceValue" class="font-bold text-emerald-600">Exact match with AI recommendation</span>
+            </div>
+          </div>
+
+          <!-- Itemized Table with Manual Budget Column -->
+          <div class="lg:col-span-7 ui-card p-6 bg-white border border-slate-200 space-y-4">
+            
+            <div class="flex items-center justify-between pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-500">
+              <div class="w-1/2">Category</div>
+              <div class="w-1/4 text-right">AI Estimate (₹)</div>
+              <div class="w-1/4 text-right text-blue-600">Manual Budget (₹)</div>
+            </div>
+
+            <!-- Category list with editable manual inputs -->
+            <div class="space-y-3" id="budgetCategoriesList">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Totals Comparison Footer -->
+            <div class="pt-4 border-t border-slate-200 flex items-center justify-between text-base font-bold">
+              <div>
+                <span class="text-slate-800 block text-xs font-bold">Total Budget</span>
+                <span class="text-slate-500 text-[11px] font-normal">Per person in INR (₹)</span>
+              </div>
+              <div class="text-right flex items-center gap-6">
+                <div>
+                  <span class="text-[11px] text-slate-400 block font-normal">AI Total</span>
+                  <span id="budgetGrandTotal" class="text-slate-700 text-sm font-bold">₹18,500</span>
+                </div>
+                <div>
+                  <span class="text-[11px] text-blue-600 block font-bold">Manual Total</span>
+                  <span id="manualGrandTotal" class="text-blue-600 text-xl font-heading font-black">₹18,500</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: PACKING CHECKLIST -->
+      <div id="view-packing" class="tab-view hidden space-y-4">
+        <div class="ui-card p-6 bg-white border border-slate-200">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-4 border-b border-slate-100">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2 font-heading">
+                <i data-lucide="luggage" class="w-5 h-5 text-blue-600"></i>
+                Packing Checklist for Indian Destinations
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">Customized for regional Indian climate, temple rules, and treks.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-right">
+                <span class="text-xs text-slate-500 block">Progress</span>
+                <span id="packingProgressCount" class="text-xs font-bold text-blue-600">0 Packed</span>
+              </div>
+              <div class="w-24 bg-slate-100 rounded-full h-2 border border-slate-200">
+                <div id="packingProgressBar" class="bg-blue-600 h-2 rounded-full w-0 transition-all duration-300"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="packingListContainer">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: LOCAL TRAVEL GUIDE -->
+      <div id="view-guide" class="tab-view hidden space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="localGuideContainer">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- AI REFINE PROMPT BAR -->
+      <div id="aiRefineBox" class="ui-card p-4 bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <div class="flex items-center gap-2 text-slate-700 shrink-0 text-xs sm:text-sm font-semibold">
+          <i data-lucide="wand-2" class="w-4 h-4 text-blue-600"></i>
+          <span>Modify Itinerary:</span>
+        </div>
+        <div class="flex-grow">
+          <input 
+            type="text" 
+            id="refinePromptInput"
+            placeholder="e.g. 'Add Solang valley snow sports on Day 2', 'Include a riverside cafe in Kasol', 'Add paragliding'..."
+            class="w-full px-3.5 py-2 rounded-lg ui-input text-xs sm:text-sm text-slate-900"
+            onkeydown="if(event.key === 'Enter') handleRefinePlan()"
+          />
+        </div>
+        <button 
+          onclick="handleRefinePlan()"
+          class="btn-blue px-4 py-2 text-xs sm:text-sm flex items-center justify-center gap-1.5 shrink-0"
+        >
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>Update Plan</span>
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- CLEAN STANDARD FOOTER (100% INDIA) -->
+  <footer class="bg-white border-t border-slate-200 py-10 mt-16 text-slate-600 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Brand Description -->
+        <div class="space-y-3">
+          <div class="flex items-center space-x-2">
+            <img src="logo.png" alt="TripMozy" class="h-9 w-auto object-contain" />
+          </div>
+          <p class="text-slate-500 text-xs leading-relaxed">
+            Incredible India AI Travel Planner. Geocoding tourist destinations across India, identifying nearby attractions, and building day-by-day itineraries with exact Indian Rupee (₹) budgets.
+          </p>
+          <div class="text-emerald-700 font-semibold text-[11px] flex items-center gap-1">
+            <span>🇮🇳 Exclusively for Indian Tourist Destinations</span>
+          </div>
+        </div>
+
+        <!-- North & Himalayan Destinations -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">North India & Mountains</h4>
+          <ul class="space-y-2 text-slate-600">
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('manali')" class="hover:text-blue-600 transition">Manali & Solang Valley</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('kashmir')" class="hover:text-blue-600 transition">Srinagar, Gulmarg & Pahalgam</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('ladakh')" class="hover:text-blue-600 transition">Leh & Pangong Tso (Ladakh)</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('rishikesh')" class="hover:text-blue-600 transition">Rishikesh & Mussoorie</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Shimla, Himachal Pradesh')" class="hover:text-blue-600 transition">Shimla & Kufri</a></li>
+          </ul>
+        </div>
+
+        <!-- South & Coastal Destinations -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">South & Coastal India</h4>
+          <ul class="space-y-2 text-slate-600">
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('goa')" class="hover:text-blue-600 transition">Goa Beaches & Heritage Forts</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('kerala')" class="hover:text-blue-600 transition">Kerala Backwaters & Munnar</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('ooty')" class="hover:text-blue-600 transition">Ooty & Coonoor Nilgiris</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('hampi')" class="hover:text-blue-600 transition">Hampi UNESCO Ruins</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Coorg, Karnataka')" class="hover:text-blue-600 transition">Coorg Coffee Plantations</a></li>
+          </ul>
+        </div>
+
+        <!-- Heritage & East/Northeast -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Heritage & Northeast</h4>
+          <ul class="space-y-2 text-slate-600">
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('rajasthan')" class="hover:text-blue-600 transition">Jaipur & Royal Rajasthan</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('varanasi')" class="hover:text-blue-600 transition">Varanasi Ghats & Kashi Vishwanath</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('darjeeling')" class="hover:text-blue-600 transition">Darjeeling & Gangtok (Sikkim)</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Shillong, Meghalaya')" class="hover:text-blue-600 transition">Meghalaya & Living Root Bridges</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Kaziranga, Assam')" class="hover:text-blue-600 transition">Kaziranga National Park (Assam)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+        <div>
+          © 2026 Tripmozy.com. Dedicated to Incredible India.
+        </div>
+        <div class="flex items-center space-x-4">
+          <span>🇮🇳 100% Indian Tourism Focus</span>
+          <span>•</span>
+          <span>GPS Map Routing</span>
+          <span>•</span>
+          <span>INR (₹) Standard</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Script -->
+  <script src="tripmozy_catalog.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
