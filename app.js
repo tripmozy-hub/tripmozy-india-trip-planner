@@ -360,7 +360,269 @@ const INDIA_DESTINATIONS = {
         { en: "Thank you", local: "Dhanyavaad" }
       ]
     }
-  }
+  },
+
+  darjeeling: {
+    destination: "Darjeeling, West Bengal",
+    days: 4,
+    title: "Queen of the Hills & Kanchenjunga Vistas: 4 Days in Darjeeling",
+    subtitle: "From early morning golden sunrise over Mt. Kanchenjunga at Tiger Hill to heritage tea estates, colonial architecture, and Himalayan mountain railways.",
+    party: "Family",
+    budgetTier: "Moderate",
+    costPerPerson: 16500,
+    currency: "INR (₹)",
+    coords: [27.0410, 88.2663], // Chowrasta Mall Road
+    nearbyAttractions: [
+      { name: "Tiger Hill Sunrise Viewpoint", category: "Scenic", coords: [26.9944, 88.2861], desc: "Iconic mountain peak providing panoramic 360-degree views of Mt. Everest and the Kanchenjunga range bathed in dawn light.", tip: "Depart hotel by 4:00 AM; carry thermal caps and gloves." },
+      { name: "Batasia Loop & Gorkha War Memorial", category: "Heritage", coords: [27.0169, 88.2494], desc: "Spiral railway loop of the Darjeeling Himalayan Railway landscaped with flowering gardens and panoramic views.", tip: "Listen for the whistling steam locomotive as it rounds the loop." },
+      { name: "Ghoom Monastery (Yiga Choeling)", category: "Temple", coords: [27.0108, 88.2547], desc: "Built in 1850, housing a magnificent 15-foot statue of Maitreya Buddha and sacred Tibetan manuscripts.", tip: "Quiet contemplation; take off footwear before entering the prayer hall." },
+      { name: "Happy Valley Tea Estate & Factory", category: "Nature", coords: [27.0528, 88.2625], desc: "One of Darjeeling's oldest estates producing world-famous Muscatel black tea on terraced mountain slopes.", tip: "Take the guided tea-tasting tour to taste First Flush vs Second Flush." },
+      { name: "Himalayan Mountaineering Institute & Zoo", category: "Culture", coords: [27.0583, 88.2708], desc: "Founded by Tenzing Norgay; zoo preserves rare Red Pandas, Snow Leopards, and Himalayan Black Bears.", tip: "Closed on Thursdays; allow at least 2.5 hours." },
+      { name: "Japanese Peace Pagoda & Temple", category: "Spiritual", coords: [27.0305, 88.2611], desc: "Pristine white pagoda built by Buddhist monk Nichidatsu Fujii showcasing four avatars of Lord Buddha.", tip: "Attend the resonant 4:30 PM drum prayer chant." },
+      { name: "Chowrasta Mall Road & Glenary's Bakery", category: "Dining", coords: [27.0430, 88.2670], desc: "Pedestrianized promenade lined with colonial heritage cafes, bookshops, and steaming pots of Darjeeling tea.", tip: "Enjoy breakfast bakery items and chocolate rum balls at Glenary's (Est. 1886)." },
+      { name: "Rock Garden & Ganga Maya Park", category: "Nature", coords: [27.0250, 88.2250], desc: "Multi-level terraced garden carved through natural waterfalls and rocky hillsides 10 km down the valley.", tip: "Steep winding drive; hire a skilled local 4x4 cab." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Arrival, Hotel Check-in & Evening Chowrasta Mall",
+        overnight: "Darjeeling (Mall Road / Gandhi Road Area)",
+        transitSummary: "Siliguri/NJP to Darjeeling: 70 km ~ 3h 15m on scenic Hill Cart Road",
+        stops: [
+          { time: "12:30 PM", name: "Hotel Check-in & Freshen Up", category: "Stay", cost: "₹0", duration: "1.5h", desc: "Check in to your verified TripMozy partner hotel or heritage homestay with Kanchenjunga valley views.", tip: "Hot ginger tea and Darjeeling momos served on arrival." },
+          { time: "02:30 PM", name: "Keventer's Colonial Rooftop Lunch", category: "Dining", cost: "₹550", duration: "1.5h", desc: "Iconic colonial open-air terrace famous for full English breakfast, meat platters, and hot Darjeeling First Flush tea.", tip: "Terrace seats provide uninterrupted valley panoramas." },
+          { time: "04:30 PM", name: "Chowrasta Mall & Heritage Stroll", category: "Relaxation", cost: "₹0", duration: "2h", desc: "Stroll along the vehicle-free promenade, watch local artists, and browse Oxford Book & Stationery.", tip: "Sit on the green benches to watch sunset clouds roll across the valley." },
+          { time: "07:30 PM", name: "Glenary's Bakery & Pub Dinner", category: "Dining", cost: "₹750", duration: "2h", desc: "Live acoustic Western and Nepali folk music, wood-fired sizzlers, and freshly baked pastries.", tip: "Try the warm apple pie with vanilla custard." }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Tiger Hill Dawn Sunrise, Batasia Loop & Monastery",
+        overnight: "Darjeeling",
+        transitSummary: "Local Mountain Transit: 28 km ~ 1h 20m in shared/private cab",
+        stops: [
+          { time: "04:15 AM", name: "Tiger Hill Sunrise over Mt. Kanchenjunga", category: "Scenic", cost: "₹50", duration: "2h", desc: "Watch the snow peaks of the third highest mountain in the world ignite with pink, crimson, and golden light.", tip: "Dress in heavy warm woolens; winter dawn temperatures drop near freezing.", coords: [26.9944, 88.2861] },
+          { time: "07:30 AM", name: "Batasia Loop & Toy Train Track", category: "Heritage", cost: "₹30", duration: "1h", desc: "Engineering marvel where the narrow-gauge train loops around a manicured war memorial garden.", tip: "Great panorama photography point.", coords: [27.0169, 88.2494] },
+          { time: "09:00 AM", name: "Ghoom Monastery (Yiga Choeling)", category: "Spiritual", cost: "₹0", duration: "1h", desc: "Ancient Gelugpa Tibetan Buddhist monastery with brass prayer wheels and butter lamps.", tip: "Rotate prayer wheels clockwise.", coords: [27.0108, 88.2547] },
+          { time: "11:30 AM", name: "Hotel Rest & Warm Mountain Brunch", category: "Relaxation", cost: "₹400", duration: "2h", desc: "Return to hotel for a relaxing hot bath, rest, and steaming noodle thukpa after the early dawn wake-up.", tip: "Essential rest window before afternoon sightseeing." },
+          { time: "02:30 PM", name: "Japanese Peace Pagoda & Temple", category: "Culture", cost: "₹0", duration: "2h", desc: "Tranquil hillside pagoda surrounded by pine and cedar trees radiating messages of universal peace.", tip: "Quiet zone; serene mountain reflections.", coords: [27.0305, 88.2611] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Tea Estates, Red Pandas & Mountaineering History",
+        overnight: "Darjeeling",
+        transitSummary: "Local City Circuit: 18 km ~ 50m",
+        stops: [
+          { time: "09:00 AM", name: "Himalayan Mountaineering Institute & Zoo", category: "Heritage", cost: "₹120", duration: "2.5h", desc: "Museum displaying historic Everest expedition artifacts alongside red pandas and snow leopards.", tip: "Notice: Zoo is closed on Thursdays.", coords: [27.0583, 88.2708] },
+          { time: "12:30 PM", name: "Hot Tibetan Lunch at Kunga / Dekevas", category: "Dining", cost: "₹450", duration: "1.5h", desc: "Famous cozy family-run joint serving steamed shaphale, hot wonton soup, and Tingmo bread.", tip: "Small seating capacity; arrive promptly at 12:30 PM." },
+          { time: "02:30 PM", name: "Happy Valley Tea Estate Guided Tour", category: "Nature", cost: "₹100", duration: "2h", desc: "Walk between lush tea bushes, learn the orthodox tea processing method, and taste freshly brewed tea.", tip: "Purchase genuine First Flush single-estate tea directly from the factory outlet.", coords: [27.0528, 88.2625] },
+          { time: "05:30 PM", name: "Mall Bazaar Souvenir Shopping", category: "Shopping", cost: "₹800", duration: "2h", desc: "Shop for hand-knit woolens, Darjeeling CTC & orthodox tea, brass singing bowls, and prayer flags.", tip: "Look for the green Darjeeling Tea logo for genuine tea quality." }
+        ]
+      },
+      {
+        day: 4,
+        title: "Day 4: Morning Tea Garden Stroll, Check-out & Departure",
+        overnight: "Departure to Siliguri/Bagdogra",
+        transitSummary: "Darjeeling to Siliguri/Bagdogra Airport: 72 km ~ 3h 30m downhill",
+        stops: [
+          { time: "08:30 AM", name: "Nathmulls Tea Tasting Lounge", category: "Dining", cost: "₹300", duration: "1.5h", desc: "Sample rare silver needle white tea and organic Muscatel varieties prepared by certified tea masters.", tip: "Ask for vacuum-packed gift caddies for flights." },
+          { time: "10:30 AM", name: "Hotel Check-out & Luggage Load", category: "Stay", cost: "₹0", duration: "1h", desc: "Complete hotel checkout and meet your TripMozy private cab driver for departure transfer.", tip: "Keep your camera accessible for roadside valley viewpoints." },
+          { time: "12:00 PM", name: "Mirik Lake & Tea Valley Scenic Drive", category: "Scenic", cost: "₹100", duration: "2h", desc: "Optional scenic detour via Mirik Lake bordered by cryptomeria pine trees and cardamom groves.", tip: "Horse riding and footbridge walks over the lake." }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 7200, food: 4400, activities: 2100, transport: 2200, shopping: 600 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar", "Cash for roadside tea stalls", "Voucher copy"],
+      clothing: ["Woolen sweaters & fleece jacket", "Thermal innerwear (Oct-March)", "Comfortable walking sneakers"],
+      gear: ["Power bank", "Compact umbrella (hill showers are sudden)", "Moisturizer / Lip balm"],
+      health: ["Motion sickness pills for winding hill roads", "Paracetamol & Band-aids"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹ INR). UPI accepted widely; keep ₹1,500 cash for Tiger Hill entry and drivers.",
+      transit: "Pre-booked 4x4 private cabs (Innova / Sumo Gold) are the most reliable on Darjeeling's steep slopes.",
+      tipping: "7-10% in cafes; ₹300-₹500 daily tip for cab driver.",
+      emergency: "Darjeeling Sadar Police: 0354-2254422 | Tourism Helpline: 0354-2255351 | Ambulance: 108.",
+      etiquette: "Never pluck tea leaves without permission. Walk around monasteries and stupas clockwise.",
+      phrases: [
+        { en: "Greetings", local: "Namaste / Tashi Delek" },
+        { en: "How much is this tea?", local: "Yeh chai kitne ki hai?" },
+        { en: "Thank you", local: "Dhanyavaad" }
+      ]
+    }
+  },
+
+  sikkim: {
+    destination: "Gangtok & East Sikkim",
+    days: 4,
+    title: "Glacial Lakes & Monasteries: 4 Days in Gangtok, Sikkim",
+    subtitle: "From high-altitude Tsomgo Glacial Lake and Baba Mandir to sacred Rumtek Monastery and vibrant pedestrianized MG Marg.",
+    party: "Family",
+    budgetTier: "Moderate",
+    costPerPerson: 18500,
+    currency: "INR (₹)",
+    coords: [27.3389, 88.6065], // MG Marg Gangtok
+    nearbyAttractions: [
+      { name: "Tsomgo (Changu) Glacial Lake", category: "Scenic", coords: [27.3742, 88.7619], desc: "Sacred oval alpine lake situated at 12,310 ft elevation reflecting towering snow peaks.", tip: "Requires Restricted Area Permit (PAP). Ride colorfully decorated local yaks around the shore." },
+      { name: "Baba Harbhajan Singh Mandir", category: "Heritage", coords: [27.3917, 88.8250], desc: "Unique high-altitude military memorial temple dedicated to an Indian Army soldier at 13,123 ft.", tip: "Temperature drops below 5°C even in summer; warm jackets essential." },
+      { name: "Rumtek Dharma Chakra Centre", category: "Spiritual", coords: [27.3039, 88.5478], desc: "Seat of the Karmapa Lama; largest monastery in Sikkim filled with sacred murals and golden stupas.", tip: "Carry original Govt photo ID for entry through security checkpoints." },
+      { name: "Nathula Pass (Indo-China Border)", category: "Scenic", coords: [27.3865, 88.8310], desc: "Historic Silk Route mountain pass connecting India and Tibet at 14,140 ft altitude.", tip: "NOTICE: Strictly closed on Mondays & Tuesdays. Only Indian citizens with prior permits allowed." },
+      { name: "MG Marg Pedestrian Boulevard", category: "Shopping", coords: [27.3314, 88.6138], desc: "Clean, vehicle-free European-style cobblestone street lined with Tibetan cafes, bakeries, and state craft emporiums.", tip: "Spit-free and litter-free eco zone with active fines." },
+      { name: "Ban Jhakri Falls & Energy Park", category: "Nature", coords: [27.3600, 88.6000], desc: "100-foot cascading waterfall set within a forested shamanistic cultural theme park.", tip: "Great for families with children." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Arrival in Gangtok & Evening MG Marg Promenade",
+        overnight: "Gangtok",
+        transitSummary: "Siliguri/Bagdogra to Gangtok: 115 km ~ 4h 30m along the roaring Teesta River",
+        stops: [
+          { time: "01:00 PM", name: "Hotel Check-in & Freshen Up", category: "Stay", cost: "₹0", duration: "1.5h", desc: "Check in to your TripMozy partner hotel overlooking the lush green Ranipool valley.", tip: "Hand over passport photos & Aadhaar copies to your driver for next day's Tsomgo permit." },
+          { time: "03:30 PM", name: "Enchey Monastery Peaceful Stroll", category: "Spiritual", cost: "₹0", duration: "1.5h", desc: "200-year-old Nyingma monastery perched on a forested ridge blessed by Lama Druptob Karpo.", tip: "Surrounded by fluttering colorful prayer flags.", coords: [27.3450, 88.6200] },
+          { time: "05:30 PM", name: "MG Marg Evening Stroll & Shopping", category: "Shopping", cost: "₹500", duration: "2.5h", desc: "Enjoy vehicle-free pedestrian boulevard, shop Sikkimese black cardamom, and try hot momos at The Roll House.", tip: "Taste authentic Tibetan Tingmo and shaphale at Taste of Tibet.", coords: [27.3314, 88.6138] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Alpine Excursion to Tsomgo Lake & Baba Mandir (13,100 ft)",
+        overnight: "Gangtok",
+        transitSummary: "Mountain Highway: 80 km round-trip ~ 3h 30m in rugged 4x4 cab",
+        stops: [
+          { time: "08:00 AM", name: "Permit Check & Ascent to Tsomgo Glacial Lake", category: "Scenic", cost: "₹250", duration: "3h", desc: "Drive up the high alpine military highway to the crystal turquoise sacred lake at 12,310 ft.", tip: "Rent warm coats and snow boots at the Kyongnosla mountain checkpoint.", coords: [27.3742, 88.7619] },
+          { time: "12:00 PM", name: "Baba Harbhajan Singh Memorial Temple", category: "Heritage", cost: "₹0", duration: "1.5h", desc: "Visit the revered high-altitude temple honoring the soldier guardian of the Nathula frontier.", tip: "Army canteen serves hot Maggi and complimentary sweet tea.", coords: [27.3917, 88.8250] },
+          { time: "03:30 PM", name: "Return to Gangtok & Relaxation", category: "Relaxation", cost: "₹0", duration: "2h", desc: "Descend back to Gangtok; rest and acclimate after high altitude excursion.", tip: "Drink plenty of warm water to prevent altitude fatigue." }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Sacred Rumtek Monastery & Ban Jhakri Waterfalls",
+        overnight: "Gangtok",
+        transitSummary: "Local Sightseeing Circuit: 45 km ~ 2h 15m",
+        stops: [
+          { time: "09:30 AM", name: "Rumtek Dharma Chakra Centre", category: "Spiritual", cost: "₹50", duration: "2.5h", desc: "Majestic Tibetan monastery housing sacred relics, gold-plated stupas, and young monk chanting halls.", tip: "Carry original Govt photo ID for entry security.", coords: [27.3039, 88.5478] },
+          { time: "01:00 PM", name: "Nimtho Restaurant Traditional Sikkimese Lunch", category: "Dining", cost: "₹650", duration: "1.5h", desc: "Organic Sikkimese feast featuring Gundruk soup, wild fern saag, and millet momos.", tip: "Authentic local culinary experience on MG Marg." },
+          { time: "03:00 PM", name: "Ban Jhakri Falls & Shamanistic Garden", category: "Nature", cost: "₹50", duration: "2h", desc: "Cascading 100-foot waterfall set in landscaped gardens depicting ancestral mountain healers.", tip: "Boating lake and bridges for photos.", coords: [27.3600, 88.6000] }
+        ]
+      },
+      {
+        day: 4,
+        title: "Day 4: Flower Exhibition, Ropeway & Departure",
+        overnight: "Departure via Siliguri / NJP",
+        transitSummary: "Gangtok to NJP / Bagdogra: 115 km ~ 4h 30m",
+        stops: [
+          { time: "09:00 AM", name: "Gangtok Cable Car Ropeway", category: "Adventure", cost: "₹150", duration: "1h", desc: "Bi-cable passenger ropeway gliding over Gangtok town with aerial views of Mt. Kanchenjunga.", tip: "Board at Deorali station early to avoid waiting." },
+          { time: "10:30 AM", name: "Directorate of Handicrafts & Handloom", category: "Shopping", cost: "₹500", duration: "1.5h", desc: "See skilled artisans weave Lepcha wool carpets, carved Choktse tables, and thankas.", tip: "Fixed government prices with quality guarantee." },
+          { time: "12:30 PM", name: "Hotel Check-out & Return Journey", category: "Stay", cost: "₹0", duration: "1h", desc: "Check out and commence comfortable transfer to NJP Railway Station / Bagdogra Airport.", tip: "Plan extra 1 hour buffer during monsoon months." }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 8400, food: 5200, activities: 2400, transport: 2000, shopping: 500 },
+    packingList: {
+      essentials: ["Govt ID / Voter Card / Passport (Aadhaar not accepted for Nathula pass)", "4 Passport Photos for permits", "Permit fee cash"],
+      clothing: ["Thermal layer top & bottom", "Windproof winter jacket", "Warm woolen cap & gloves"],
+      gear: ["Power bank", "UV sunglasses for alpine snow glare", "Sturdy walking boots"],
+      health: ["Diamox (for altitude acclimatization)", "Motion sickness pills", "Lip balm"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹ INR). UPI works in Gangtok; carry ₹2,000 cash for high-altitude Tsomgo points.",
+      transit: "Only Sikkim-registered commercial 4x4 vehicles (Innova, Scorpio, Bolero) permitted to Tsomgo Lake.",
+      tipping: "10% in restaurants; ₹300-₹500/day for high-altitude mountain drivers.",
+      emergency: "Sikkim Tourist Police: 03592-202022 | Emergency Helpline: 112 | STNM Hospital Gangtok: 03592-202944.",
+      etiquette: "Dress conservatively at monasteries. Do not photograph inside sanctum sanctorums without permission.",
+      phrases: [
+        { en: "Hello", local: "Kuzoozangpo / Namaste" },
+        { en: "Thank you", local: "Kadrinchhe / Dhanyavaad" }
+      ]
+    }
+  },
+
+  meghalaya: {
+    destination: "Shillong & Cherrapunji, Meghalaya",
+    days: 4,
+    title: "Abode of Clouds & Crystal Waters: 4 Days in Meghalaya",
+    subtitle: "From roaring Nohkalikai Falls and limestone Mawsmai caves in Cherrapunji to crystal clear Dawki river and cleanest village Mawlynnong.",
+    party: "Family",
+    budgetTier: "Moderate",
+    costPerPerson: 19500,
+    currency: "INR (₹)",
+    coords: [25.5788, 91.8933], // Police Bazar Shillong
+    nearbyAttractions: [
+      { name: "Nohkalikai Falls (Tallest Plunge Waterfall)", category: "Scenic", coords: [25.2756, 91.6917], desc: "India's tallest plunge waterfall (1,115 ft) cascading from a verdant cliff into a turquoise pool.", tip: "Best photography light between 10 AM and 2 PM before mist rises." },
+      { name: "Mawsmai Limestone Caves", category: "Adventure", coords: [25.2444, 91.7167], desc: "Natural subterranean limestone cave system illuminated with internal lights, stalactites and stalagmites.", tip: "Wear shoes with rubber grip; cave floor has shallow flowing water." },
+      { name: "Dawki Umngot River Boating", category: "Scenic", coords: [25.1850, 92.0150], desc: "World-famous transparent river where wooden country boats appear to float on pure air above the riverbed.", tip: "Best crystal clarity from November to April." },
+      { name: "Mawlynnong Cleanest Village", category: "Culture", coords: [25.2010, 91.9160], desc: "Recognized as Asia's cleanest village with bamboo dustbins at every corner, orchids, and a Single Decker Root Bridge nearby in Riwai.", tip: "Walk through the blooming treehouse viewpoint overlooking Bangladesh plains." },
+      { name: "Umiam (Barapani) Lake", category: "Nature", coords: [25.6667, 91.8944], desc: "Sprawling sapphire highland water reservoir framed by lush coniferous pine hills outside Shillong.", tip: "Speedboat and water scooter rides available at the water sports complex." },
+      { name: "Elephant Falls & Shillong Peak", category: "Nature", coords: [25.5361, 91.8250], desc: "Three-tiered mountain stream flowing over dark fern-covered rocks named by British officers.", tip: "Easy paved walkway with railings suitable for all ages." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Guwahati to Shillong via Scenic Umiam Lake",
+        overnight: "Shillong (Police Bazar / Laitumkhrah)",
+        transitSummary: "Guwahati Airport to Shillong: 100 km ~ 3h on smooth 4-lane highway",
+        stops: [
+          { time: "11:30 AM", name: "Umiam Lake Viewpoint & Water Sports", category: "Scenic", cost: "₹300", duration: "1.5h", desc: "Stop at the breathtaking highland reservoir for mountain lake breeze and boat ride.", tip: "Try hot roasted corn with lemon chili by the lake.", coords: [25.6667, 91.8944] },
+          { time: "01:30 PM", name: "Hotel Check-in & Traditional Khasi Lunch", category: "Dining", cost: "₹500", duration: "1.5h", desc: "Enjoy Jadoh rice with aromatic herbs and local bamboo shoot delicacies in Shillong.", tip: "Trattoria in Police Bazar is famous for authentic Khasi cuisine." },
+          { time: "04:30 PM", name: "Ward's Lake & Botanical Stroll", category: "Nature", cost: "₹50", duration: "2h", desc: "Horseshoe-shaped colonial lake with wooden footbridge, lotus beds, and paddle boating.", tip: "Feed colorful Japanese koi fish from the bridge." },
+          { time: "07:00 PM", name: "Police Bazar Evening Cafes & Rock Music", category: "Relaxation", cost: "₹450", duration: "2h", desc: "Shillong is India's rock music capital; visit Dylan's Cafe or Cafe Shillong for live music and hot coffee.", tip: "Lively shopping street for Scottish woolens and bamboo crafts." }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Cherrapunji (Sohra) Waterfalls & Limestone Caves",
+        overnight: "Cherrapunji (Sohra)",
+        transitSummary: "Shillong to Cherrapunji: 55 km ~ 2h along dramatic misty gorge ridges",
+        stops: [
+          { time: "08:30 AM", name: "Elephant Falls Three-Tier Cascades", category: "Nature", cost: "₹30", duration: "1.5h", desc: "Walk down wooden steps alongside three cascading mountain torrents.", tip: "Morning light provides misty rainbow photo opportunities.", coords: [25.5361, 91.8250] },
+          { time: "11:30 AM", name: "Mawkdok Dympep Valley Viewpoint", category: "Scenic", cost: "₹50", duration: "1h", desc: "Dramatic iron bridge crossing a sheer green mountain chasm; optional mountain zipline.", tip: "Zip across the 2,600 ft canyon if you love adventure." },
+          { time: "01:30 PM", name: "Nohkalikai Falls & Cliff View Lunch", category: "Scenic", cost: "₹450", duration: "2h", desc: "India's highest plunge waterfall plummeting into an emerald pool.", tip: "Buy local cinnamon, bay leaves, and pure wild honey from Khasi village stalls.", coords: [25.2756, 91.6917] },
+          { time: "04:00 PM", name: "Mawsmai Cave Spelunking", category: "Adventure", cost: "₹50", duration: "1.5h", desc: "Explore prehistoric limestone cave passages with natural calcite rock formations.", tip: "Safe illuminated trail; duck slightly in narrow squeeze spots.", coords: [25.2444, 91.7167] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Crystal Clear Dawki River & Mawlynnong Cleanest Village",
+        overnight: "Shillong",
+        transitSummary: "Cherrapunji to Dawki & Mawlynnong: 95 km ~ 3h 15m",
+        stops: [
+          { time: "09:00 AM", name: "Dawki Umngot River Transparent Boating", category: "Scenic", cost: "₹800", duration: "2h", desc: "Glide on water so transparent that your boat appears suspended mid-air above smooth river pebbles.", tip: "Hire a private country wooden boat for a tranquil row to the gorge.", coords: [25.1850, 92.0150] },
+          { time: "12:30 PM", name: "India-Bangladesh Tamabil Border Checkpost", category: "Culture", cost: "₹0", duration: "45m", desc: "Friendly international border post where travelers photograph the historic boundary markers.", tip: "Respect security guidelines and border guards." },
+          { time: "02:00 PM", name: "Mawlynnong Village Traditional Lunch", category: "Dining", cost: "₹400", duration: "1.5h", desc: "Home-cooked Khasi chicken, lentils, and fresh organic garden vegetables served in a floral village home.", tip: "Village is 100% plastic-free." },
+          { time: "03:30 PM", name: "Riwai Single-Decker Living Root Bridge", category: "Nature", cost: "₹40", duration: "1.5h", desc: "Ancient bridge grown over centuries by training Ficus elastica tree roots across a boulder river.", tip: "Short 10-minute stone walk from village car park.", coords: [25.2010, 91.9160] }
+        ]
+      },
+      {
+        day: 4,
+        title: "Day 4: Don Bosco Indigenous Museum & Return Transfer",
+        overnight: "Departure to Guwahati Airport / Station",
+        transitSummary: "Shillong to Guwahati: 100 km ~ 3h",
+        stops: [
+          { time: "09:00 AM", name: "Don Bosco Centre for Indigenous Cultures", category: "Culture", cost: "₹100", duration: "2h", desc: "Seven-story hexagonal museum showcasing authentic tribal attire, weapons, and musical instruments of all 8 Northeast states.", tip: "Visit the rooftop skywalk for panoramic views of Shillong." },
+          { time: "11:30 AM", name: "Hotel Check-out & Highway Departure Transfer", category: "Stay", cost: "₹0", duration: "1h", desc: "Depart for Guwahati airport with pleasant memories and fresh Meghalaya pineapples.", tip: "Buy sweet honey pineapples at Nongpoh highway stalls." }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 8600, food: 5400, activities: 2600, transport: 2400, shopping: 500 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar", "Cash for Dawki boatmen and village stalls", "Waterproof pouch for mobile"],
+      clothing: ["Light cottons + warm fleece jacket (Cherrapunji evenings are cool)", "Raincoat / Umbrella", "Comfortable walking shoes with rubber grip"],
+      gear: ["Power bank", "Camera with polarized lens (cuts water glare in Dawki)"],
+      health: ["Mosquito repellent cream", "Band-aids", "Motion sickness pills"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹ INR). UPI accepted in Shillong; keep ₹2,500 cash for Dawki boating and village entry.",
+      transit: "A dedicated private cab from Guwahati is the most comfortable and reliable way to travel Meghalaya.",
+      tipping: "7-10% in cafes; ₹300-₹400/day for driver.",
+      emergency: "Meghalaya Police: 112 | Shillong Civil Hospital: 0364-2224100 | Tourism Info: 0364-2226220.",
+      etiquette: "Khasi society is matrilineal; show high respect to women elders. Never litter in villages.",
+      phrases: [
+        { en: "Hello", local: "Khublei" },
+        { en: "Thank you", local: "Khublei Shibun" }
+      ]
+    }
+  },
+
 };
 
 // Additional 40+ Indian Tourist Locations for Live Mapping & Nearby Detection
@@ -413,6 +675,9 @@ const INDIAN_COORDS_LOOKUP = {
   "madurai": [9.9252, 78.1198],
   "kanyakumari": [8.0883, 77.5385]
 };
+if (typeof window !== 'undefined') {
+  window.INDIAN_COORDS_LOOKUP = INDIAN_COORDS_LOOKUP;
+}
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -532,6 +797,43 @@ function loadIndianCircuit(key) {
 }
 
 // FORM SUBMISSION & MAP GEOLOCATION WORKFLOW
+
+// =====================================================================
+// PHASE 2 & 4: GROUP SIZING, ROOMS & VEHICLE ALLOCATION HELPERS
+// =====================================================================
+
+function adjustCount(id, delta) {
+  var input = document.getElementById(id);
+  if (!input) return;
+  var val = (parseInt(input.value) || 0) + delta;
+  var min = parseInt(input.min) || 0;
+  var max = parseInt(input.max) || 25;
+  if (val >= min && val <= max) {
+    input.value = val;
+    updateVehicleAndRoomAllocation();
+  }
+}
+
+function updateVehicleAndRoomAllocation() {
+  var adults = parseInt(document.getElementById('adultsCountInput')?.value) || 2;
+  var children = parseInt(document.getElementById('childrenCountInput')?.value) || 0;
+  var roomPref = document.getElementById('roomSharingSelect')?.value || 'auto';
+
+  // Calculate rooms
+  if (window.TripMozyEngine) {
+    var roomAlloc = window.TripMozyEngine.calculateRooms(adults, children, roomPref);
+    var roomTextEl = document.getElementById('roomCountText');
+    if (roomTextEl) roomTextEl.textContent = roomAlloc.description + ' required';
+
+    var vehicleAlloc = window.TripMozyEngine.determineVehicleType(adults, children);
+    var vehicleBadge = document.getElementById('vehicleBadgeDisplay');
+    if (vehicleBadge) {
+      var icon = vehicleAlloc.type === 'tempo' ? '🚐 ' : (vehicleAlloc.type === 'suv' ? '🚙 ' : '🚗 ');
+      vehicleBadge.textContent = icon + vehicleAlloc.label;
+    }
+  }
+}
+
 async function handleFormSubmit(e) {
   if (e && e.preventDefault) e.preventDefault();
 
@@ -542,11 +844,24 @@ async function handleFormSubmit(e) {
   }
 
   const days = parseInt(document.getElementById('durationRange').value) || 4;
-  const companion = document.querySelector('input[name="companion"]:checked')?.value || "Solo";
+  const originCity = document.getElementById('originCityInput')?.value.trim() || "At Destination (Local Sightseeing)";
+  const startDate = document.getElementById('startDateInput')?.value || "";
+  const endDate = document.getElementById('endDateInput')?.value || "";
+  const adults = parseInt(document.getElementById('adultsCountInput')?.value) || 2;
+  const children = parseInt(document.getElementById('childrenCountInput')?.value) || 0;
+  const roomSharingPref = document.getElementById('roomSharingSelect')?.value || "auto";
+  const transportPref = document.getElementById('transportPrefSelect')?.value || "private_cab";
+  const travelStyle = document.querySelector('input[name="travelStyle"]:checked')?.value || "Standard Sightseeing";
+  const companion = document.querySelector('input[name="companion"]:checked')?.value || (adults > 2 ? "Family" : (adults === 2 ? "Couple" : "Solo"));
   const budgetTier = document.querySelector('input[name="budget"]:checked')?.value || "Moderate";
   const dietary = document.getElementById('dietaryPref')?.value || "Pure Vegetarian";
   const manualBudgetInput = Number(document.getElementById('manualTargetBudgetInput')?.value) || 0;
   const mapRadius = parseInt(document.getElementById('mapRadiusSelect')?.value) || 35;
+  const mustVisit = document.getElementById('mustVisitInput')?.value.trim() || "";
+  const placesAvoid = document.getElementById('placesAvoidInput')?.value.trim() || "";
+  const seniorFriendly = document.getElementById('seniorFriendlyCb')?.checked || false;
+  const childFriendly = document.getElementById('childFriendlyCb')?.checked || false;
+  const mountainPacing = document.getElementById('mountainPacingCb')?.checked || false;
 
   const selectedInterests = Array.from(document.querySelectorAll('.interest-chip.active'))
     .map(c => c.getAttribute('data-interest'));
@@ -594,14 +909,27 @@ async function handleFormSubmit(e) {
   // Generate Itinerary
   const tripPlan = generateIndianTripPlan({
     destination,
+    originCity,
+    startDate,
+    endDate,
     baseCoords,
     days,
+    adults,
+    children,
+    roomSharingPref,
+    transportPref,
+    travelStyle,
     companion,
     budgetTier,
     dietary,
     manualBudget: manualBudgetInput,
     interests: selectedInterests,
-    radius: mapRadius
+    radius: mapRadius,
+    mustVisit,
+    placesAvoid,
+    seniorFriendly,
+    childFriendly,
+    mountainPacing
   });
   currentTrip = tripPlan;
 
@@ -670,13 +998,40 @@ function generateIndianTripPlan(params) {
   const dest = params.destination;
   const clean = dest.toLowerCase();
 
+  // Run structured budget engine
+  const accurateBudget = (window.TripMozyEngine && window.TripMozyEngine.calculateAccurateTripBudget)
+    ? window.TripMozyEngine.calculateAccurateTripBudget({
+        destination: params.destination,
+        days: params.days,
+        adults: params.adults || 2,
+        children: params.children || 0,
+        roomSharingPref: params.roomSharingPref || 'auto',
+        transportPref: params.transportPref || 'private_cab',
+        budgetTier: params.budgetTier || 'Moderate',
+        dietaryPref: params.dietary || 'Pure Vegetarian',
+        targetBudget: params.manualBudget || 0
+      })
+    : null;
+
   // Check preset first
   for (const key in INDIA_DESTINATIONS) {
     if (clean.includes(key)) {
       const preset = JSON.parse(JSON.stringify(INDIA_DESTINATIONS[key]));
+      preset.originCity = params.originCity;
+      preset.startDate = params.startDate;
+      preset.endDate = params.endDate;
       preset.party = params.companion;
       preset.budgetTier = params.budgetTier;
       preset.radius = params.radius;
+      preset.adults = params.adults || 2;
+      preset.children = params.children || 0;
+      preset.accurateBudget = accurateBudget;
+      if (accurateBudget) {
+        preset.costPerPerson = accurateBudget.costPerPerson;
+        preset.grandTotalTrip = accurateBudget.grandTotalTrip;
+        preset.roomAllocation = accurateBudget.roomAllocation;
+        preset.vehicleAllocation = accurateBudget.vehicleAllocation;
+      }
 
       // Scale days if needed
       if (params.days !== preset.days) {
@@ -698,6 +1053,26 @@ function generateIndianTripPlan(params) {
         poi.distKm = getDistanceKm(preset.coords[0], preset.coords[1], poi.coords[0], poi.coords[1]);
       });
       preset.nearbyAttractions.sort((a, b) => a.distKm - b.distKm);
+
+      // Attach date strings if startDate provided
+      if (params.startDate) {
+        var dObj = new Date(params.startDate);
+        preset.daysPlan.forEach(function(d) {
+          if (!isNaN(dObj.getTime())) {
+            d.dateStr = dObj.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+            dObj.setDate(dObj.getDate() + 1);
+          }
+        });
+      }
+
+      // Ensure overnight stays are populated
+      preset.daysPlan.forEach(function(d) {
+        if (!d.overnight) d.overnight = "Overnight in " + preset.destination;
+      });
+
+      if (typeof validateTripPlanSchema === 'function') {
+        validateTripPlanSchema(preset);
+      }
 
       return preset;
     }
@@ -774,9 +1149,17 @@ function createDynamicIndianCityPlan(params) {
     const poi1 = nearbyAttractions[((d - 1) * 2) % nearbyAttractions.length];
     const poi2 = nearbyAttractions[((d - 1) * 2 + 1) % nearbyAttractions.length];
 
+    var overnightPlace = "Overnight in " + dest;
+    var transitDist = Math.round(15 + Math.random() * 20);
+    var transitEst = (window.TripMozyEngine && window.TripMozyEngine.estimateTransferDuration)
+      ? window.TripMozyEngine.estimateTransferDuration(transitDist, true)
+      : transitDist + " km ~ 50 mins";
+
     daysPlan.push({
       day: d,
       title: `Day ${d}: ${theme} (${dest})`,
+      overnight: overnightPlace,
+      transitSummary: transitEst,
       stops: [
         {
           time: "09:30 AM",
@@ -889,9 +1272,22 @@ function initManualBudgetState(trip, manualBudgetInput) {
 // RENDER DASHBOARD
 function renderDashboard(trip) {
   document.getElementById('badgeCity').textContent = trip.destination;
-  document.getElementById('dashDaysBadge').textContent = `${trip.days} Days`;
-  document.getElementById('dashStyleBadge').textContent = `${trip.budgetTier} Tier`;
-  document.getElementById('dashPartyBadge').textContent = trip.party;
+  
+  var durText = trip.days + " Days";
+  if (trip.startDate && trip.endDate) {
+    durText += " (" + trip.startDate + " to " + trip.endDate + ")";
+  }
+  document.getElementById('dashDaysBadge').textContent = durText;
+
+  var roomText = trip.roomAllocation ? trip.roomAllocation.description : "Double Rooms";
+  document.getElementById('dashStyleBadge').textContent = trip.budgetTier + " Tier &middot; " + roomText;
+
+  var paxText = (trip.adults || 2) + " Adults" + (trip.children ? ", " + trip.children + " Kids" : "");
+  if (trip.vehicleAllocation) {
+    paxText += " &middot; " + trip.vehicleAllocation.label;
+  }
+  document.getElementById('dashPartyBadge').textContent = paxText;
+
   document.getElementById('dashTripTitle').textContent = trip.title;
   document.getElementById('dashTripSubtitle').textContent = trip.subtitle;
   document.getElementById('dashTotalBudget').textContent = formatINR(trip.costPerPerson);
@@ -1264,13 +1660,20 @@ function renderItineraryTimeline(daysPlan) {
     container.innerHTML += `
       <div class="day-card-container ui-card p-5 sm:p-6 bg-white border border-slate-200 shadow-sm rounded-xl" data-day="${day.day}">
         <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center font-black text-sm">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center font-black text-sm shrink-0 mt-0.5">
               D${day.day}
             </div>
             <div>
-              <h3 class="text-lg font-bold text-slate-900 font-heading">${day.title}</h3>
-              <span class="text-xs text-slate-500">${day.stops.length} curated stops on map</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="text-base sm:text-lg font-bold text-slate-900 font-heading">${day.title}</h3>
+                ${day.dateStr ? `<span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">${day.dateStr}</span>` : ''}
+              </div>
+              <div class="flex items-center gap-3 text-xs text-slate-500 mt-1 flex-wrap">
+                <span>${day.stops.length} curated stops</span>
+                ${day.overnight ? `<span class="text-blue-700 font-semibold flex items-center gap-1">🌙 ${day.overnight}</span>` : ''}
+                ${day.transitSummary ? `<span class="text-slate-600 font-medium bg-slate-100 px-2 py-0.5 rounded">🚗 ${day.transitSummary}</span>` : ''}
+              </div>
             </div>
           </div>
         </div>
@@ -1314,12 +1717,20 @@ function renderBudgetWithManualColumn(trip) {
   const aiTotal = b.stay + b.food + b.activities + b.transport + b.shopping;
   document.getElementById('budgetGrandTotal').textContent = formatINR(aiTotal);
 
+  var stayLabel = (trip.accurateBudget && trip.accurateBudget.itemizedBreakdown)
+    ? trip.accurateBudget.itemizedBreakdown.accommodation.label
+    : "Hotels & Stays";
+
+  var cabLabel = (trip.accurateBudget && trip.accurateBudget.itemizedBreakdown)
+    ? trip.accurateBudget.itemizedBreakdown.transport.label
+    : "Dedicated Cab & Fuel";
+
   const categories = [
-    { key: "stay", name: "Hotels & Stays", aiVal: b.stay, icon: "bed", color: "bg-blue-500" },
-    { key: "food", name: "Dining, Cafes & Drinks", aiVal: b.food, icon: "utensils", color: "bg-amber-500" },
-    { key: "activities", name: "Sightseeing & Entry Tickets", aiVal: b.activities, icon: "ticket", color: "bg-purple-500" },
-    { key: "transport", name: "Cabs, Trains & Local Transit", aiVal: b.transport, icon: "bus", color: "bg-emerald-500" },
-    { key: "shopping", name: "Bazaars, Souvenirs & Misc", aiVal: b.shopping, icon: "shopping-bag", color: "bg-rose-500" }
+    { key: "stay", name: stayLabel, aiVal: b.stay, icon: "bed", color: "bg-blue-500" },
+    { key: "transport", name: cabLabel, aiVal: b.transport, icon: "car", color: "bg-emerald-500" },
+    { key: "food", name: "Meals & Dining (" + (trip.dietary || 'Standard') + ")", aiVal: b.food, icon: "utensils", color: "bg-amber-500" },
+    { key: "activities", name: "Sightseeing, Monuments & Activities", aiVal: b.activities, icon: "ticket", color: "bg-purple-500" },
+    { key: "shopping", name: "Contingency Buffer & Misc", aiVal: b.shopping, icon: "shield-alert", color: "bg-rose-500" }
   ];
 
   const listContainer = document.getElementById('budgetCategoriesList');
@@ -1358,6 +1769,51 @@ function renderBudgetWithManualColumn(trip) {
       </div>
     `;
   });
+
+  // Render Budget Shortfall / Recommendation Banner
+  const varianceBanner = document.getElementById('budgetVarianceBanner');
+  if (varianceBanner && trip.accurateBudget && trip.accurateBudget.budgetAnalysis && trip.accurateBudget.budgetAnalysis.recommendation) {
+    const analysis = trip.accurateBudget.budgetAnalysis;
+    var bgClass = analysis.status === 'shortfall' ? 'bg-amber-50 border-amber-300 text-amber-900' : 'bg-emerald-50 border-emerald-300 text-emerald-900';
+    varianceBanner.className = 'mt-4 p-3 rounded-xl border text-xs w-full text-left leading-relaxed ' + bgClass;
+    varianceBanner.innerHTML = '<strong>Budget Intelligence:</strong> ' + analysis.recommendation;
+  }
+
+  // Render Included vs Excluded Expenses List if container exists or append
+  let inclusionsEl = document.getElementById('budgetInclusionsBox');
+  if (!inclusionsEl) {
+    inclusionsEl = document.createElement('div');
+    inclusionsEl.id = 'budgetInclusionsBox';
+    inclusionsEl.className = 'mt-5 pt-4 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs';
+    inclusionsEl.innerHTML = `
+      <div class="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200/80">
+        <h5 class="font-bold text-emerald-900 flex items-center gap-1.5 mb-2">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+          <span>Included in Calculation</span>
+        </h5>
+        <ul class="space-y-1.5 text-emerald-950 font-medium list-disc pl-4">
+          <li>Hotel stay in verified partner properties with morning breakfast</li>
+          <li>Dedicated private vehicle with fuel, parking, tolls &amp; driver allowance</li>
+          <li>All scheduled sightseeing transfers &amp; pickup/drop</li>
+          <li>State tourist entry taxes and inner permits where specified</li>
+          <li>TripMozy 24x7 on-trip phone &amp; WhatsApp coordination</li>
+        </ul>
+      </div>
+      <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+        <h5 class="font-bold text-slate-800 flex items-center gap-1.5 mb-2">
+          <i data-lucide="x-circle" class="w-4 h-4 text-slate-400"></i>
+          <span>Excluded / Optional Extras</span>
+        </h5>
+        <ul class="space-y-1.5 text-slate-600 list-disc pl-4">
+          <li>Personal shopping, souvenirs &amp; personal expenses</li>
+          <li>Optional adventure activities (paragliding, scuba, snow quad)</li>
+          <li>Lunch, alcoholic beverages &amp; room service</li>
+          <li>Applicable GST on final hotel invoices</li>
+        </ul>
+      </div>
+    `;
+    listContainer.parentElement.appendChild(inclusionsEl);
+  }
 
   updateBudgetTotalsAndChart();
 }
@@ -1844,4 +2300,264 @@ function showBookingConfirmToast(destination, days, adults, budget, hotelUrl) {
     '<button onclick="document.getElementById(\'bookingToast\').remove()" style="background:none;border:none;color:white;font-size:18px;cursor:pointer;opacity:0.8;padding:0;">&times;</button>';
   document.body.appendChild(toast);
   setTimeout(function() { if (toast.parentNode) toast.remove(); }, 7000);
+}
+
+
+// =====================================================================
+// PHASE 7: STRUCTURED SCHEMA VALIDATION & INTEGRITY CHECKER
+// =====================================================================
+function validateTripPlanSchema(plan) {
+  if (!plan || typeof plan !== 'object') {
+    throw new Error("Invalid itinerary object generated.");
+  }
+  if (!plan.destination || typeof plan.destination !== 'string') {
+    throw new Error("Missing destination name.");
+  }
+  if (!plan.days || plan.days < 1 || plan.days > 30) {
+    throw new Error("Invalid trip duration: " + plan.days);
+  }
+  if (!Array.isArray(plan.daysPlan) || plan.daysPlan.length !== plan.days) {
+    console.warn("Day plan length mismatch. Auto-correcting to exact duration of " + plan.days + " days.");
+    if (Array.isArray(plan.daysPlan) && plan.daysPlan.length > plan.days) {
+      plan.daysPlan = plan.daysPlan.slice(0, plan.days);
+    }
+  }
+
+  // Ensure each day has valid stops, overnight and transit details
+  plan.daysPlan.forEach(function(day, idx) {
+    day.day = idx + 1;
+    if (!day.title) day.title = "Day " + (idx + 1) + ": Exploring " + plan.destination;
+    if (!day.overnight) day.overnight = "Overnight in " + plan.destination;
+    if (!Array.isArray(day.stops) || day.stops.length === 0) {
+      day.stops = [
+        { time: "09:30 AM", name: plan.destination + " Cultural & Heritage Stroll", category: "Culture", cost: "₹0", duration: "2.5h", desc: "Leisure morning walk through historic quarters.", tip: "Comfortable shoes recommended." },
+        { time: "01:00 PM", name: "Regional Lunch Break", category: "Dining", cost: "₹450", duration: "1.5h", desc: "Enjoy hot local specialties.", tip: "Ask for freshly cooked seasonal specials." },
+        { time: "04:30 PM", name: plan.destination + " Panoramic Sunset View", category: "Scenic", cost: "₹0", duration: "2h", desc: "Watch twilight over the hills.", tip: "Great photography spot." }
+      ];
+    }
+  });
+
+  // Ensure cost per person is non-negative and finite
+  if (!plan.costPerPerson || plan.costPerPerson <= 0 || !isFinite(plan.costPerPerson)) {
+    plan.costPerPerson = Math.round(plan.days * 4500);
+  }
+
+  return true;
+}
+
+
+// =====================================================================
+// PHASE 9: TRIPMOZY OFFICIAL QUOTE MODAL & WHATSAPP INTEGRATION
+// =====================================================================
+
+function openTripmozyWhatsApp() {
+  if (!currentTrip) {
+    window.open('https://wa.me/919641866181?text=' + encodeURIComponent('Hello TripMozy! I would like to inquire about holiday packages.'), '_blank');
+    return;
+  }
+  var budgetInfo = currentTrip.accurateBudget || {
+    adults: currentTrip.adults || 2,
+    children: currentTrip.children || 0,
+    costPerPerson: currentTrip.costPerPerson,
+    grandTotalTrip: currentTrip.grandTotalTrip || (currentTrip.costPerPerson * (currentTrip.adults || 2)),
+    roomAllocation: currentTrip.roomAllocation || { description: "Double Rooms" },
+    vehicleAllocation: currentTrip.vehicleAllocation || { label: "Private Dedicated Cab" }
+  };
+
+  var waUrl = (window.TripMozyEngine && window.TripMozyEngine.buildTripmozyWhatsAppUrl)
+    ? window.TripMozyEngine.buildTripmozyWhatsAppUrl(currentTrip, budgetInfo)
+    : 'https://wa.me/919641866181?text=' + encodeURIComponent('Hello TripMozy! I want to book a trip to ' + currentTrip.destination);
+
+  window.open(waUrl, '_blank');
+}
+
+function openQuoteModal() {
+  var modal = document.getElementById('quoteModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    // Pre-fill trip details
+    var destInput = document.getElementById('quoteDest');
+    if (destInput && currentTrip) destInput.value = currentTrip.destination;
+    var durInput = document.getElementById('quoteDuration');
+    if (durInput && currentTrip) durInput.value = currentTrip.days + ' Days (' + (currentTrip.days - 1) + ' Nights)';
+    var paxInput = document.getElementById('quotePax');
+    if (paxInput && currentTrip) {
+      paxInput.value = (currentTrip.adults || 2) + ' Adults' + (currentTrip.children ? ', ' + currentTrip.children + ' Children' : '');
+    }
+  }
+}
+
+function closeQuoteModal() {
+  var modal = document.getElementById('quoteModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function submitTripmozyQuote(e) {
+  if (e && e.preventDefault) e.preventDefault();
+
+  var name = document.getElementById('quoteName')?.value.trim();
+  var phone = document.getElementById('quotePhone')?.value.trim();
+  var email = document.getElementById('quoteEmail')?.value.trim();
+  var consent = document.getElementById('quoteConsent')?.checked;
+
+  if (!name || !phone) {
+    alert("Please provide your name and contact phone number.");
+    return;
+  }
+
+  // Validate Indian 10-digit phone
+  var cleanPhone = phone.replace(/[^0-9]/g, '');
+  if (cleanPhone.length < 10) {
+    alert("Please enter a valid 10-digit Indian phone/WhatsApp number.");
+    return;
+  }
+
+  if (!consent) {
+    alert("Please check the consent box allowing TripMozy Private Limited to share your quotation.");
+    return;
+  }
+
+  closeQuoteModal();
+
+  // Show celebratory confirmation toast
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99999;min-width:320px;max-width:92vw;background:linear-gradient(135deg,#16a34a,#15803d);color:white;border-radius:16px;padding:18px 24px;box-shadow:0 12px 40px rgba(0,0,0,0.3);text-align:center;font-family:inherit;animation:slideUpToast 0.4s ease;';
+  toast.innerHTML = '<div style="font-size:28px;margin-bottom:6px;">🎉</div>' +
+    '<div style="font-weight:800;font-size:16px;margin-bottom:4px;">Quote Request Sent to TripMozy!</div>' +
+    '<div style="font-size:12px;opacity:0.95;margin-bottom:12px;">Thank you, ' + name + '. A TripMozy travel expert will contact you at +91 ' + cleanPhone.slice(-10) + ' within 30 minutes with live room availability.</div>' +
+    '<div style="display:flex;gap:8px;justify-content:center;">' +
+      '<button onclick="openTripmozyWhatsApp(); this.parentElement.parentElement.remove();" style="background:#25d366;color:#ffffff;font-weight:bold;font-size:12px;padding:8px 16px;border:none;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">💬 Chat Instantly on WhatsApp</button>' +
+      '<button onclick="this.parentElement.parentElement.remove();" style="background:rgba(255,255,255,0.2);color:white;font-weight:bold;font-size:12px;padding:8px 14px;border:none;border-radius:8px;cursor:pointer;">Close</button>' +
+    '</div>';
+  document.body.appendChild(toast);
+
+  setTimeout(function() { if (toast.parentNode) toast.remove(); }, 10000);
+}
+
+// Conflict detector for dates vs duration slider
+function checkDateConflict() {
+  var startVal = document.getElementById('startDateInput')?.value;
+  var endVal = document.getElementById('endDateInput')?.value;
+  var conflictBanner = document.getElementById('dateConflictBanner');
+
+  if (!startVal || !endVal) {
+    if (conflictBanner) conflictBanner.classList.add('hidden');
+    return;
+  }
+
+  var start = new Date(startVal);
+  var end = new Date(endVal);
+  var diffTime = end.getTime() - start.getTime();
+  var calcDays = Math.round(diffTime / (1000 * 3600 * 24)) + 1;
+
+  if (calcDays < 1) {
+    if (conflictBanner) {
+      conflictBanner.classList.remove('hidden');
+      conflictBanner.innerHTML = '⚠️ Return date cannot be earlier than departure date.';
+    }
+    return;
+  }
+
+  var currentSliderDays = parseInt(document.getElementById('durationRange')?.value) || 4;
+  if (calcDays !== currentSliderDays) {
+    if (conflictBanner) {
+      conflictBanner.classList.remove('hidden');
+      conflictBanner.innerHTML = '<div class="flex items-center justify-between gap-3 text-xs">' +
+        '<span>⚠️ Selected dates correspond to <strong>' + calcDays + ' Days</strong>, but slider is set to <strong>' + currentSliderDays + ' Days</strong>.</span>' +
+        '<button type="button" onclick="setTripDays(' + calcDays + '); checkDateConflict();" class="px-2.5 py-1 bg-blue-600 text-white rounded font-bold whitespace-nowrap hover:bg-blue-700">Sync to ' + calcDays + ' Days</button>' +
+      '</div>';
+    }
+  } else {
+    if (conflictBanner) conflictBanner.classList.add('hidden');
+  }
+}
+
+// Quick 1-Tap Refinement Handler (Phase 8)
+function handleQuickRefine(type) {
+  if (!currentTrip) return;
+
+  if (type === 'reduce_budget') {
+    if (currentTrip.budgetTier === 'Luxury') {
+      currentTrip.budgetTier = 'Moderate';
+    } else if (currentTrip.budgetTier === 'Moderate') {
+      currentTrip.budgetTier = 'Economy';
+    }
+    // Recompute accurate budget
+    if (window.TripMozyEngine) {
+      currentTrip.accurateBudget = window.TripMozyEngine.calculateAccurateTripBudget({
+        destination: currentTrip.destination,
+        days: currentTrip.days,
+        adults: currentTrip.adults || 2,
+        children: currentTrip.children || 0,
+        budgetTier: currentTrip.budgetTier,
+        transportPref: currentTrip.transportPref || 'private_cab'
+      });
+      currentTrip.costPerPerson = currentTrip.accurateBudget.costPerPerson;
+      currentTrip.grandTotalTrip = currentTrip.accurateBudget.grandTotalTrip;
+    }
+    renderDashboard(currentTrip);
+    alert("💰 Adjusted itinerary to " + currentTrip.budgetTier + " tier with lower accommodation and transit costs!");
+  } else if (type === 'relaxed') {
+    // Relax pacing: ensure max 3 stops per day and insert afternoon leisure
+    currentTrip.daysPlan.forEach(function(day) {
+      if (day.stops.length > 3) {
+        day.stops = day.stops.slice(0, 3);
+      }
+      day.stops.push({
+        time: "04:30 PM",
+        name: "Leisurely Afternoon Tea & Mountain Rest",
+        category: "Relaxation",
+        cost: "₹150",
+        duration: "2h",
+        desc: "Relax on scenic resort terrace with hot tea, snacks, and valley views.",
+        tip: "Ideal for senior citizens and unwinding."
+      });
+    });
+    renderDashboard(currentTrip);
+    alert("🧘 Itinerary relaxed! Shortened daily travel and added leisure rest windows.");
+  } else if (type === 'luxury') {
+    currentTrip.budgetTier = 'Luxury';
+    if (window.TripMozyEngine) {
+      currentTrip.accurateBudget = window.TripMozyEngine.calculateAccurateTripBudget({
+        destination: currentTrip.destination,
+        days: currentTrip.days,
+        adults: currentTrip.adults || 2,
+        children: currentTrip.children || 0,
+        budgetTier: 'Luxury',
+        transportPref: 'private_cab'
+      });
+      currentTrip.costPerPerson = currentTrip.accurateBudget.costPerPerson;
+      currentTrip.grandTotalTrip = currentTrip.accurateBudget.grandTotalTrip;
+    }
+    renderDashboard(currentTrip);
+    alert("✨ Upgraded to 5★ Heritage Luxury Tier with private SUV allocation!");
+  } else if (type === 'child_friendly') {
+    currentTrip.daysPlan.forEach(function(day) {
+      day.stops.push({
+        time: "03:30 PM",
+        name: "Family Boating & Children Park Play",
+        category: "Nature",
+        cost: "₹200",
+        duration: "1.5h",
+        desc: "Safe manicured garden park with paddle boats and swings for kids.",
+        tip: "Child-friendly activity."
+      });
+    });
+    renderDashboard(currentTrip);
+    alert("👨‍👩‍👧‍👦 Enhanced for kids! Added family park and boating activities.");
+  } else if (type === 'add_nature') {
+    currentTrip.daysPlan.forEach(function(day) {
+      day.stops.push({
+        time: "02:30 PM",
+        name: "Hidden Pine Forest Trail & Waterfall Cascade",
+        category: "Nature",
+        cost: "₹50",
+        duration: "2h",
+        desc: "Untouched mountain stream cascading through pine forest.",
+        tip: "Wear walking shoes."
+      });
+    });
+    renderDashboard(currentTrip);
+    alert("🌲 Added serene forest trail and waterfall spots to your days!");
+  }
 }

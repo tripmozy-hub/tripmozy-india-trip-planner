@@ -340,10 +340,10 @@ input[type=number] {
     background-color: #ffffff !important;
     color: #0f172a !important;
   }
-  .no-print, nav, header, #heroSection, #promoBar, footer {
+  .no-print, nav, header, #heroSection, #promoBar, footer, #quoteModal, #aiRefineBox, #mapContainer, .tab-btn {
     display: none !important;
   }
-  #itineraryDashboard {
+  #itineraryDashboard, #view-itinerary, #view-budget {
     display: block !important;
   }
 }

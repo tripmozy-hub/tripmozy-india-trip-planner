@@ -271,6 +271,140 @@
             </div>
           </div>
 
+          
+          <!-- FIELD 1B: Starting / Pickup City in India (Intercity & Last-Mile Connectivity) -->
+          <div class="pt-3 border-t border-slate-100">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <div class="md:col-span-6">
+                <label class="block text-sm font-bold text-slate-800 mb-1 flex items-center justify-between">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="navigation" class="w-4 h-4 text-emerald-600"></i>
+                    Starting / Pickup City in India:
+                  </span>
+                  <span class="text-[11px] text-slate-500 font-semibold">For intercity cab / transit</span>
+                </label>
+                <div class="relative">
+                  <input 
+                    type="text" 
+                    id="originCityInput" 
+                    placeholder="e.g. Kolkata, Delhi NCR, Mumbai, Bangalore, Siliguri / NJP, Guwahati, or At Destination" 
+                    class="w-full px-3.5 py-2.5 rounded-xl ui-input text-sm text-slate-800 font-semibold pl-9 shadow-2xs"
+                    value="At Destination (Local Sightseeing)"
+                  />
+                  <i data-lucide="home" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                </div>
+                <!-- Quick Pickup Presets -->
+                <div class="mt-1.5 flex flex-wrap gap-1 text-[11px]">
+                  <span class="text-slate-400 self-center">Popular:</span>
+                  <button type="button" onclick="document.getElementById('originCityInput').value='Kolkata'; document.getElementById('originCityInput').focus();" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-blue-50 text-slate-700 transition">Kolkata</button>
+                  <button type="button" onclick="document.getElementById('originCityInput').value='Delhi NCR'; document.getElementById('originCityInput').focus();" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-blue-50 text-slate-700 transition">Delhi NCR</button>
+                  <button type="button" onclick="document.getElementById('originCityInput').value='Mumbai'; document.getElementById('originCityInput').focus();" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-blue-50 text-slate-700 transition">Mumbai</button>
+                  <button type="button" onclick="document.getElementById('originCityInput').value='Siliguri / NJP'; document.getElementById('originCityInput').focus();" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-blue-50 text-slate-700 transition">Siliguri / NJP</button>
+                  <button type="button" onclick="document.getElementById('originCityInput').value='Guwahati'; document.getElementById('originCityInput').focus();" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-blue-50 text-slate-700 transition">Guwahati</button>
+                  <button type="button" onclick="document.getElementById('originCityInput').value='At Destination (Local Sightseeing)'; document.getElementById('originCityInput').focus();" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-blue-50 text-slate-700 transition">At Destination</button>
+                </div>
+              </div>
+
+              <!-- Departure & Return Calendar Dates with Conflict Checker -->
+              <div class="md:col-span-6">
+                <label class="block text-sm font-bold text-slate-800 mb-1 flex items-center justify-between">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="calendar-days" class="w-4 h-4 text-blue-600"></i>
+                    Travel Dates (Departure &amp; Return):
+                  </span>
+                  <span class="text-[11px] text-blue-600 font-semibold">Auto-calculates days &amp; nights</span>
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <span class="text-[10px] text-slate-500 font-bold block mb-0.5">Departure Date</span>
+                    <input 
+                      type="date" 
+                      id="startDateInput" 
+                      onchange="checkDateConflict()" 
+                      class="w-full px-2.5 py-2 rounded-xl ui-input text-xs sm:text-sm text-slate-800 font-semibold shadow-2xs"
+                    />
+                  </div>
+                  <div>
+                    <span class="text-[10px] text-slate-500 font-bold block mb-0.5">Return Date</span>
+                    <input 
+                      type="date" 
+                      id="endDateInput" 
+                      onchange="checkDateConflict()" 
+                      class="w-full px-2.5 py-2 rounded-xl ui-input text-xs sm:text-sm text-slate-800 font-semibold shadow-2xs"
+                    />
+                  </div>
+                </div>
+                <!-- Inline Date / Duration Conflict Banner -->
+                <div id="dateConflictBanner" class="hidden mt-2 p-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FIELD 1C: Group Sizing (Adults, Children, Room Allocation & Vehicle Capacity) -->
+          <div class="pt-3 border-t border-slate-100">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <!-- Adults & Children Counters -->
+              <div class="md:col-span-6 bg-slate-50/80 rounded-xl p-3.5 border border-slate-200">
+                <div class="flex items-center justify-between mb-2">
+                  <label class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <i data-lucide="users" class="w-3.5 h-3.5 text-blue-600"></i>
+                    <span>Traveler Count (Adults &amp; Children)</span>
+                  </label>
+                  <span id="vehicleBadgeDisplay" class="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                    🚗 Sedan (1-4 pax)
+                  </span>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <span class="text-[11px] text-slate-600 font-semibold block mb-1">Adults (12+ yrs)</span>
+                    <div class="flex items-center gap-2">
+                      <button type="button" onclick="adjustCount('adultsCountInput', -1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center">-</button>
+                      <input type="number" id="adultsCountInput" value="2" min="1" max="25" onchange="updateVehicleAndRoomAllocation()" class="w-12 text-center py-1 rounded-lg border border-slate-200 font-bold text-sm" />
+                      <button type="button" onclick="adjustCount('adultsCountInput', 1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center">+</button>
+                    </div>
+                  </div>
+                  <div>
+                    <span class="text-[11px] text-slate-600 font-semibold block mb-1">Children (0-11 yrs)</span>
+                    <div class="flex items-center gap-2">
+                      <button type="button" onclick="adjustCount('childrenCountInput', -1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center">-</button>
+                      <input type="number" id="childrenCountInput" value="0" min="0" max="10" onchange="updateVehicleAndRoomAllocation()" class="w-12 text-center py-1 rounded-lg border border-slate-200 font-bold text-sm" />
+                      <button type="button" onclick="adjustCount('childrenCountInput', 1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Room Allocation & Transport Preference -->
+              <div class="md:col-span-6 grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1">
+                    <i data-lucide="hotel" class="w-3.5 h-3.5 text-blue-600"></i>
+                    Room Sharing
+                  </label>
+                  <select id="roomSharingSelect" onchange="updateVehicleAndRoomAllocation()" class="w-full px-2.5 py-2.5 rounded-xl ui-input text-xs font-semibold text-slate-800">
+                    <option value="auto" selected>Auto (1 Room / 2 Adults)</option>
+                    <option value="single">Single (Private Room for each)</option>
+                    <option value="triple">Triple (3 Adults sharing room)</option>
+                  </select>
+                  <span id="roomCountText" class="text-[10px] text-emerald-700 font-semibold mt-1 block">1 Double Room required</span>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1">
+                    <i data-lucide="car" class="w-3.5 h-3.5 text-blue-600"></i>
+                    Transport Mode
+                  </label>
+                  <select id="transportPrefSelect" onchange="updateVehicleAndRoomAllocation()" class="w-full px-2.5 py-2.5 rounded-xl ui-input text-xs font-semibold text-slate-800">
+                    <option value="private_cab" selected>Private Cab with Driver (TripMozy Best)</option>
+                    <option value="flight_cab">Flight + Local Sightseeing Cab</option>
+                    <option value="public_train">Train + Local Station Cab</option>
+                    <option value="self_drive">Self-Drive Rental Car</option>
+                  </select>
+                  <span class="text-[10px] text-slate-500 mt-1 block">Includes fuel, tolls &amp; driver allowance</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- FIELD 2: Duration & Map Radius Exploration -->
           <div class="pt-2 border-t border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-5">
             <!-- Duration -->
@@ -459,6 +593,54 @@
             </div>
           </div>
 
+          
+          <!-- FIELD 6: Must-Visit Sights, Places to Avoid & Accessibility (Phase 2 & 6) -->
+          <div class="pt-2 border-t border-slate-100">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <div class="md:col-span-6">
+                <label class="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+                  <i data-lucide="pin" class="w-3.5 h-3.5 text-blue-600"></i>
+                  Must-Visit Places / Activities (Optional):
+                </label>
+                <input 
+                  type="text" 
+                  id="mustVisitInput" 
+                  placeholder="e.g. Tiger Hill sunrise, Living Root Bridge, Scuba diving, Shikara ride..." 
+                  class="w-full px-3 py-2 rounded-xl ui-input text-xs text-slate-800 font-medium"
+                />
+              </div>
+              <div class="md:col-span-6">
+                <label class="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+                  <i data-lucide="shield-ban" class="w-3.5 h-3.5 text-rose-600"></i>
+                  Places to Avoid / Travel Limitations (Optional):
+                </label>
+                <input 
+                  type="text" 
+                  id="placesAvoidInput" 
+                  placeholder="e.g. Steep stair treks, long drives > 4 hours, noisy clubs..." 
+                  class="w-full px-3 py-2 rounded-xl ui-input text-xs text-slate-800 font-medium"
+                />
+              </div>
+            </div>
+
+            <!-- Accessibility & Pace Chips -->
+            <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+              <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Pacing &amp; Accessibility:</span>
+              <label class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 border border-slate-200 cursor-pointer text-slate-700 text-xs font-semibold select-none">
+                <input type="checkbox" id="seniorFriendlyCb" class="rounded accent-blue-600" />
+                <span>👴 Senior Citizen Friendly (Minimal stairs &amp; elevator stays)</span>
+              </label>
+              <label class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 border border-slate-200 cursor-pointer text-slate-700 text-xs font-semibold select-none">
+                <input type="checkbox" id="childFriendlyCb" class="rounded accent-blue-600" />
+                <span>👶 Child Friendly (Safe parks &amp; mild pacing)</span>
+              </label>
+              <label class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 border border-slate-200 cursor-pointer text-slate-700 text-xs font-semibold select-none">
+                <input type="checkbox" id="mountainPacingCb" class="rounded accent-blue-600" />
+                <span>🏔️ High-Altitude Easy Pacing</span>
+              </label>
+            </div>
+          </div>
+
           <!-- PRIMARY SUBMIT BUTTON -->
           <div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100">
             <div class="text-xs text-slate-500 flex items-center gap-1.5">
@@ -545,6 +727,31 @@
                 <span>Edit</span>
               </button>
             </div>
+            
+            <!-- TRIPMOZY OFFICIAL COMMERCIAL ACTIONS (PHASE 9) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full mt-2">
+              <button
+                type="button"
+                onclick="openTripmozyWhatsApp()"
+                class="px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 text-white shadow-md active:scale-[0.98] transition-all cursor-pointer"
+                style="background: #25d366;"
+                title="Chat with TripMozy official reservation desk"
+              >
+                <i data-lucide="message-circle" class="w-4 h-4 text-white"></i>
+                <span>Chat with TripMozy (+91 9641866181)</span>
+              </button>
+              <button
+                type="button"
+                onclick="openQuoteModal()"
+                class="px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 text-white shadow-md active:scale-[0.98] transition-all cursor-pointer"
+                style="background: linear-gradient(135deg, #1967d2, #3b82f6);"
+                title="Request customized quotation with confirmed room allocation"
+              >
+                <i data-lucide="file-check" class="w-4 h-4"></i>
+                <span>Get Official TripMozy Quote</span>
+              </button>
+            </div>
+
             <!-- BOOK NOW BUTTON -->
             <button
               id="bookNowHeroBtn"
@@ -557,6 +764,15 @@
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
           </div>
+        </div>
+      </div>
+
+      
+      <!-- TRIPMOZY VERIFIED AI DISCLAIMER (PHASE 9) -->
+      <div class="p-3.5 bg-amber-50/90 border border-amber-200/90 rounded-2xl flex items-start gap-3 text-xs text-amber-900 shadow-2xs">
+        <i data-lucide="shield-check" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+        <div class="leading-relaxed">
+          <strong>TripMozy Planning Estimate &amp; Verification Disclaimer:</strong> This itinerary combines live geographic road routing, hill transit formulas, and verified Indian tourism standards. All prices and driving times are realistic planning estimates. For guaranteed room allotments, private vehicle allocation, and customized bookings, contact <strong>TripMozy Private Limited</strong> directly at <strong>+91 9641866181</strong> or click "Get Official TripMozy Quote".
         </div>
       </div>
 
@@ -836,6 +1052,20 @@
         </div>
       </div>
 
+      
+      <!-- QUICK 1-TAP ITINERARY REFINEMENT CHIPS (PHASE 8) -->
+      <div class="ui-card p-3 bg-white border border-slate-200 rounded-xl flex items-center gap-2 overflow-x-auto scrollbar-none text-xs">
+        <span class="text-blue-900 font-bold uppercase text-[10px] tracking-wider shrink-0 flex items-center gap-1 pl-1">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-600"></i>
+          <span>1-Tap Refine:</span>
+        </span>
+        <button type="button" onclick="handleQuickRefine('reduce_budget')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">💰 Reduce Budget by 15%</button>
+        <button type="button" onclick="handleQuickRefine('relaxed')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">🧘 More Relaxed Pacing</button>
+        <button type="button" onclick="handleQuickRefine('child_friendly')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-pink-50 hover:text-pink-700 hover:border-pink-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">👨‍👩‍👧‍👦 Child &amp; Senior Friendly</button>
+        <button type="button" onclick="handleQuickRefine('luxury')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">✨ Upgrade to Luxury 5★</button>
+        <button type="button" onclick="handleQuickRefine('add_nature')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-green-50 hover:text-green-700 hover:border-green-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">🌲 Add Nature &amp; Waterfalls</button>
+      </div>
+
       <!-- AI REFINE PROMPT BAR -->
       <div id="aiRefineBox" class="ui-card p-4 bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         <div class="flex items-center gap-2 text-slate-700 shrink-0 text-xs sm:text-sm font-semibold">
@@ -936,6 +1166,81 @@
 
   <!-- App Script -->
   <script src="tripmozy_catalog.js"></script>
+  <script src="india_travel_engine.js"></script>
   <script src="app.js"></script>
+
+  <!-- TRIPMOZY OFFICIAL QUOTE MODAL (PHASE 9) -->
+  <div id="quoteModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative border border-slate-200 max-h-[92vh] overflow-y-auto">
+      <button type="button" onclick="closeQuoteModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+      
+      <div class="flex items-center gap-2.5 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 font-bold text-lg">
+          <i data-lucide="file-check" class="w-5 h-5 text-blue-600"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-black font-heading text-slate-900 leading-tight">Request Official TripMozy Quote</h3>
+          <p class="text-xs text-slate-500">TripMozy Private Limited &middot; WhatsApp: +91 9641866181</p>
+        </div>
+      </div>
+
+      <form onsubmit="submitTripmozyQuote(event)" class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Destination</label>
+            <input type="text" id="quoteDest" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-800" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Duration</label>
+            <input type="text" id="quoteDuration" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-800" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Travelers &amp; Rooms</label>
+          <input type="text" id="quotePax" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-800" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-1">Your Full Name *</label>
+          <input type="text" id="quoteName" required placeholder="e.g. Rahul Sharma" class="w-full px-3.5 py-2.5 rounded-xl ui-input text-sm text-slate-800 font-semibold" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1">WhatsApp / Mobile Number *</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-500">+91</span>
+              <input type="tel" id="quotePhone" required placeholder="98765 43210" maxlength="12" class="w-full pl-11 pr-3 py-2.5 rounded-xl ui-input text-sm text-slate-800 font-bold" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1">Email Address</label>
+            <input type="email" id="quoteEmail" placeholder="you@example.com" class="w-full px-3.5 py-2.5 rounded-xl ui-input text-sm text-slate-800" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-1">Custom Notes / Special Requirements</label>
+          <textarea id="quoteNotes" rows="2" placeholder="e.g. Vegetarian meals only, ground floor room for senior parents, hotel with mountain view..." class="w-full px-3.5 py-2 rounded-xl ui-input text-xs text-slate-800"></textarea>
+        </div>
+
+        <!-- Privacy & Consent Checkbox -->
+        <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer pt-1">
+          <input type="checkbox" id="quoteConsent" checked required class="mt-0.5 rounded accent-blue-600" />
+          <span>I consent to TripMozy Private Limited contacting me regarding this customized quotation and travel arrangements. Your personal information is protected.</span>
+        </label>
+
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeQuoteModal()" class="btn-white px-4 py-2 text-xs font-semibold rounded-xl">Cancel</button>
+          <button type="submit" class="btn-blue px-5 py-2 text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md shadow-blue-600/20">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            <span>Submit Quotation Request</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </body>
 </html>
