@@ -4,7 +4,13 @@
 .DS_Store
 Thumbs.db
 
+# Testing
+test-suite.js
+
 # Local server scripts
 server.ps1
 deploy-vercel.ps1
 check-token.ps1
+run-plugin.ps1
+find-node.ps1
+
