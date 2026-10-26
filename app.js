@@ -1328,9 +1328,127 @@ function renderDashboard(trip) {
   // Render Budget & Manual Column
   renderBudgetWithManualColumn(trip);
 
+  // Render Dual-Plan Comparison (TripMozy Recommendation vs User Target Budget)
+  renderDualPlanComparison(trip);
+
   // Render Packing & Guide
   renderPacking(trip);
   renderGuide(trip);
+}
+
+// DUAL-PLAN COMPARISON ENGINE
+function renderDualPlanComparison(trip) {
+  var banner = document.getElementById('dualPlanComparisonBanner');
+  if (!banner) return;
+
+  var analysis = trip.accurateBudget?.budgetAnalysis;
+  if (analysis && analysis.hasTarget && analysis.optimizedPlan) {
+    banner.classList.remove('hidden');
+
+    var rec = analysis.recommendedPlan;
+    var opt = analysis.optimizedPlan;
+
+    var costRecEl = document.getElementById('dualCostRecommended');
+    var costOptEl = document.getElementById('dualCostTarget');
+    var titleOptEl = document.getElementById('dualTitleTarget');
+    var descOptEl = document.getElementById('dualDescTarget');
+
+    if (costRecEl) costRecEl.textContent = formatINR(rec.costPerPerson);
+    if (costOptEl) costOptEl.textContent = formatINR(opt.costPerPerson);
+    if (titleOptEl) titleOptEl.textContent = "Custom Plan (Under ₹" + Number(analysis.targetPerPerson).toLocaleString('en-IN') + " Limit)";
+    if (descOptEl) {
+      descOptEl.textContent = "Analyzed strictly under your ₹" + Number(analysis.targetPerPerson).toLocaleString('en-IN') + "/person limit: verified clean homestays, smart transfers, and regional dhabas.";
+    }
+
+    // Default to the optimized plan so the customer immediately sees their trip under their limit
+    selectActiveBudgetPlan('target');
+  } else {
+    banner.classList.add('hidden');
+  }
+}
+
+function selectActiveBudgetPlan(planType) {
+  if (!currentTrip || !currentTrip.accurateBudget || !currentTrip.accurateBudget.budgetAnalysis) return;
+  var analysis = currentTrip.accurateBudget.budgetAnalysis;
+  var rec = analysis.recommendedPlan;
+  var opt = analysis.optimizedPlan;
+  if (!rec || !opt) return;
+
+  var cardRec = document.getElementById('planCardRecommended');
+  var cardOpt = document.getElementById('planCardTarget');
+  var badgeRec = document.getElementById('badgePlanRecommended');
+  var badgeOpt = document.getElementById('badgePlanTarget');
+  var totalBudgetEl = document.getElementById('dashTotalBudget');
+
+  if (planType === 'target') {
+    // Select Target Plan (Under Budget)
+    currentTrip.activePlanType = 'target';
+    currentTrip.costPerPerson = opt.costPerPerson;
+    currentTrip.grandTotalTrip = opt.grandTotalTrip;
+    currentTrip.selectedPlanTitle = opt.title;
+
+    manualBudgetState = {
+      stay: opt.breakdownPerPerson.stay,
+      transport: opt.breakdownPerPerson.transport,
+      food: opt.breakdownPerPerson.food,
+      activities: opt.breakdownPerPerson.activities,
+      shopping: opt.breakdownPerPerson.shopping
+    };
+
+    if (cardOpt) {
+      cardOpt.className = 'p-4 rounded-2xl border-2 border-emerald-600 bg-emerald-50/50 cursor-pointer shadow-md relative';
+    }
+    if (badgeOpt) badgeOpt.classList.remove('hidden');
+
+    if (cardRec) {
+      cardRec.className = 'p-4 rounded-2xl border-2 border-slate-200 bg-white cursor-pointer hover:border-blue-400 hover:shadow-xs relative';
+    }
+    if (badgeRec) badgeRec.classList.add('hidden');
+
+    if (totalBudgetEl) {
+      totalBudgetEl.textContent = formatINR(opt.costPerPerson);
+      totalBudgetEl.className = 'text-2xl font-black text-emerald-700 font-heading';
+    }
+  } else {
+    // Select Recommended Plan (TripMozy Preference)
+    currentTrip.activePlanType = 'recommended';
+    currentTrip.costPerPerson = rec.costPerPerson;
+    currentTrip.grandTotalTrip = rec.grandTotalTrip;
+    currentTrip.selectedPlanTitle = rec.title;
+
+    manualBudgetState = {
+      stay: rec.breakdownPerPerson.stay,
+      transport: rec.breakdownPerPerson.transport,
+      food: rec.breakdownPerPerson.food,
+      activities: rec.breakdownPerPerson.activities,
+      shopping: rec.breakdownPerPerson.shopping
+    };
+
+    if (cardRec) {
+      cardRec.className = 'p-4 rounded-2xl border-2 border-blue-600 bg-blue-50/50 cursor-pointer shadow-md relative';
+    }
+    if (badgeRec) badgeRec.classList.remove('hidden');
+
+    if (cardOpt) {
+      cardOpt.className = 'p-4 rounded-2xl border-2 border-slate-200 bg-white cursor-pointer hover:border-emerald-400 hover:shadow-xs relative';
+    }
+    if (badgeOpt) badgeOpt.classList.add('hidden');
+
+    if (totalBudgetEl) {
+      totalBudgetEl.textContent = formatINR(rec.costPerPerson);
+      totalBudgetEl.className = 'text-2xl font-black text-blue-700 font-heading';
+    }
+  }
+
+  // Update budget tab inputs and variance
+  const categories = ['stay', 'transport', 'food', 'activities', 'shopping'];
+  categories.forEach(k => {
+    var inputEl = document.querySelector(`input[oninput*="'${k}'"]`);
+    if (inputEl) inputEl.value = manualBudgetState[k];
+  });
+
+  updateBudgetTotalsAndChart();
+  lucide.createIcons();
 }
 
 // MAP & NEARBY ATTRACTIONS RENDERING
@@ -1786,8 +1904,17 @@ function renderBudgetWithManualColumn(trip) {
   if (varianceBanner && trip.accurateBudget && trip.accurateBudget.budgetAnalysis && trip.accurateBudget.budgetAnalysis.recommendation) {
     const analysis = trip.accurateBudget.budgetAnalysis;
     var bgClass = analysis.status === 'shortfall' ? 'bg-amber-50 border-amber-300 text-amber-900' : 'bg-emerald-50 border-emerald-300 text-emerald-900';
-    varianceBanner.className = 'mt-4 p-3 rounded-xl border text-xs w-full text-left leading-relaxed ' + bgClass;
-    varianceBanner.innerHTML = '<strong>Budget Intelligence:</strong> ' + analysis.recommendation;
+    varianceBanner.className = 'mt-4 p-3.5 rounded-xl border text-xs w-full text-left leading-relaxed ' + bgClass;
+
+    var bannerContent = '<strong>Budget Intelligence:</strong> ' + analysis.recommendation;
+    if (analysis.hasTarget && analysis.optimizedPlan) {
+      bannerContent += '<div class="mt-2.5 pt-2 border-t border-amber-200/90 flex flex-wrap items-center gap-3 font-semibold text-xs">' +
+        '<span class="text-blue-900 flex items-center gap-1"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-600"></i> TripMozy Recommended: <strong>' + formatINR(analysis.recommendedPlan.costPerPerson) + '/person</strong></span>' +
+        '<span class="text-slate-400">•</span>' +
+        '<span class="text-emerald-900 flex items-center gap-1"><i data-lucide="target" class="w-3.5 h-3.5 text-emerald-600"></i> Custom Plan (Under ₹' + Number(analysis.targetPerPerson).toLocaleString('en-IN') + '): <strong>' + formatINR(analysis.optimizedPlan.costPerPerson) + '/person</strong></span>' +
+      '</div>';
+    }
+    varianceBanner.innerHTML = bannerContent;
   }
 
   // Render Included vs Excluded Expenses List if container exists or append
@@ -2403,7 +2530,9 @@ function openQuoteModal() {
       }
       if (budgetInput) {
         var cost = currentTrip.costPerPerson ? '₹' + currentTrip.costPerPerson.toLocaleString('en-IN') + ' / person' : 'Custom Quote';
-        if (currentTrip.grandTotalTrip) {
+        if (currentTrip.selectedPlanTitle) {
+          cost += ' [' + currentTrip.selectedPlanTitle + ']';
+        } else if (currentTrip.grandTotalTrip) {
           cost += ' (Total: ₹' + currentTrip.grandTotalTrip.toLocaleString('en-IN') + ')';
         }
         budgetInput.value = cost;

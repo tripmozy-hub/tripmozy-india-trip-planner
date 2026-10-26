@@ -594,7 +594,62 @@
         </div>
       </div>
 
-      
+      <!-- DUAL-PLAN COMPARISON CARD (TRIPMOZY RECOMMENDED VS USER TARGET BUDGET) -->
+      <div id="dualPlanComparisonBanner" class="hidden p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-emerald-50/90 border border-blue-200/90 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-blue-200/80">
+          <div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white shadow-2xs">
+              <i data-lucide="scale" class="w-3.5 h-3.5"></i>
+              <span>Dual-Plan Analysis: TripMozy Preference vs Your Budget</span>
+            </span>
+            <h3 id="dualPlanHeading" class="text-base sm:text-lg font-black text-slate-900 mt-1">
+              Comparing TripMozy Preference with Your Budget Limit
+            </h3>
+          </div>
+          <span class="text-xs text-slate-600 font-semibold bg-white/80 px-3 py-1 rounded-full border border-blue-100 shadow-2xs">
+            👉 Tap either option to select it:
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3.5">
+          <!-- Option 1: TripMozy Recommended Choice -->
+          <div onclick="selectActiveBudgetPlan('recommended')" id="planCardRecommended" class="p-4 rounded-2xl border-2 border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-blue-700 flex items-center gap-1.5">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-600"></i>
+                <span>TripMozy Recommended Choice</span>
+              </span>
+              <span id="badgePlanRecommended" class="hidden text-[10px] font-black bg-blue-600 text-white px-2 py-0.5 rounded-full">ACTIVE</span>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span id="dualCostRecommended" class="text-2xl font-black text-slate-900 font-heading">₹14,500</span>
+              <span class="text-xs text-slate-500 font-bold">/ person</span>
+            </div>
+            <p id="dualDescRecommended" class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              Standard 3★ AC Hotel Rooms, dedicated private cab, fuel, tolls, meals, and full sightseeing.
+            </p>
+          </div>
+
+          <!-- Option 2: User Target Budget Plan -->
+          <div onclick="selectActiveBudgetPlan('target')" id="planCardTarget" class="p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/40 cursor-pointer transition-all hover:shadow-md relative">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+                <i data-lucide="target" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <span id="dualTitleTarget">Custom Plan (Under Your Limit)</span>
+              </span>
+              <span id="badgePlanTarget" class="text-[10px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-full">ACTIVE</span>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span id="dualCostTarget" class="text-2xl font-black text-emerald-700 font-heading">₹9,800</span>
+              <span class="text-xs text-slate-500 font-bold">/ person</span>
+            </div>
+            <p id="dualDescTarget" class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              Optimized to stay strictly under your budget: verified clean homestays, smart local transit, and regional dining.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- TRIPMOZY VERIFIED AI DISCLAIMER (PHASE 9) -->
       <div class="p-3.5 bg-amber-50/90 border border-amber-200/90 rounded-2xl flex items-start gap-3 text-xs text-amber-900 shadow-2xs">
         <i data-lucide="shield-check" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>

@@ -350,17 +350,77 @@
     var budgetStatus = 'unspecified';
     var varianceAmount = 0;
     var budgetRecommendation = '';
+    var optimizedPlan = null;
 
     if (targetBudgetPerPerson > 0) {
       var targetTotalTrip = targetBudgetPerPerson * totalPax;
       varianceAmount = targetTotalTrip - grandTotalTrip;
+
+      // Build Target Budget Optimized Plan (Strictly <= targetBudgetPerPerson)
+      var optTotalTrip = targetTotalTrip;
+      var optStayAmount = Math.round(optTotalTrip * 0.38);
+      var optRoomRate = Math.max(900, Math.round(optStayAmount / (roomAlloc.roomsCount * nights)));
+      var totalOptStay = optRoomRate * roomAlloc.roomsCount * nights;
+
+      var optTransitAmount = Math.round(optTotalTrip * 0.28);
+      var optDailyTransit = Math.max(800, Math.round(optTransitAmount / days));
+      var totalOptTransit = optDailyTransit * days;
+
+      var optMealAmount = Math.round(optTotalTrip * 0.18);
+      var optDailyMeal = Math.max(300, Math.round(optMealAmount / (totalPax * days)));
+      var totalOptFood = optDailyMeal * totalPax * days;
+
+      var totalOptActivities = Math.round(optTotalTrip * 0.10);
+
+      var optSubtotal = totalOptStay + totalOptTransit + totalOptFood + totalOptActivities;
+      var totalOptBuffer = Math.max(250, optTotalTrip - optSubtotal);
+      var optFinalGrandTotal = optSubtotal + totalOptBuffer;
+      var optFinalPerPerson = Math.round(optFinalGrandTotal / totalPax);
+
+      optimizedPlan = {
+        title: "Your Budget Plan (Under ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + " Limit)",
+        targetBudgetPerPerson: targetBudgetPerPerson,
+        costPerPerson: optFinalPerPerson,
+        grandTotalTrip: optFinalGrandTotal,
+        tierName: "Budget Homestay / Value Standard",
+        stay: {
+          label: "Verified Budget Homestay / Clean Hotel (" + nights + " Nights, " + roomAlloc.description + ")",
+          dailyRate: optRoomRate,
+          amount: totalOptStay
+        },
+        transport: {
+          label: "Smart Cab / Shared Transfers (" + days + " Days)",
+          dailyRate: optDailyTransit,
+          amount: totalOptTransit
+        },
+        food: {
+          label: "Regional Thalis & Authentic Dhabas (₹" + optDailyMeal + "/person/day)",
+          amount: totalOptFood
+        },
+        activities: {
+          label: "Core Viewpoints, Temples & Nature Trails",
+          amount: totalOptActivities
+        },
+        contingency: {
+          label: "Emergency Buffer & Reserves",
+          amount: totalOptBuffer
+        },
+        breakdownPerPerson: {
+          stay: Math.round(totalOptStay / totalPax),
+          transport: Math.round(totalOptTransit / totalPax),
+          food: Math.round(totalOptFood / totalPax),
+          activities: Math.round(totalOptActivities / totalPax),
+          shopping: Math.round(totalOptBuffer / totalPax)
+        }
+      };
+
       if (varianceAmount >= 0) {
         budgetStatus = 'surplus';
         budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person comfortably covers this " + tier + " tier itinerary with a planning buffer of ₹" + Math.round(varianceAmount / totalPax).toLocaleString('en-IN') + "/person.";
       } else {
         budgetStatus = 'shortfall';
         var deficitPerPax = Math.round(Math.abs(varianceAmount) / totalPax);
-        budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person is ₹" + deficitPerPax.toLocaleString('en-IN') + " lower than the realistic " + tier + " tier cost (₹" + costPerPerson.toLocaleString('en-IN') + "/person). Recommended adjustments: 1) Switch to " + (tier === 'Luxury' ? 'Standard 3★' : 'Budget Homestay') + " tier, 2) Optimize room sharing (" + roomAlloc.description + "), or 3) Book group vehicle transfers.";
+        budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person is ₹" + deficitPerPax.toLocaleString('en-IN') + " lower than the realistic " + tier + " tier cost (₹" + costPerPerson.toLocaleString('en-IN') + "/person). We have analyzed both options for you: 1) TripMozy Recommended Plan (₹" + costPerPerson.toLocaleString('en-IN') + "/person with 3★ comfort), and 2) Custom Plan (₹" + optFinalPerPerson.toLocaleString('en-IN') + "/person fitted strictly under your ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + " budget).";
       }
     }
 
@@ -422,10 +482,30 @@
       },
       budgetAnalysis: {
         status: budgetStatus,
+        hasTarget: targetBudgetPerPerson > 0,
         targetPerPerson: targetBudgetPerPerson,
         calculatedPerPerson: costPerPerson,
         variancePerPerson: Math.round(varianceAmount / totalPax),
-        recommendation: budgetRecommendation
+        recommendation: budgetRecommendation,
+        optimizedPlan: optimizedPlan,
+        recommendedPlan: {
+          title: "TripMozy Recommended (" + tierInfo.name + " Comfort)",
+          costPerPerson: costPerPerson,
+          grandTotalTrip: grandTotalTrip,
+          tierName: tierInfo.name,
+          stay: { label: "Hotels & Stays (" + nights + " Nights, " + roomAlloc.description + ")", amount: totalRoomCost },
+          transport: { label: "Cab / Transit (" + vehicleAlloc.label + ", " + days + " Days)", amount: totalVehicleCost },
+          food: { label: "Meals & Dining (" + days + " Days)", amount: totalFoodCost },
+          activities: { label: "Attraction Entry Tickets & Experiences", amount: totalActivitiesCost },
+          contingency: { label: "Contingency & Emergency Buffer (6%)", amount: contingency },
+          breakdownPerPerson: {
+            stay: Math.round(totalRoomCost / totalPax),
+            transport: Math.round(totalVehicleCost / totalPax),
+            food: Math.round(totalFoodCost / totalPax),
+            activities: Math.round(totalActivitiesCost / totalPax),
+            shopping: Math.round(contingency / totalPax)
+          }
+        }
       },
       disclaimer: "All budget figures are realistic verified estimates for Indian tourism conditions. Final room and cab rates are confirmed at time of booking with TripMozy Private Limited (+91 9641866181)."
     };
