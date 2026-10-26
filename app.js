@@ -2516,9 +2516,44 @@ function submitTripmozyQuote(e) {
     console.warn("Storage warning:", err);
   }
 
+  // 2. Dispatch quotation lead directly to company email: tripmozy@gmail.com
+  try {
+    fetch('https://formsubmit.co/ajax/tripmozy@gmail.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        _subject: '🔔 New TripMozy Quote: ' + quoteData.destination + ' (' + quoteData.customerName + ')',
+        _template: 'table',
+        _captcha: 'false',
+        'Customer Name': quoteData.customerName,
+        'Mobile Number': quoteData.phone,
+        'Email Address': quoteData.email,
+        'Destination': quoteData.destination,
+        'Duration': quoteData.duration,
+        'Travelers': quoteData.travelers,
+        'Estimated Budget': quoteData.budget,
+        'Total Trip Cost': quoteData.totalEstimated,
+        'Special Requirements': quoteData.notes,
+        'Lead ID': quoteData.id,
+        'Submitted At': new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+      })
+    }).then(function(res) {
+      return res.json();
+    }).then(function(data) {
+      console.log('Quotation lead successfully sent to tripmozy@gmail.com:', data);
+    }).catch(function(err) {
+      console.warn('Email dispatch warning:', err);
+    });
+  } catch (emailErr) {
+    console.warn('Email service dispatch exception:', emailErr);
+  }
+
   closeQuoteModal();
 
-  // 2. Format detailed quotation message and deliver directly to TripMozy WhatsApp desk (+91 9641866181)
+  // 3. Format detailed quotation message and deliver directly to TripMozy WhatsApp desk (+91 9641866181)
   var waMessage = "📋 *NEW TRIPMOZY OFFICIAL QUOTATION REQUEST*\n" +
     "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
     "👤 *Customer Name:* " + quoteData.customerName + "\n" +
@@ -2537,12 +2572,12 @@ function submitTripmozyQuote(e) {
   // Auto-launch WhatsApp directly to send details to TripMozy
   window.open(waUrl, '_blank');
 
-  // 3. Show celebratory confirmation toast with direct link
+  // 4. Show celebratory confirmation toast with direct link
   var toast = document.createElement('div');
   toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99999;min-width:320px;max-width:92vw;background:linear-gradient(135deg,#16a34a,#15803d);color:white;border-radius:16px;padding:18px 24px;box-shadow:0 12px 40px rgba(0,0,0,0.3);text-align:center;font-family:inherit;animation:slideUpToast 0.4s ease;';
   toast.innerHTML = '<div style="font-size:28px;margin-bottom:6px;">🎉</div>' +
     '<div style="font-weight:800;font-size:16px;margin-bottom:4px;">Quote Details Sent to TripMozy!</div>' +
-    '<div style="font-size:12px;opacity:0.95;margin-bottom:12px;">Thank you, ' + name + '! Your quote request has been sent to TripMozy (+91 9641866181) and saved in your quotes log. Our reservation desk will call you at +91 ' + cleanPhone.slice(-10) + ' within 30 minutes.</div>' +
+    '<div style="font-size:12px;opacity:0.95;margin-bottom:12px;">Thank you, ' + name + '! Your quote request has been emailed directly to <strong>tripmozy@gmail.com</strong> and sent to TripMozy WhatsApp (+91 9641866181). Our team will call you at +91 ' + cleanPhone.slice(-10) + ' within 30 minutes.</div>' +
     '<div style="display:flex;gap:8px;justify-content:center;">' +
       '<a href="' + waUrl + '" target="_blank" style="background:#25d366;color:#ffffff;font-weight:bold;font-size:12px;padding:8px 16px;border:none;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none;">💬 Open WhatsApp Enquiry</a>' +
       '<button onclick="this.parentElement.parentElement.remove();" style="background:rgba(255,255,255,0.2);color:white;font-weight:bold;font-size:12px;padding:8px 14px;border:none;border-radius:8px;cursor:pointer;">Close</button>' +
