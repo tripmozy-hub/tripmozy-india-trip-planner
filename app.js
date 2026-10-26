@@ -847,12 +847,23 @@ async function handleFormSubmit(e) {
   const originCity = document.getElementById('originCityInput')?.value.trim() || "At Destination (Local Sightseeing)";
   const startDate = document.getElementById('startDateInput')?.value || "";
   const endDate = document.getElementById('endDateInput')?.value || "";
-  const adults = parseInt(document.getElementById('adultsCountInput')?.value) || 2;
-  const children = parseInt(document.getElementById('childrenCountInput')?.value) || 0;
+  const comp = document.querySelector('input[name="companion"]:checked')?.value || "Couple";
+  let adults = 2;
+  let children = 0;
+  const adultsInput = document.getElementById('adultsCountInput');
+  if (adultsInput) {
+    adults = parseInt(adultsInput.value) || 2;
+    children = parseInt(document.getElementById('childrenCountInput')?.value) || 0;
+  } else {
+    if (comp === 'Solo') { adults = 1; children = 0; }
+    else if (comp === 'Couple') { adults = 2; children = 0; }
+    else if (comp === 'Family') { adults = 2; children = 2; }
+    else if (comp === 'Friends') { adults = 4; children = 0; }
+  }
   const roomSharingPref = document.getElementById('roomSharingSelect')?.value || "auto";
   const transportPref = document.getElementById('transportPrefSelect')?.value || "private_cab";
   const travelStyle = document.querySelector('input[name="travelStyle"]:checked')?.value || "Standard Sightseeing";
-  const companion = document.querySelector('input[name="companion"]:checked')?.value || (adults > 2 ? "Family" : (adults === 2 ? "Couple" : "Solo"));
+  const companion = comp;
   const budgetTier = document.querySelector('input[name="budget"]:checked')?.value || "Moderate";
   const dietary = document.getElementById('dietaryPref')?.value || "Pure Vegetarian";
   const manualBudgetInput = Number(document.getElementById('manualTargetBudgetInput')?.value) || 0;
