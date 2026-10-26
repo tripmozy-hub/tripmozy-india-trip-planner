@@ -2388,12 +2388,34 @@ function openQuoteModal() {
     modal.classList.remove('hidden');
     // Pre-fill trip details
     var destInput = document.getElementById('quoteDest');
-    if (destInput && currentTrip) destInput.value = currentTrip.destination;
     var durInput = document.getElementById('quoteDuration');
-    if (durInput && currentTrip) durInput.value = currentTrip.days + ' Days (' + (currentTrip.days - 1) + ' Nights)';
     var paxInput = document.getElementById('quotePax');
-    if (paxInput && currentTrip) {
-      paxInput.value = (currentTrip.adults || 2) + ' Adults' + (currentTrip.children ? ', ' + currentTrip.children + ' Children' : '');
+    var budgetInput = document.getElementById('quoteBudget');
+
+    if (currentTrip) {
+      if (destInput) destInput.value = currentTrip.destination;
+      if (durInput) durInput.value = currentTrip.days + ' Days (' + (currentTrip.days - 1) + ' Nights)';
+      if (paxInput) {
+        var adults = currentTrip.adults || 2;
+        var children = currentTrip.children || 0;
+        var party = currentTrip.party || 'Couple';
+        paxInput.value = adults + ' Adults' + (children ? ', ' + children + ' Children' : '') + ' (' + party + ')';
+      }
+      if (budgetInput) {
+        var cost = currentTrip.costPerPerson ? '₹' + currentTrip.costPerPerson.toLocaleString('en-IN') + ' / person' : 'Custom Quote';
+        if (currentTrip.grandTotalTrip) {
+          cost += ' (Total: ₹' + currentTrip.grandTotalTrip.toLocaleString('en-IN') + ')';
+        }
+        budgetInput.value = cost;
+      }
+    } else {
+      var destVal = document.getElementById('destinationInput')?.value.trim() || 'Custom Indian Holiday';
+      var durVal = document.getElementById('durationRange')?.value || 4;
+      var compVal = document.querySelector('input[name="companion"]:checked')?.value || 'Couple';
+      if (destInput) destInput.value = destVal;
+      if (durInput) durInput.value = durVal + ' Days (' + (durVal - 1) + ' Nights)';
+      if (paxInput) paxInput.value = compVal;
+      if (budgetInput) budgetInput.value = 'Quote on Request';
     }
   }
 }
@@ -2403,12 +2425,55 @@ function closeQuoteModal() {
   if (modal) modal.classList.add('hidden');
 }
 
+function viewSavedQuoteLeads() {
+  var box = document.getElementById('savedLeadsBox');
+  var list = document.getElementById('savedLeadsList');
+  if (!box || !list) return;
+
+  if (!box.classList.contains('hidden')) {
+    box.classList.add('hidden');
+    return;
+  }
+
+  box.classList.remove('hidden');
+  var leads = [];
+  try {
+    leads = JSON.parse(localStorage.getItem('tripmozy_quotation_leads') || '[]');
+  } catch (e) {
+    leads = [];
+  }
+
+  if (leads.length === 0) {
+    list.innerHTML = '<div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-500 text-xs">No saved quotations yet. Submit a quote request above to view it here.</div>';
+    return;
+  }
+
+  list.innerHTML = leads.map(function(lead) {
+    return '<div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">' +
+      '<div class="flex items-center justify-between font-bold text-slate-800">' +
+        '<span>' + lead.customerName + ' · ' + lead.phone + '</span>' +
+        '<span class="text-[10px] text-blue-600 font-semibold">' + (new Date(lead.timestamp).toLocaleDateString('en-IN')) + '</span>' +
+      '</div>' +
+      '<div class="text-[11px] text-slate-600">' + lead.destination + ' · ' + lead.duration + ' · ' + lead.budget + '</div>' +
+      (lead.notes && lead.notes !== 'None' ? ('<div class="text-[10px] text-slate-500 italic">"' + lead.notes + '"</div>') : '') +
+    '</div>';
+  }).join('');
+}
+
+function clearSavedQuoteLeads() {
+  if (confirm("Clear all locally stored quotation leads?")) {
+    localStorage.removeItem('tripmozy_quotation_leads');
+    viewSavedQuoteLeads();
+  }
+}
+
 function submitTripmozyQuote(e) {
   if (e && e.preventDefault) e.preventDefault();
 
   var name = document.getElementById('quoteName')?.value.trim();
   var phone = document.getElementById('quotePhone')?.value.trim();
   var email = document.getElementById('quoteEmail')?.value.trim();
+  var notes = document.getElementById('quoteNotes')?.value.trim();
   var consent = document.getElementById('quoteConsent')?.checked;
 
   if (!name || !phone) {
@@ -2428,21 +2493,63 @@ function submitTripmozyQuote(e) {
     return;
   }
 
+  // 1. Save quotation lead into persistent storage (localStorage)
+  var quoteData = {
+    id: 'TM-' + Math.floor(100000 + Math.random() * 900000),
+    timestamp: new Date().toISOString(),
+    customerName: name,
+    phone: '+91 ' + cleanPhone.slice(-10),
+    email: email || 'N/A',
+    destination: currentTrip ? currentTrip.destination : (document.getElementById('quoteDest')?.value || 'India'),
+    duration: currentTrip ? (currentTrip.days + ' Days / ' + (currentTrip.days - 1) + ' Nights') : (document.getElementById('quoteDuration')?.value || '4 Days'),
+    travelers: currentTrip ? ((currentTrip.adults || 2) + ' Adults' + (currentTrip.children ? ', ' + currentTrip.children + ' Children' : '') + ' (' + (currentTrip.party || 'Couple') + ')') : (document.getElementById('quotePax')?.value || '2 Adults'),
+    budget: currentTrip && currentTrip.costPerPerson ? ('₹' + currentTrip.costPerPerson.toLocaleString('en-IN') + '/person') : (document.getElementById('quoteBudget')?.value || 'Standard Quote'),
+    totalEstimated: currentTrip && currentTrip.grandTotalTrip ? ('₹' + currentTrip.grandTotalTrip.toLocaleString('en-IN')) : 'On Request',
+    notes: notes || 'None'
+  };
+
+  try {
+    var storedLeads = JSON.parse(localStorage.getItem('tripmozy_quotation_leads') || '[]');
+    storedLeads.unshift(quoteData);
+    localStorage.setItem('tripmozy_quotation_leads', JSON.stringify(storedLeads));
+  } catch (err) {
+    console.warn("Storage warning:", err);
+  }
+
   closeQuoteModal();
 
-  // Show celebratory confirmation toast
+  // 2. Format detailed quotation message and deliver directly to TripMozy WhatsApp desk (+91 9641866181)
+  var waMessage = "📋 *NEW TRIPMOZY OFFICIAL QUOTATION REQUEST*\n" +
+    "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+    "👤 *Customer Name:* " + quoteData.customerName + "\n" +
+    "📞 *Mobile/WhatsApp:* " + quoteData.phone + "\n" +
+    (email ? ("📧 *Email:* " + email + "\n") : "") +
+    "📍 *Destination:* " + quoteData.destination + "\n" +
+    "⏱️ *Duration:* " + quoteData.duration + "\n" +
+    "👥 *Travelers:* " + quoteData.travelers + "\n" +
+    "💰 *Budget Estimate:* " + quoteData.budget + " (Total: " + quoteData.totalEstimated + ")\n" +
+    (notes ? ("📝 *Special Requirements:* " + notes + "\n") : "") +
+    "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+    "Please send me the confirmed itinerary quotation with live hotel availability. Thank you!";
+
+  var waUrl = "https://wa.me/919641866181?text=" + encodeURIComponent(waMessage);
+
+  // Auto-launch WhatsApp directly to send details to TripMozy
+  window.open(waUrl, '_blank');
+
+  // 3. Show celebratory confirmation toast with direct link
   var toast = document.createElement('div');
   toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99999;min-width:320px;max-width:92vw;background:linear-gradient(135deg,#16a34a,#15803d);color:white;border-radius:16px;padding:18px 24px;box-shadow:0 12px 40px rgba(0,0,0,0.3);text-align:center;font-family:inherit;animation:slideUpToast 0.4s ease;';
   toast.innerHTML = '<div style="font-size:28px;margin-bottom:6px;">🎉</div>' +
-    '<div style="font-weight:800;font-size:16px;margin-bottom:4px;">Quote Request Sent to TripMozy!</div>' +
-    '<div style="font-size:12px;opacity:0.95;margin-bottom:12px;">Thank you, ' + name + '. A TripMozy travel expert will contact you at +91 ' + cleanPhone.slice(-10) + ' within 30 minutes with live room availability.</div>' +
+    '<div style="font-weight:800;font-size:16px;margin-bottom:4px;">Quote Details Sent to TripMozy!</div>' +
+    '<div style="font-size:12px;opacity:0.95;margin-bottom:12px;">Thank you, ' + name + '! Your quote request has been sent to TripMozy (+91 9641866181) and saved in your quotes log. Our reservation desk will call you at +91 ' + cleanPhone.slice(-10) + ' within 30 minutes.</div>' +
     '<div style="display:flex;gap:8px;justify-content:center;">' +
-      '<button onclick="openTripmozyWhatsApp(); this.parentElement.parentElement.remove();" style="background:#25d366;color:#ffffff;font-weight:bold;font-size:12px;padding:8px 16px;border:none;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">💬 Chat Instantly on WhatsApp</button>' +
+      '<a href="' + waUrl + '" target="_blank" style="background:#25d366;color:#ffffff;font-weight:bold;font-size:12px;padding:8px 16px;border:none;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none;">💬 Open WhatsApp Enquiry</a>' +
       '<button onclick="this.parentElement.parentElement.remove();" style="background:rgba(255,255,255,0.2);color:white;font-weight:bold;font-size:12px;padding:8px 14px;border:none;border-radius:8px;cursor:pointer;">Close</button>' +
     '</div>';
   document.body.appendChild(toast);
 
-  setTimeout(function() { if (toast.parentNode) toast.remove(); }, 10000);
+  setTimeout(function() { if (toast.parentNode) toast.remove(); }, 12000);
 }
 
 // Conflict detector for dates vs duration slider

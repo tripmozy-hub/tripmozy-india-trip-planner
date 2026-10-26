@@ -1023,9 +1023,15 @@
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Travelers &amp; Rooms</label>
-          <input type="text" id="quotePax" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-800" />
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Travelers &amp; Party</label>
+            <input type="text" id="quotePax" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-800" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Estimated Budget</label>
+            <input type="text" id="quoteBudget" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-blue-700" />
+          </div>
         </div>
 
         <div>
@@ -1058,14 +1064,32 @@
           <span>I consent to TripMozy Private Limited contacting me regarding this customized quotation and travel arrangements. Your personal information is protected.</span>
         </label>
 
-        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
-          <button type="button" onclick="closeQuoteModal()" class="btn-white px-4 py-2 text-xs font-semibold rounded-xl">Cancel</button>
-          <button type="submit" class="btn-blue px-5 py-2 text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md shadow-blue-600/20">
-            <i data-lucide="send" class="w-3.5 h-3.5"></i>
-            <span>Submit Quotation Request</span>
+        <div class="pt-3 flex items-center justify-between gap-2 border-t border-slate-100">
+          <button type="button" onclick="viewSavedQuoteLeads()" class="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
+            <i data-lucide="folder-clock" class="w-3.5 h-3.5"></i>
+            <span>View Saved Quotes</span>
           </button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closeQuoteModal()" class="btn-white px-3.5 py-2 text-xs font-semibold rounded-xl">Cancel</button>
+            <button type="submit" class="btn-blue px-4 sm:px-5 py-2 text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md shadow-blue-600/20">
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+              <span>Submit &amp; Send to WhatsApp</span>
+            </button>
+          </div>
         </div>
       </form>
+
+      <!-- COLLAPSIBLE SAVED QUOTES LOG -->
+      <div id="savedLeadsBox" class="hidden mt-4 pt-3 border-t border-slate-200">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+            <i data-lucide="history" class="w-3.5 h-3.5 text-blue-600"></i>
+            Stored TripMozy Quotation Leads
+          </span>
+          <button type="button" onclick="clearSavedQuoteLeads()" class="text-[11px] text-rose-600 hover:underline">Clear History</button>
+        </div>
+        <div id="savedLeadsList" class="space-y-2 max-h-48 overflow-y-auto text-xs text-slate-600"></div>
+      </div>
     </div>
   </div>
 
