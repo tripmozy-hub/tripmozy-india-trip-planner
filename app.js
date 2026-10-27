@@ -623,6 +623,769 @@ const INDIA_DESTINATIONS = {
     }
   },
 
+  kashmir: {
+    destination: "Srinagar & Kashmir Valley, Jammu & Kashmir",
+    days: 5,
+    title: "Paradise on Earth: 5 Days in Srinagar, Gulmarg & Pahalgam",
+    subtitle: "From Dal Lake Shikara cruises and Mughal terraced gardens to the alpine gondola in Gulmarg and Betaab Valley in Pahalgam.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 22500,
+    currency: "INR (₹)",
+    coords: [34.0837, 74.7973], // Srinagar Dal Lake
+    nearbyAttractions: [
+      { name: "Dal Lake Shikara & Char Chinar", category: "Scenic", coords: [34.0837, 74.8373], ticketCost: "₹800", costValue: 800, budgetTier: "premium", desc: "Traditional wooden water taxi ride through floating gardens, lotus blooms, and historic houseboats.", tip: "Take a 2-hour sunset shikara to Char Chinar island for golden photography." },
+      { name: "Nishat & Shalimar Mughal Gardens", category: "Heritage", coords: [34.1230, 74.8770], ticketCost: "₹25", costValue: 25, budgetTier: "budget", desc: "17th-century terraced imperial Mughal pleasure gardens overlooking the serene Dal Lake.", tip: "Visit in the afternoon when water fountains are fully active." },
+      { name: "Gulmarg Gondola & Apharwat Peak", category: "Adventure", coords: [34.0484, 74.3805], ticketCost: "₹1,050", costValue: 1050, budgetTier: "premium", desc: "World's second highest operating cable car ascending to 3,980 meters in snow peaks.", tip: "Book Phase 1 & Phase 2 tickets 3 weeks ahead on the official portal." },
+      { name: "Pahalgam Betaab Valley & Lidder River", category: "Nature", coords: [34.0163, 75.3150], ticketCost: "₹100", costValue: 100, budgetTier: "budget", desc: "Scenic mountain valley surrounded by lush pine meadows and snow-fed Lidder stream.", tip: "Baisaran (Mini Switzerland) pony trek starts from the Pahalgam taxi stand." },
+      { name: "Shankaracharya Ancient Shiva Temple", category: "Temple", coords: [34.0720, 74.8450], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Historic 200 BC hilltop stone shrine offering 360-degree panoramic vistas of Srinagar.", tip: "240 stone steps to reach top; mobile phones not permitted inside sanctum." },
+      { name: "Aru Valley Wildlife & Pine Sanctuary", category: "Nature", coords: [34.0900, 75.2600], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "Quiet eco-village with rolling alpine pastures and base camp for Kolahoi Glacier.", tip: "Local Pahalgam union cab required to visit Aru & Chandanwari." },
+      { name: "Lal Chowk & Old City Saffron Bazaar", category: "Shopping", coords: [34.0725, 74.8090], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Vibrant market for pure Kashmiri saffron (Kesar), Pashmina shawls, and walnuts.", tip: "Look for Govt GI-tagged Kashmiri Pashmina and dry fruit cooperatives." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Dal Lake Shikara & Floating Flower Markets",
+        overnight: "Overnight in Srinagar Houseboat",
+        transitSummary: "Local Srinagar ~ 18 km",
+        stops: [
+          { time: "09:30 AM", name: "Dal Lake Shikara & Char Chinar", category: "Scenic", cost: "₹800", costValue: 800, duration: "2.5h", desc: "Glide along the jewel of Kashmir through floating vegetable gardens and lotus beds.", tip: "Carry cash for hot saffron kahwa tea sold by lake vendors.", coords: [34.0837, 74.8373] },
+          { time: "01:00 PM", name: "Traditional Kashmiri Wazwan Lunch", category: "Dining", cost: "₹750", costValue: 750, duration: "1.5h", desc: "Savor aromatic Rogan Josh, Gushtaba, Rista, and saffron rice.", tip: "Ahdoos on Residency Road is legendary for Wazwan.", coords: [34.0710, 74.8150] },
+          { time: "03:30 PM", name: "Shankaracharya Hilltop Temple", category: "Temple", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Climb the stone stairs to the sacred Shiva lingam with bird's-eye valley views.", tip: "Keep valid government photo ID handy at security checkpost.", coords: [34.0720, 74.8450] },
+          { time: "06:30 PM", name: "Boulevard Road Sunset Promenade", category: "Relaxation", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Leisure stroll along Dal Lake embankment with glowing snow peaks in background.", tip: "Buy freshly roasted chestnuts and walnuts.", coords: [34.0850, 74.8300] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Imperial Mughal Gardens & Old Srinagar",
+        overnight: "Overnight in Srinagar Hotel",
+        transitSummary: "Srinagar loop ~ 26 km",
+        stops: [
+          { time: "09:30 AM", name: "Nishat & Shalimar Mughal Gardens", category: "Heritage", cost: "₹25", costValue: 25, duration: "3h", desc: "Walk through 12 grand terraces of Nishat Bagh built by Asif Khan in 1633.", tip: "Great photography along the central water channel lined with chinar trees.", coords: [34.1230, 74.8770] },
+          { time: "01:30 PM", name: "Hazratbal Shrine & Lakeside Trout Cafe", category: "Culture", cost: "₹450", costValue: 450, duration: "1.5h", desc: "White marble domed shrine on northern bank of Dal Lake.", tip: "Dress conservatively covering head.", coords: [34.1280, 74.8420] },
+          { time: "04:00 PM", name: "Lal Chowk & Old City Saffron Bazaar", category: "Shopping", cost: "Free Entry", costValue: 0, duration: "2.5h", desc: "Shop for certified Kashmiri saffron, walnut wood carvings, and papier-mâché.", tip: "Saffron strands should turn water golden yellow, not red.", coords: [34.0725, 74.8090] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Gulmarg High Alpine Meadow & Gondola Snow",
+        overnight: "Overnight in Gulmarg / Srinagar",
+        transitSummary: "Srinagar to Gulmarg ~ 54 km (2h)",
+        stops: [
+          { time: "09:00 AM", name: "Gulmarg Gondola & Apharwat Peak", category: "Adventure", cost: "₹1,050", costValue: 1050, duration: "3.5h", desc: "Board Phase 1 to Kongdoori and Phase 2 to Apharwat summit snowfields at 3,980m.", tip: "Dress in warm waterproof layers and rent snow boots at Tangmarg.", coords: [34.0484, 74.3805] },
+          { time: "01:30 PM", name: "Highland Park Alpine Dining", category: "Dining", cost: "₹650", costValue: 650, duration: "1.5h", desc: "Warm up with hot mutton Yakhni soup, Nadru Yakhni, and naan.", tip: "Warm wooden lounge with fireplace.", coords: [34.0500, 74.3850] },
+          { time: "03:30 PM", name: "Strawberry Valley & St. Mary's Church", category: "Nature", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Walk through pine groves to the 100-year-old British stone church on the golf course.", tip: "Ponies or walking are both pleasant options across the meadow.", coords: [34.0450, 74.3900] }
+        ]
+      },
+      {
+        day: 4,
+        title: "Day 4: Pahalgam Valley of Shepherds & Betaab Valley",
+        overnight: "Overnight in Pahalgam",
+        transitSummary: "Srinagar to Pahalgam ~ 92 km (2.5h)",
+        stops: [
+          { time: "09:30 AM", name: "Pahalgam Betaab Valley & Lidder River", category: "Nature", cost: "₹100", costValue: 100, duration: "3h", desc: "Explore the emerald meadows where the Bollywood movie Betaab was filmed.", tip: "Enjoy the cold glacier water flowing from Sheshnag lake.", coords: [34.0163, 75.3150] },
+          { time: "01:30 PM", name: "Riverside Dhaba & Kashmiri Trout Fish", category: "Dining", cost: "₹600", costValue: 600, duration: "1.5h", desc: "Freshly caught Himalayan brown trout pan-fried with local butter and herbs.", tip: "Ask for lemon-butter sauce.", coords: [34.0150, 75.3200] },
+          { time: "03:30 PM", name: "Baisaran Pine Meadow (Mini Switzerland)", category: "Scenic", cost: "₹250", costValue: 250, duration: "3h", desc: "High mountain clearing surrounded by dense deodar forests with snow peak backdrops.", tip: "Wear shoes with firm rubber traction.", coords: [34.0100, 75.3300] }
+        ]
+      },
+      {
+        day: 5,
+        title: "Day 5: Aru Eco-Valley & Departure Transfer",
+        overnight: "Overnight in Srinagar / Airport",
+        transitSummary: "Pahalgam to Srinagar Airport ~ 90 km (2.5h)",
+        stops: [
+          { time: "09:00 AM", name: "Aru Valley Wildlife & Pine Sanctuary", category: "Nature", cost: "₹50", costValue: 50, duration: "2.5h", desc: "Pristine mountain village nestled amidst wildflower pastures and snow streams.", tip: "Early morning walks offer sightings of Himalayan birds.", coords: [34.0900, 75.2600] },
+          { time: "12:30 PM", name: "Avantipur Ancient Ruins & Saffron Fields", category: "Heritage", cost: "₹25", costValue: 25, duration: "1.5h", desc: "9th-century stone temple ruins of King Avantivarman and Pampore saffron fields.", tip: "Pampore has official saffron testing labs on NH44.", coords: [33.9200, 75.0100] },
+          { time: "03:30 PM", name: "Srinagar Airport Transfer", category: "Transit", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Arrive 3 hours early at Srinagar International Airport due to mandatory multi-tier security.", tip: "Keep hand baggage light as battery banks must stay in check-in luggage.", coords: [33.9870, 74.7740] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 8500, food: 5500, activities: 3500, transport: 3500, shopping: 1500 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "Cash for pony union & shikara", "Thermal innerwear"],
+      clothing: ["Fleece jacket or down parka", "Woolen socks & gloves", "Modest outfits for religious sites"],
+      gear: ["Power bank", "UV sunglasses for snow glare", "Sturdy grip trekking boots"],
+      health: ["Cold & cough tablets", "Sunscreen SPF 50+", "Moisturizer & lip balm"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). UPI works well in Srinagar; carry cash for Gulmarg & Pahalgam pony rides.",
+      transit: "Pre-book a trusted private cab for the entire circuit through Tripmozy for seamless travel.",
+      tipping: "₹200-₹300/day for cab driver; ₹100 for shikara boatman.",
+      emergency: "Kashmir Tourist Police: 0194-2452224 | Emergency: 112.",
+      etiquette: "Dress respectfully at mosques and temples. Always confirm pony rates with union ticket counter.",
+      phrases: [{ en: "Hello", local: "Salam Alaikum" }, { en: "Thank you", local: "Shukriya" }]
+    }
+  },
+
+  jaipur: {
+    destination: "Jaipur, Rajasthan",
+    days: 4,
+    title: "Royal Forts & Pink City Splendors: 4 Days in Jaipur",
+    subtitle: "From majestic Amber Fort and Sheesh Mahal to Hawa Mahal, astronomy at Jantar Mantar, and evening celebrations at Chokhi Dhani.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 16500,
+    currency: "INR (₹)",
+    coords: [26.9124, 75.7873], // Jaipur City Center
+    nearbyAttractions: [
+      { name: "Amber Fort & Sheesh Mahal", category: "Fort", coords: [26.9855, 75.8513], ticketCost: "₹100", costValue: 100, budgetTier: "budget", desc: "Majestic hilltop fortress overlooking Maota Lake with the world-renowned Hall of Mirrors.", tip: "Hire an official ASI guide at the sun gate entrance." },
+      { name: "Hawa Mahal (Palace of Winds)", category: "Heritage", coords: [26.9239, 75.8267], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "Five-story pink sandstone palace with 953 honeycomb windows designed for royal court ladies.", tip: "Cross the street to Tattoo Cafe for iconic rooftop photos facing the facade." },
+      { name: "City Palace & Chandra Mahal", category: "Heritage", coords: [26.9258, 75.8236], ticketCost: "₹200", costValue: 200, budgetTier: "moderate", desc: "Magnificent royal residence blending Rajput, Mughal, and European architecture.", tip: "Don't miss the Peacock Gate in the inner courtyard." },
+      { name: "Jantar Mantar UNESCO Observatory", category: "Heritage", coords: [26.9248, 75.8246], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "Astronomical collection of 19 architectural instruments built by Maharaja Sawai Jai Singh II.", tip: "Features the world's largest stone sundial accurate to within two seconds." },
+      { name: "Nahargarh Fort & Sunset Point", category: "Scenic", coords: [26.9373, 75.8155], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "Rugged fortress perched atop Aravalli hills with sweeping sunset vistas over the Pink City.", tip: "Padao restaurant inside offers cold refreshments with the panoramic sunset." },
+      { name: "Jal Mahal (Water Palace)", category: "Scenic", coords: [26.9535, 75.8462], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Serene submerged palace floating in the center of Man Sagar Lake.", tip: "Illuminated beautifully with yellow lamps after 7:00 PM." },
+      { name: "Chokhi Dhani Ethnic Cultural Village", category: "Culture", coords: [26.7663, 75.8360], ticketCost: "₹900", costValue: 900, budgetTier: "premium", desc: "Vibrant Rajasthani village fair with folk dances, camel rides, fire acts, and royal thali feast.", tip: "Arrive around 5:30 PM to enjoy all village performances before dining." },
+      { name: "Johari Bazaar & Bapu Bazaar", category: "Shopping", coords: [26.9190, 75.8270], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Pink City street market for silver jewelry, handcrafted juttis, and block-print quilts.", tip: "Check out Laxmi Mishthan Bhandar (LMB) for authentic Pyaaz Kachori and Ghewar." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Historic Forts & Royal Mansions of Amer",
+        overnight: "Overnight in Jaipur Hotel / Haveli",
+        transitSummary: "Amer circuit ~ 24 km",
+        stops: [
+          { time: "09:00 AM", name: "Amber Fort & Sheesh Mahal", category: "Fort", cost: "₹100", costValue: 100, duration: "3h", desc: "Explore grand courtyards, Diwan-e-Aam, and dazzling Sheesh Mahal glass palace.", tip: "Wear comfortable walking shoes for the cobblestone ramparts.", coords: [26.9855, 75.8513] },
+          { time: "12:30 PM", name: "Jal Mahal (Water Palace) & Lunch", category: "Dining", cost: "₹550", costValue: 550, duration: "1.5h", desc: "Enjoy authentic Rajasthani Gatte Ki Sabzi and Ker Sangri overlooking the lake.", tip: "Try the sweet lassi at roadside stalls.", coords: [26.9535, 75.8462] },
+          { time: "03:00 PM", name: "Nahargarh Fort & Sunset Point", category: "Scenic", cost: "₹50", costValue: 50, duration: "2.5h", desc: "Watch the sun sink into the Aravalli horizon as Jaipur city lights illuminate below.", tip: "Carry a light jacket as the hilltop gets breezy after dark.", coords: [26.9373, 75.8155] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: The Walled Pink City, Palaces & Bazaars",
+        overnight: "Overnight in Jaipur Hotel",
+        transitSummary: "Old City loop ~ 14 km",
+        stops: [
+          { time: "09:30 AM", name: "Hawa Mahal (Palace of Winds)", category: "Heritage", cost: "₹50", costValue: 50, duration: "1.5h", desc: "Marvel at the pink lattice facade and wind flow channels inside.", tip: "Morning sunlight directly illuminates the eastern facade.", coords: [26.9239, 75.8267] },
+          { time: "11:30 AM", name: "City Palace & Chandra Mahal", category: "Heritage", cost: "₹200", costValue: 200, duration: "2.5h", desc: "Visit the royal arms museum, costume gallery, and the world's largest silver vessels.", tip: "Composite tickets available at the ticket window.", coords: [26.9258, 75.8236] },
+          { time: "02:30 PM", name: "Jantar Mantar UNESCO Observatory", category: "Heritage", cost: "₹50", costValue: 50, duration: "1.5h", desc: "Discover how ancient astronomers measured time and tracked constellations with stone.", tip: "Audio guides explain each instrument clearly.", coords: [26.9248, 75.8246] },
+          { time: "04:30 PM", name: "Johari Bazaar & Bapu Bazaar", category: "Shopping", coords: [26.9190, 75.8270], cost: "Free Entry", costValue: 0, duration: "2.5h", desc: "Shop for tie-and-dye Bandhani dupattas, blue pottery, and silver jewelry.", tip: "Savor hot Pyaaz Kachori at LMB.", coords: [26.9190, 75.8270] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Albert Hall Museum, Birla Temple & Chokhi Dhani",
+        overnight: "Overnight in Jaipur Hotel",
+        transitSummary: "Jaipur South loop ~ 32 km",
+        stops: [
+          { time: "10:00 AM", name: "Albert Hall Museum & Ram Niwas Garden", category: "Heritage", cost: "₹40", costValue: 40, duration: "2h", desc: "State museum housed in stunning Indo-Saracenic palace featuring Egyptian mummies and pottery.", tip: "Feeding pigeons in front of Albert Hall is a popular photo ritual.", coords: [26.9116, 75.8195] },
+          { time: "01:00 PM", name: "Traditional Rajasthani Thali Lunch", category: "Dining", cost: "₹450", costValue: 450, duration: "1.5h", desc: "Unlimited authentic thali with Dal Baati Churma, Bajre Ki Roti, and Gatte Ki Kadhi.", tip: "Rawat Mishthan Bhandar or Thali & More.", coords: [26.9200, 75.7950] },
+          { time: "03:30 PM", name: "Birla Mandir White Marble Temple", category: "Temple", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Pure white Makrana marble temple dedicated to Lakshmi Narayan beneath Moti Dungri fortress.", tip: "Remove footwear outside; socks permitted on marble floors.", coords: [26.8924, 75.8155] },
+          { time: "05:30 PM", name: "Chokhi Dhani Ethnic Cultural Village", category: "Culture", cost: "₹900", costValue: 900, duration: "4h", desc: "Immerse in desert folk traditions with puppet shows, acrobatics, and royal feast.", tip: "Pre-book admission to skip the evening line.", coords: [26.7663, 75.8360] }
+        ]
+      },
+      {
+        day: 4,
+        title: "Day 4: Jaigarh Fort Cannon & Blue Pottery Departure",
+        overnight: "Departure Transfer",
+        transitSummary: "Jaipur to Airport / Railway Station ~ 18 km",
+        stops: [
+          { time: "09:30 AM", name: "Jaigarh Fort & Jaivana Giant Cannon", category: "Fort", cost: "₹50", costValue: 50, duration: "2.5h", desc: "See the world's largest cannon on wheels perched high above Amber Fort.", tip: "Offers underground tunnel walk connecting directly to Amber.", coords: [26.9840, 75.8450] },
+          { time: "12:30 PM", name: "Sanganer Hand-Block Printing Workshop", category: "Shopping", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Watch master artisans carve wooden blocks and stamp vibrant organic vegetable dyes.", tip: "Direct factory prices for cotton bedsheets and kurtas.", coords: [26.8150, 75.7700] },
+          { time: "03:30 PM", name: "Jaipur Airport / Junction Transfer", category: "Transit", cost: "Free Entry", costValue: 0, duration: "1h", desc: "Safe drop-off for flight or superfast train back home.", tip: "Pack a box of sweet Ghewar to take home.", coords: [26.8280, 75.8050] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 6500, food: 4200, activities: 2800, transport: 2200, shopping: 800 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "UPI / Cash for market bargaining", "Sunscreen SPF 50+"],
+      clothing: ["Breathable cotton shirts & kurtas", "Comfortable walking shoes", "Sunhat & sunglasses"],
+      gear: ["Power bank", "Camera for royal facades", "Canvas tote bag for shopping"],
+      health: ["Electrolytes / ORS sachets", "Hand sanitizer", "Basic indigestion pills"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). UPI accepted everywhere in Jaipur from street carts to luxury palaces.",
+      transit: "Pre-booked private AC sedan is best due to distances between Amer and city center.",
+      tipping: "7-10% at restaurants; ₹200/day for private driver.",
+      emergency: "Jaipur Tourist Helpline: 0141-2822863 | Police: 112.",
+      etiquette: "Bargaining is expected in street bazaars; maintain polite smiles.",
+      phrases: [{ en: "Hello", local: "Khamma Ghani" }, { en: "Thank you", local: "Dhanyawaad" }]
+    }
+  },
+
+  udaipur: {
+    destination: "Udaipur, Rajasthan",
+    days: 4,
+    title: "City of Lakes & White Palaces: 4 Days in Udaipur",
+    subtitle: "From Lake Pichola sunset boat cruises and grand City Palace museum to Saheliyon Ki Bari and Dharohar folk dances at Bagore Ki Haveli.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 17500,
+    currency: "INR (₹)",
+    coords: [24.5854, 73.7125], // Udaipur Center
+    nearbyAttractions: [
+      { name: "Udaipur City Palace & Royal Museum", category: "Heritage", coords: [24.5764, 73.6835], ticketCost: "₹300", costValue: 300, budgetTier: "moderate", desc: "Rajasthan's largest palace complex built over 400 years with marble arches, mirror work, and lake panoramas.", tip: "Hire an audio guide for the King's personal gallery." },
+      { name: "Lake Pichola Sunset Boat Cruise to Jag Mandir", category: "Scenic", coords: [24.5720, 73.6800], ticketCost: "₹450", costValue: 450, budgetTier: "moderate", desc: "Scenic boat cruise gliding past Taj Lake Palace to the island palace garden of Jag Mandir.", tip: "Book the 5:00 PM sunset slot for glowing lake vistas." },
+      { name: "Saheliyon Ki Bari (Garden of the Maidens)", category: "Nature", coords: [24.6015, 73.6872], ticketCost: "₹20", costValue: 20, budgetTier: "budget", desc: "Lush courtyards with marble elephant fountains, lotus pools, and rose gardens designed for royal princesses.", tip: "Fountains operate entirely on natural water pressure without pumps." },
+      { name: "Bagore Ki Haveli Dharohar Folk Dance", category: "Culture", coords: [24.5794, 73.6811], ticketCost: "₹100", costValue: 100, budgetTier: "budget", desc: "Historic 18th-century waterfront mansion hosting evening Chari, Terah Taali, and Bhavai puppet and pot-balancing dances.", tip: "Queue by 6:00 PM as seats fill quickly for the 7:00 PM performance." },
+      { name: "Sajjangarh Monsoon Palace", category: "Fort", coords: [24.5898, 73.6375], ticketCost: "₹60", costValue: 60, budgetTier: "budget", desc: "White hilltop palace atop Bansdara mountain overlooking lakes and Aravalli mountain sunsets.", tip: "Take forest department vans from the base gate." },
+      { name: "Jagdish Ancient Temple", category: "Temple", coords: [24.5786, 73.6838], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Intricately carved 1651 stone temple with sculpted elephant friezes dedicated to Lord Vishnu.", tip: "Attend the morning 9:00 AM aarti with cymbals and bells." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: City Palace & Lake Pichola Sunset Cruise",
+        overnight: "Overnight in Udaipur Heritage Hotel",
+        transitSummary: "Lakeside circuit ~ 12 km",
+        stops: [
+          { time: "09:30 AM", name: "Udaipur City Palace & Royal Museum", category: "Heritage", cost: "₹300", costValue: 300, duration: "3h", desc: "Wander through the Peacock Courtyard, Manak Mahal, and Krishna Vilas.", tip: "Wear comfortable shoes as the palace has several stone steps.", coords: [24.5764, 73.6835] },
+          { time: "01:00 PM", name: "Lakeside Haveli Lunch (Ambrai / Tribute)", category: "Dining", cost: "₹650", costValue: 650, duration: "1.5h", desc: "Savor authentic Laal Maas and freshly baked butter naan overlooking Lake Pichola.", tip: "Reserve a lakefront table in advance.", coords: [24.5790, 73.6780] },
+          { time: "03:30 PM", name: "Jagdish Ancient Temple", category: "Temple", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Admire centuries-old Indo-Aryan stone carvings and the black stone Vishnu idol.", tip: "Leave shoes with the temple shoe caretaker.", coords: [24.5786, 73.6838] },
+          { time: "05:00 PM", name: "Lake Pichola Sunset Boat Cruise to Jag Mandir", category: "Scenic", cost: "₹450", costValue: 450, duration: "2h", desc: "Glide across golden waters past Lake Palace to Jag Mandir island palace.", tip: "Sit on the open upper deck for best photos.", coords: [24.5720, 73.6800] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Royal Gardens, Monsoon Palace & Cultural Dance",
+        overnight: "Overnight in Udaipur Hotel",
+        transitSummary: "Udaipur west loop ~ 22 km",
+        stops: [
+          { time: "09:30 AM", name: "Saheliyon Ki Bari (Garden of the Maidens)", category: "Nature", cost: "₹20", costValue: 20, duration: "2h", desc: "Relax amidst marble pavilions, rain fountains, and lotus ponds.", tip: "Listen to the natural rain effect generated by the marble fountains.", coords: [24.6015, 73.6872] },
+          { time: "12:30 PM", name: "Fateh Sagar Lake Promenade & Lunch", category: "Dining", cost: "₹450", costValue: 450, duration: "1.5h", desc: "Enjoy famous cold coffee and regional street snacks at Bombay Market.", tip: "Sukhadia Circle street food is nearby.", coords: [24.6000, 73.6750] },
+          { time: "03:30 PM", name: "Sajjangarh Monsoon Palace", category: "Fort", cost: "₹60", costValue: 60, duration: "2.5h", desc: "Ascend to the hilltop castle for dramatic 360-degree sunset panoramas.", tip: "Watch the sun melt into the Aravalli hills.", coords: [24.5898, 73.6375] },
+          { time: "06:45 PM", name: "Bagore Ki Haveli Dharohar Folk Dance", category: "Culture", cost: "₹100", costValue: 100, duration: "2h", desc: "Witness world-famous Rajasthani Bhavai pot-balancing and puppet masters.", tip: "Cameras require a nominal ₹100 photography permit at the desk.", coords: [24.5794, 73.6811] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Vintage Car Museum & Karni Mata Ropeway",
+        overnight: "Overnight in Udaipur Hotel",
+        transitSummary: "Central Udaipur ~ 16 km",
+        stops: [
+          { time: "10:00 AM", name: "Royal Vintage & Classic Car Collection", category: "Heritage", cost: "₹250", costValue: 250, duration: "2h", desc: "See the Maharanas' rare Rolls-Royces, Cadillacs, and 1934 Rolls-Royce Phantom.", tip: "Several cars were featured in James Bond's Octopussy.", coords: [24.5750, 73.6930] },
+          { time: "01:00 PM", name: "Rajasthani Thali Lunch at Natraj", category: "Dining", cost: "₹350", costValue: 350, duration: "1.5h", desc: "Famous unlimited traditional Gujarati and Rajasthani vegetarian thali.", tip: "Come hungry; the service is famously fast and generous.", coords: [24.5850, 73.6980] },
+          { time: "04:00 PM", name: "Mansapurna Karni Mata Ropeway", category: "Scenic", cost: "₹110", costValue: 110, duration: "2.5h", desc: "Cable car ride to Machhla Magra hilltop overlooking both Pichola and Fateh Sagar lakes.", tip: "Spectacular dusk view as city bridges light up.", coords: [24.5700, 73.6850] }
+        ]
+      },
+      {
+        day: 4,
+        title: "Day 4: Shilpgram Artisan Village & Departure",
+        overnight: "Departure Transfer",
+        transitSummary: "Udaipur to Airport ~ 24 km",
+        stops: [
+          { time: "09:30 AM", name: "Shilpgram Rural Arts & Crafts Complex", category: "Shopping", cost: "₹50", costValue: 50, duration: "2.5h", desc: "Living ethnographic museum showcasing traditional tribal mud houses and live potters.", tip: "Direct purchase from rural weavers with zero middlemen.", coords: [24.6150, 73.6600] },
+          { time: "01:00 PM", name: "Old Bazaars (Hathi Pol) for Miniature Paintings", category: "Shopping", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Browse authentic Pichwai temple art and camel bone miniature paintings.", tip: "Inspect fine brushwork made using natural stone colors.", coords: [24.5850, 73.6870] },
+          { time: "03:30 PM", name: "Udaipur Maharana Pratap Airport Drop-off", category: "Transit", cost: "Free Entry", costValue: 0, duration: "1h", desc: "Smooth departure transfer concluding your romantic lake vacation.", tip: "Carry souvenirs securely packed in hand luggage.", coords: [24.6170, 73.8960] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 7000, food: 4500, activities: 2800, transport: 2200, shopping: 1000 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "Cash for ferry & street bazaars", "Sun protection"],
+      clothing: ["Light cotton clothing", "Smart evening wear for rooftop lake dinners", "Walking sandals"],
+      gear: ["Power bank", "Camera for sunset reflections", "Light shawl for evening breeze"],
+      health: ["Hand wipes", "Hydration tablets", "Basic personal medication"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). UPI accepted widely in Udaipur.",
+      transit: "Auto-rickshaws for narrow old alleys; pre-booked private cab for airport and outer lakes.",
+      tipping: "7-10% at restaurants; ₹200/day for private driver.",
+      emergency: "Tourist Assistance: 0294-2411535 | Police: 112.",
+      etiquette: "Modest attire inside Jagdish temple. Confirm boat timings before heading to the jetty.",
+      phrases: [{ en: "Hello", local: "Namaste" }, { en: "Thank you", local: "Dhanyawaad" }]
+    }
+  },
+
+  ooty: {
+    destination: "Ooty (Udhagamandalam), Tamil Nadu",
+    days: 3,
+    title: "Queen of the Nilgiris: 3 Days in Ooty & Coonoor",
+    subtitle: "From heritage UNESCO Nilgiri toy train and fragrant botanical gardens to Doddabetta Peak, Pykara falls, and lush tea estates.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 14500,
+    currency: "INR (₹)",
+    coords: [11.4102, 76.6950], // Ooty Town
+    nearbyAttractions: [
+      { name: "Government Botanical Gardens & Italian Garden", category: "Nature", coords: [11.4180, 76.7110], ticketCost: "₹40", costValue: 40, budgetTier: "budget", desc: "22 hectares of exotic flora, lush terraced lawns, and a 20-million-year-old fossilized tree trunk.", tip: "Visit morning before tourist buses arrive." },
+      { name: "Ooty Lake & Boat House", category: "Scenic", coords: [11.4050, 76.6850], ticketCost: "₹120", costValue: 120, budgetTier: "moderate", desc: "Picturesque man-made lake with motor, rowing, and pedal boats framed by eucalyptus trees.", tip: "Rent a 4-seater paddle boat for tranquil lake exploration." },
+      { name: "Doddabetta Peak & Telescope House", category: "Scenic", coords: [11.4010, 76.7360], ticketCost: "₹10", costValue: 10, budgetTier: "budget", desc: "Highest peak in the Nilgiri Mountains at 2,637 meters offering sweeping Chamundi hill views.", tip: "Clear mornings offer views reaching down into Coimbatore plains." },
+      { name: "Nilgiri Mountain Railway Heritage Toy Train", category: "Heritage", coords: [11.4080, 76.7020], ticketCost: "₹150", costValue: 150, budgetTier: "moderate", desc: "UNESCO steam railway cutting through dark tunnels, tea valleys, and viaducts down to Coonoor.", tip: "Book first-class window seats 60 days ahead on IRCTC." },
+      { name: "Pykara Lake & Cascading Waterfalls", category: "Nature", coords: [11.4500, 76.6000], ticketCost: "₹175", costValue: 175, budgetTier: "moderate", desc: "Sacred Toda river cascading into tiered waterfalls surrounded by pine forests.", tip: "Speedboat ride on Pykara dam lake is thrilling." },
+      { name: "Highfield Tea Factory & Chocolate Museum", category: "Culture", coords: [11.3600, 76.7900], ticketCost: "₹20", costValue: 20, budgetTier: "budget", desc: "Watch fresh tea leaves undergo CTC crushing and sample hot green tea and homemade fudge.", tip: "Try the eucalyptus oil and cardamom tea packs." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Botanical Gardens, Doddabetta & Tea Factory",
+        overnight: "Overnight in Ooty Tea Resort",
+        transitSummary: "Ooty central circuit ~ 18 km",
+        stops: [
+          { time: "09:30 AM", name: "Government Botanical Gardens", category: "Nature", cost: "₹40", costValue: 40, duration: "2.5h", desc: "Explore the glass house, fern house, and rare cork trees planted in 1848.", tip: "Wear comfortable walking shoes.", coords: [11.4180, 76.7110] },
+          { time: "12:30 PM", name: "South Indian Thali Lunch", category: "Dining", cost: "₹350", costValue: 350, duration: "1.5h", desc: "Authentic hot rice, sambar, rasam, kootu, and crispy appalam on banana leaf.", tip: "Junior Kuppanna or Shinkows Chinese.", coords: [11.4120, 76.7000] },
+          { time: "02:30 PM", name: "Doddabetta Peak & Telescope House", category: "Scenic", cost: "₹10", costValue: 10, duration: "2h", desc: "Look across the Nilgiri blue mountains through the summit telescope.", tip: "Carry warm woolens as Doddabetta is significantly cooler than town.", coords: [11.4010, 76.7360] },
+          { time: "05:00 PM", name: "Highfield Tea Factory & Chocolate Museum", category: "Culture", cost: "₹20", costValue: 20, duration: "2h", desc: "Sip freshly steeped cardamom tea and buy handmade hazelnut chocolates.", tip: "Factory tour lasts 25 mins.", coords: [11.3600, 76.7900] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: UNESCO Toy Train Joyride to Coonoor & Sim's Park",
+        overnight: "Overnight in Ooty Hotel",
+        transitSummary: "Ooty to Coonoor ~ 20 km (Toy Train)",
+        stops: [
+          { time: "09:00 AM", name: "Nilgiri Mountain Railway Heritage Toy Train", category: "Heritage", cost: "₹150", costValue: 150, duration: "1.5h", desc: "Chug along the scenic rack-and-pinion railway tracks with mountain gorge vistas.", tip: "Board at Ooty railway station; train leaves at 09:15 AM.", coords: [11.4080, 76.7020] },
+          { time: "11:30 AM", name: "Sim's Park & Rose Garden (Coonoor)", category: "Nature", coords: [11.3530, 76.7959], cost: "₹30", costValue: 30, duration: "2h", desc: "Natural botanical garden featuring rare temperate trees, magnolias, and pines.", tip: "Gentle walking paths with zero steep climbs.", coords: [11.3530, 76.7959] },
+          { time: "02:00 PM", name: "Dolphin's Nose Viewpoint & Catherine Falls", category: "Scenic", coords: [11.3400, 76.8300], cost: "Free Entry", costValue: 0, duration: "2h", desc: "Dramatic rock promontory looking into deep St. Catherine waterfall cascades.", tip: "Tea stalls along the route sell hot Nilgiri chai.", coords: [11.3400, 76.8300] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Pykara Waterfalls, Lake Boating & Departure",
+        overnight: "Departure Transfer to Coimbatore / Bangalore",
+        transitSummary: "Pykara loop ~ 42 km",
+        stops: [
+          { time: "09:30 AM", name: "Pykara Lake & Cascading Waterfalls", category: "Nature", cost: "₹175", costValue: 175, duration: "3h", desc: "Experience pure mountain serenity with pine forest walks and speedboat cruise.", tip: "Battery buggies available from the road to the falls.", coords: [11.4500, 76.6000] },
+          { time: "01:30 PM", name: "Ooty Lake & Boat House Promenade", category: "Scenic", cost: "₹120", costValue: 120, duration: "2h", desc: "Leisure boat ride followed by shopping for Nilgiri honey and essential oils.", tip: "Look for certified Nilgiri eucalyptus oil.", coords: [11.4050, 76.6850] },
+          { time: "04:00 PM", name: "Coimbatore Airport / Mettupalayam Drop-off", category: "Transit", cost: "Free Entry", costValue: 0, duration: "2.5h", desc: "Descend the scenic Kallar mountain hairpin bends to Coimbatore.", tip: "Driver will pause briefly at tea stall viewpoints.", coords: [11.0300, 77.0400] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 5800, food: 3800, activities: 2200, transport: 2200, shopping: 500 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "Cash for state park entry tickets", "Light umbrella"],
+      clothing: ["Light sweaters & cardigans", "Full trousers", "Walking sneakers"],
+      gear: ["Power bank", "Binoculars for Doddabetta telescope view", "Camera"],
+      health: ["Motion sickness medication for winding ghats", "Moisturizer", "Band-aids"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). UPI accepted in most shops; keep cash for toll gates and boat counters.",
+      transit: "Private cab is the safest and most convenient option across mountain roads.",
+      tipping: "7-10% at cafes; ₹200-₹300/day for private driver.",
+      emergency: "Ooty Police: 0423-2444010 | Emergency: 112.",
+      etiquette: "Protect the fragile Nilgiri ecosystem: do not discard plastic bottles along ghats.",
+      phrases: [{ en: "Hello", local: "Vanakkam" }, { en: "Thank you", local: "Nandri" }]
+    }
+  },
+
+  rishikesh: {
+    destination: "Rishikesh, Uttarakhand",
+    days: 3,
+    title: "Yoga Capital & Himalayan Ganges: 3 Days in Rishikesh",
+    subtitle: "From evening Triveni Ghat Ganga Aarti and iconic suspension bridges to The Beatles Ashram, Neer Garh falls, and white water rafting.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 12500,
+    currency: "INR (₹)",
+    coords: [30.0869, 78.2676], // Rishikesh Ganga Center
+    nearbyAttractions: [
+      { name: "Triveni Ghat Evening Maha Ganga Aarti", category: "Spiritual", coords: [30.1040, 78.2980], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Sacred confluence where oil lamps are floated into the holy river amidst Vedic chants and brass lamps.", tip: "Arrive by 5:30 PM to secure prime riverside steps." },
+      { name: "Ram Jhula & Swarg Ashram Suspension Bridge", category: "Heritage", coords: [30.1235, 78.3180], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Historic 450-foot iron suspension footbridge connecting ashrams across turquoise mountain waters.", tip: "Watch out for mischievous monkeys on the bridge railings." },
+      { name: "The Beatles Ashram (Chaurasi Kutia)", category: "Culture", coords: [30.1170, 78.3240], ticketCost: "₹150", costValue: 150, budgetTier: "moderate", desc: "Fabled meditation retreat where the Beatles stayed in 1968; filled with pop-art graffiti murals.", tip: "Walk inside the stone meditation domes." },
+      { name: "Shivpuri White Water River Rafting Hub", category: "Adventure", coords: [30.1370, 78.3880], ticketCost: "₹650", costValue: 650, budgetTier: "premium", desc: "16 km Grade III/IV river rafting down Marine Drive, Roller Coaster, and Golf Course rapids.", tip: "Wear quick-dry clothes and water sandals; life jackets provided." },
+      { name: "Neer Garh Cascading Waterfall & Nature Trail", category: "Nature", coords: [30.1420, 78.3360], ticketCost: "₹30", costValue: 30, budgetTier: "budget", desc: "Pristine multi-tier mountain waterfall with natural swimming rock pools.", tip: "Short 20-minute uphill hike; wear shoes with good wet grip." },
+      { name: "Parmarth Niketan Ashram & Shiva Statue", category: "Spiritual", coords: [30.1190, 78.3150], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Renowned spiritual center featuring a giant seated Lord Shiva statue overlooking the Ganga.", tip: "Join the sunset aarti with devotional singing." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Ram Jhula, Ashrams & Evening Ganga Aarti",
+        overnight: "Overnight in Rishikesh Riverside Resort",
+        transitSummary: "Local Rishikesh ~ 14 km",
+        stops: [
+          { time: "09:30 AM", name: "Ram Jhula & Swarg Ashram Suspension Bridge", category: "Heritage", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Cross the swaying suspension bridge with majestic river views and spiritual bookstores.", tip: "Do not carry plastic bags openly due to monkeys.", coords: [30.1235, 78.3180] },
+          { time: "12:30 PM", name: "Pure Vegetarian Ashram Bistro Lunch", category: "Dining", cost: "₹350", costValue: 350, duration: "1.5h", desc: "Enjoy organic Ayurvedic thali, wood-fired sourdough pizza, and ginger-lemon tea.", tip: "Little Buddha Cafe overlooking the river.", coords: [30.1260, 78.3220] },
+          { time: "03:00 PM", name: "The Beatles Ashram (Chaurasi Kutia)", category: "Culture", cost: "₹150", costValue: 150, duration: "2.5h", desc: "Stroll through the forested ruins, Beatles Cathedral gallery, and meditation igloos.", tip: "Very peaceful and photogenic.", coords: [30.1170, 78.3240] },
+          { time: "06:00 PM", name: "Triveni Ghat Evening Maha Ganga Aarti", category: "Spiritual", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Participate in the mesmerizing evening prayer ceremony with multi-tiered brass oil lamps.", tip: "Buy a biodegradable leaf lamp with marigolds to float on the river.", coords: [30.1040, 78.2980] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: White Water Rafting & Neer Garh Waterfalls",
+        overnight: "Overnight in Rishikesh Resort",
+        transitSummary: "Shivpuri to Tapovan ~ 28 km",
+        stops: [
+          { time: "09:00 AM", name: "Shivpuri White Water River Rafting Hub", category: "Adventure", cost: "₹650", costValue: 650, duration: "3.5h", desc: "Conquer rapids including 'Return to Sender' and 'Club House' with cliff jumping.", tip: "Leave phones, wallets, and keys in the transport dry bag.", coords: [30.1370, 78.3880] },
+          { time: "01:30 PM", name: "Tapovan Mountain Viewpoint Lunch", category: "Dining", cost: "₹450", costValue: 450, duration: "1.5h", desc: "Relax with hot lemon-honey ginger tea, fresh hummus falafel, and hot thukpa.", tip: "German Bakery or Beatles Cafe.", coords: [30.1300, 78.3250] },
+          { time: "03:30 PM", name: "Neer Garh Cascading Waterfall & Nature Trail", category: "Nature", cost: "₹30", costValue: 30, duration: "2.5h", desc: "Hike up the forest trail and dip your feet in the crystal clear turquoise pool.", tip: "Carry drinking water and a small towel.", coords: [30.1420, 78.3360] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Yoga Morning, Haridwar Heritage & Departure",
+        overnight: "Departure Transfer to Dehradun / Haridwar",
+        transitSummary: "Rishikesh to Haridwar / Dehradun ~ 35 km",
+        stops: [
+          { time: "07:30 AM", name: "Sunrise Yoga & Meditation Session on Ganga Beach", category: "Spiritual", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Morning pranayama and gentle asanas with clean Himalayan river breeze.", tip: "Wear comfortable stretchable clothing.", coords: [30.1200, 78.3160] },
+          { time: "11:00 AM", name: "Har Ki Pauri & Haridwar Heritage Ghats", category: "Heritage", coords: [29.9457, 78.1642], cost: "Free Entry", costValue: 0, duration: "2h", desc: "Sacred footprint ghat of Lord Vishnu where the Ganga enters the Indo-Gangetic plains.", tip: "Taste the hot Mohan Ji Puri Wale kachoris nearby.", coords: [29.9457, 78.1642] },
+          { time: "03:00 PM", name: "Dehradun Airport (Jolly Grant) / Haridwar Railway Drop", category: "Transit", cost: "Free Entry", costValue: 0, duration: "1h", desc: "Comfortable departure transfer concluding your rejuvenating spiritual getaway.", tip: "Airport is just 30 mins drive from Rishikesh.", coords: [30.1897, 78.1803] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 5200, food: 3200, activities: 2100, transport: 1500, shopping: 500 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "Water shoes or strap sandals for rafting", "Quick dry towel"],
+      clothing: ["Breathable cottons", "Modest yoga attire", "Light sweater for evening river breeze"],
+      gear: ["Waterproof phone pouch", "Power bank", "Reusable water bottle"],
+      health: ["Mosquito repellant", "Hand sanitizer", "Basic antiseptic cream"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). UPI accepted in all Tapovan cafes and shops.",
+      transit: "Auto rickshaws (Vikram) between ghats; private cab for Shivpuri rafting and airport.",
+      tipping: "7-10% in cafes; ₹100 for rafting guide.",
+      emergency: "Rishikesh Police: 0135-2430012 | Emergency: 112.",
+      etiquette: "Rishikesh is an alcohol-free and strictly vegetarian holy town. Dress modestly along ghats.",
+      phrases: [{ en: "Greetings", local: "Radhe Radhe" }, { en: "Thank you", local: "Dhanyawaad" }]
+    }
+  },
+
+  varanasi: {
+    destination: "Varanasi (Kashi / Banaras), Uttar Pradesh",
+    days: 3,
+    title: "Eternal City of Lights: 3 Days in Kashi & Sarnath",
+    subtitle: "From sunrise boat rides across 84 historic ghats and Kashi Vishwanath Golden Temple to Dashashwamedh evening aarti and Buddhist stupas in Sarnath.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 13500,
+    currency: "INR (₹)",
+    coords: [25.3176, 82.9739], // Varanasi Ghats
+    nearbyAttractions: [
+      { name: "Dashashwamedh Ghat Grand Evening Ganga Aarti", category: "Spiritual", coords: [25.3075, 83.0104], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "World-renowned ritual of choreographed brass oil lamps, conch shells, and incense by seven priests.", tip: "Hire an anchored wooden boat on the river for prime unobstructed viewing." },
+      { name: "Kashi Vishwanath Golden Temple", category: "Temple", coords: [25.3109, 83.0107], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "One of the twelve sacred Jyotirlingas of Lord Shiva topped with a 1-ton pure gold dome.", tip: "Early morning 6:00 AM darshan avoids long temple corridor queues." },
+      { name: "Sunrise Boat Ride across 84 Historic Ghats", category: "Scenic", coords: [25.2950, 83.0050], ticketCost: "₹250", costValue: 250, budgetTier: "moderate", desc: "Rowing past Assi Ghat, Harishchandra Ghat, and Manikarnika observing sunrise morning rituals.", tip: "Depart at 05:45 AM to witness the sun rise over the eastern sandy riverbank." },
+      { name: "Sarnath Deer Park & Dhamek Stupa", category: "Heritage", coords: [25.3811, 83.0214], ticketCost: "₹25", costValue: 25, budgetTier: "budget", desc: "Cradle of Buddhism where Lord Buddha delivered his first sermon after attaining enlightenment.", tip: "Visit the Sarnath Archaeological Museum housing the original Ashoka Lion Capital." },
+      { name: "Banarasi Silk Weaving Colony & Looms", category: "Shopping", coords: [25.3250, 83.0020], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Watch master weavers operate handlooms creating intricate gold and silver zari silk sarees.", tip: "Look for certified silk mark hologram labels." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Kashi Vishwanath Darshan & Grand Evening Aarti",
+        overnight: "Overnight in Varanasi Heritage Hotel",
+        transitSummary: "Ghats corridor ~ 8 km",
+        stops: [
+          { time: "07:30 AM", name: "Kashi Vishwanath Golden Temple", category: "Temple", cost: "Free Entry", costValue: 0, duration: "2.5h", desc: "Sacred darshan at the magnificent newly renovated Kashi Vishwanath Corridor connecting directly to the Ganga.", tip: "No electronic items, leather belts, or wallets allowed inside sanctum.", coords: [25.3109, 83.0107] },
+          { time: "11:30 AM", name: "Banaras Heritage Street Food Brunch", category: "Dining", cost: "₹250", costValue: 250, duration: "1.5h", desc: "Savor steaming hot Kachori-Jalebi at Ram Bhandar and thick Malaiyo foam sweet.", tip: "Malaiyo is a winter saffron dew delicacy.", coords: [25.3100, 83.0080] },
+          { time: "02:30 PM", name: "Banarasi Silk Weaving Colony & Looms", category: "Shopping", cost: "Free Entry", costValue: 0, duration: "2.5h", desc: "Witness real gold and silver threads woven on jacquard pit looms.", tip: "Buy directly from master weaver cooperatives.", coords: [25.3250, 83.0020] },
+          { time: "06:00 PM", name: "Dashashwamedh Ghat Grand Evening Ganga Aarti", category: "Spiritual", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Witness the magnificent spectacle of synchronized multi-tiered brass oil lamps.", tip: "Take a wooden rowboat on the river for tranquil viewing.", coords: [25.3075, 83.0104] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Sunrise 84-Ghat Boat Cruise & Sarnath Excursion",
+        overnight: "Overnight in Varanasi Hotel",
+        transitSummary: "Varanasi to Sarnath ~ 22 km",
+        stops: [
+          { time: "05:45 AM", name: "Sunrise Boat Ride across 84 Historic Ghats", category: "Scenic", cost: "₹250", costValue: 250, duration: "2.5h", desc: "Glide along the sacred river from Assi Ghat to Manikarnika in soft morning dawn.", tip: "Dress warmly for early morning breeze.", coords: [25.2950, 83.0050] },
+          { time: "09:30 AM", name: "Subah-e-Banaras Morning Ragas at Assi Ghat", category: "Culture", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Experience live classical morning flute recitals, Vedic chants, and gentle yoga on the ghat.", tip: "Sip hot lemon tea served in terracotta clay kulhads.", coords: [25.2890, 83.0060] },
+          { time: "12:30 PM", name: "Sarnath Deer Park & Dhamek Stupa", category: "Heritage", cost: "₹25", costValue: 25, duration: "3h", desc: "Explore the 128-foot cylindrical stone stupa marking the birthplace of the Buddhist Sangha.", tip: "Visit the museum closed on Fridays.", coords: [25.3811, 83.0214] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Sankat Mochan Temple & Departure Transfer",
+        overnight: "Departure Transfer",
+        transitSummary: "Varanasi to Airport ~ 26 km",
+        stops: [
+          { time: "08:30 AM", name: "Sankat Mochan Hanuman Ancient Temple", category: "Temple", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Revered temple founded by Saint Tulsidas, author of the Ramcharitmanas.", tip: "Try the famous Besan Ladoo prasad.", coords: [25.2810, 82.9980] },
+          { time: "11:00 AM", name: "Banaras Hindu University (BHU) & New Vishwanath Temple", category: "Heritage", coords: [25.2677, 82.9913], cost: "Free Entry", costValue: 0, duration: "2h", desc: "Visit the serene marble Vishwanath temple inside Asia's largest residential university campus.", tip: "Clean, tree-lined quiet campus roads.", coords: [25.2677, 82.9913] },
+          { time: "02:30 PM", name: "Lal Bahadur Shastri International Airport Transfer", category: "Transit", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Drop-off for outbound flight concluding your unforgettable spiritual voyage.", tip: "Carry authentic Banarasi paan packed in betel leaf to share.", coords: [25.4520, 82.8590] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 5500, food: 3500, activities: 2000, transport: 1800, shopping: 700 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "Cash for temple offerings & boats", "Modest Indian ethnic clothing"],
+      clothing: ["Cotton kurtas / modest pants", "Slip-on sandals (shoes removed frequently)", "Shawl for morning boat ride"],
+      gear: ["Power bank", "Camera", "Small shoulder pouch without leather"],
+      health: ["Hand sanitizer", "Basic stomach relief pills", "Mosquito repellent"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). UPI accepted almost everywhere; keep cash for boats and street kulhads.",
+      transit: "Cycle e-rickshaws for narrow lanes; pre-booked private cab for airport and Sarnath.",
+      tipping: "7-10% in restaurants; ₹100-₹200 for boatman.",
+      emergency: "Tourist Police Varanasi: 0542-2508008 | Emergency: 112.",
+      etiquette: "Strictly avoid photography at Manikarnika burning ghat out of respect for families.",
+      phrases: [{ en: "Greetings", local: "Har Har Mahadev" }, { en: "Thank you", local: "Dhanyawaad" }]
+    }
+  },
+
+  ladakh: {
+    destination: "Leh & Ladakh, Jammu & Kashmir / Ladakh",
+    days: 6,
+    title: "Land of High Passes: 6 Days in Leh, Nubra & Pangong Tso",
+    subtitle: "From ancient Tibetan monasteries and Khardung La pass to double-humped camel rides in Hunder sand dunes and indigo blue Pangong Tso.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 28500,
+    currency: "INR (₹)",
+    coords: [34.1526, 77.5771], // Leh Center
+    nearbyAttractions: [
+      { name: "Leh Palace & Shanti Stupa", category: "Heritage", coords: [34.1642, 77.5847], ticketCost: "₹25", costValue: 25, budgetTier: "budget", desc: "9-story royal fortress built in 1600 overlooking the Indus valley, and white Buddhist peace pagoda.", tip: "Visit Shanti Stupa at sunset when prayer bells ring." },
+      { name: "Magnetic Hill & Indus-Zanskar Sangam", category: "Scenic", coords: [34.1800, 77.2000], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Gravity hill illusion where vehicles appear to roll uphill, and confluence of Indus and muddy Zanskar.", tip: "Stop on the white box marked on the highway to experience the gravity pull." },
+      { name: "Khardung La High Mountain Pass (5,359 m)", category: "Scenic", coords: [34.2790, 77.6040], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "One of the highest motorable roads in the world connecting Leh to Nubra Valley.", tip: "Do not spend more than 15-20 minutes at the pass due to thin oxygen." },
+      { name: "Nubra Valley & Hunder Sand Dunes", category: "Adventure", coords: [34.5800, 77.4600], ticketCost: "₹350", costValue: 350, budgetTier: "moderate", desc: "High-altitude cold desert dunes with rare two-humped Bactrian camel safaris.", tip: "Watch sunset over the dunes as the snow peaks turn copper gold." },
+      { name: "Pangong Tso Trans-Himalayan Salt Lake", category: "Nature", coords: [33.7595, 78.6674], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Endorheic salt lake at 4,225 m elevation famous for shifting from turquoise to azure blue.", tip: "Temperature drops below freezing at night; dress in heavy down jackets." },
+      { name: "Hall of Fame Military Museum", category: "Heritage", coords: [34.1400, 77.5500], ticketCost: "₹100", costValue: 100, budgetTier: "budget", desc: "Indian Army museum honoring brave soldiers of Siachen and Kargil conflicts.", tip: "Watch the poignant 15-minute documentary film inside." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Arrival & Mandatory Acclimatization in Leh",
+        overnight: "Overnight in Leh Hotel",
+        transitSummary: "Airport to Leh ~ 5 km",
+        stops: [
+          { time: "10:00 AM", name: "Leh Hotel Check-in & Rest", category: "Relaxation", cost: "Free Entry", costValue: 0, duration: "4h", desc: "Complete physical rest is medically mandatory on Day 1 to adapt to 3,500m elevation.", tip: "Drink 4-5 liters of water; avoid strenuous walking.", coords: [34.1526, 77.5771] },
+          { time: "04:30 PM", name: "Leh Palace & Shanti Stupa", category: "Heritage", cost: "₹25", costValue: 25, duration: "2h", desc: "Gentle evening stroll around the peace stupa with bird's-eye views of Leh town.", tip: "Move at a slow, steady pace without rushing.", coords: [34.1642, 77.5847] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Sham Valley, Magnetic Hill & Sangam",
+        overnight: "Overnight in Leh Hotel",
+        transitSummary: "Leh to Sangam loop ~ 70 km",
+        stops: [
+          { time: "09:30 AM", name: "Magnetic Hill & Indus-Zanskar Sangam", category: "Scenic", cost: "Free Entry", costValue: 0, duration: "3h", desc: "Observe the two-tone river confluence and test the magnetic phenomenon.", tip: "Great photography spot from the cliff overlook.", coords: [34.1800, 77.2000] },
+          { time: "01:30 PM", name: "Alchi Monastery & Apricot Garden Lunch", category: "Dining", cost: "₹450", costValue: 450, duration: "1.5h", desc: "Taste local Tibetan momos, Thukpa, and freshly plucked Ladakhi apricots.", tip: "Try the warm butter tea (Gur Gur chai).", coords: [34.2200, 77.1700] },
+          { time: "03:30 PM", name: "Hall of Fame Military Museum", category: "Heritage", cost: "₹100", costValue: 100, duration: "2h", desc: "Learn about the extreme high-altitude warfare operations on the Siachen glacier.", tip: "Laser show in the evening.", coords: [34.1400, 77.5500] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Khardung La Pass (5,359 m) & Nubra Valley",
+        overnight: "Overnight in Nubra Valley Camp / Hotel",
+        transitSummary: "Leh to Nubra via Khardung La ~ 125 km (5h)",
+        stops: [
+          { time: "08:30 AM", name: "Khardung La High Mountain Pass (5,359 m)", category: "Scenic", cost: "Free Entry", costValue: 0, duration: "1h", desc: "Reach the world-famous pass surrounded by prayer flags and glacier peaks.", tip: "Keep warm cap and gloves on; oxygen levels are 50% of sea level.", coords: [34.2790, 77.6040] },
+          { time: "01:30 PM", name: "Diskit Monastery & Giant Maitreya Buddha", category: "Spiritual", cost: "₹30", costValue: 30, duration: "2h", desc: "32-meter giant golden statue of Buddha facing down the Shyok river valley.", tip: "Panoramic overlook of the desert valley.", coords: [34.5400, 77.5300] },
+          { time: "04:30 PM", name: "Nubra Valley & Hunder Sand Dunes", category: "Adventure", cost: "₹350", costValue: 350, duration: "2.5h", desc: "Ride two-humped Bactrian camels amidst silver sand dunes and snow ridges.", tip: "Camel rides last 15-30 minutes.", coords: [34.5800, 77.4600] }
+        ]
+      },
+      {
+        day: 4,
+        title: "Day 4: Shyok River Route to Pangong Tso Lake",
+        overnight: "Overnight in Pangong Tso Cottages / Camp",
+        transitSummary: "Nubra to Pangong via Shyok ~ 160 km (6h)",
+        stops: [
+          { time: "08:30 AM", name: "Shyok River Gorge Scenic Drive", category: "Scenic", cost: "Free Entry", costValue: 0, duration: "4h", desc: "Drive along the wild roaring Shyok river carved through sheer granite cliffs.", tip: "Road conditions vary; experienced 4x4 drivers are vital.", coords: [34.3500, 78.1000] },
+          { time: "02:30 PM", name: "Pangong Tso Trans-Himalayan Salt Lake", category: "Nature", cost: "Free Entry", costValue: 0, duration: "3h", desc: "Arrive at the world's most spectacular high-altitude blue lake extending into Tibet.", tip: "Photograph with the iconic 3 Idiots yellow scooter at the shore.", coords: [33.7595, 78.6674] }
+        ]
+      },
+      {
+        day: 5,
+        title: "Day 5: Pangong Sunrise & Chang La Pass to Leh",
+        overnight: "Overnight in Leh Hotel",
+        transitSummary: "Pangong to Leh via Chang La ~ 150 km (5h)",
+        stops: [
+          { time: "06:00 AM", name: "Pangong Tso Sunrise Phenomenon", category: "Nature", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Watch the crystal waters transform from black to jade green to deep violet.", tip: "Extremely cold morning; wear windproof thermal parka.", coords: [33.7595, 78.6674] },
+          { time: "11:00 AM", name: "Chang La High Mountain Pass (5,360 m)", category: "Scenic", cost: "Free Entry", costValue: 0, duration: "1h", desc: "Third highest motorable mountain pass guarded by the Indian Army.", tip: "Free hot army tea served at the top temple.", coords: [34.0500, 77.9200] },
+          { time: "02:30 PM", name: "Thiksey Monastery (Mini Potala Palace)", category: "Heritage", cost: "₹50", costValue: 50, duration: "2h", desc: "12-story hilltop monastery resembling the Potala Palace of Lhasa with Maitreya shrine.", tip: "Admire the 49-foot two-story Buddha statue.", coords: [34.0580, 77.6660] }
+        ]
+      },
+      {
+        day: 6,
+        title: "Day 6: Leh Main Bazaar & Kushok Bakula Airport Drop",
+        overnight: "Departure Transfer",
+        transitSummary: "Leh town to Airport ~ 4 km",
+        stops: [
+          { time: "09:00 AM", name: "Leh Main Bazaar for Tibetan Silver & Pashmina", category: "Shopping", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Shop for turquoise jewelry, sea buckthorn berry juice, and hand-spun Ladakhi woolens.", tip: "Sea buckthorn juice is packed with natural Vitamin C.", coords: [34.1630, 77.5830] },
+          { time: "11:30 AM", name: "Leh Kushok Bakula Rimpochee Airport Drop-off", category: "Transit", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Spectacular flight taking off between snow-capped Himalayan ridges.", tip: "Choose a window seat on the left side of the aircraft for views.", coords: [34.1350, 77.5460] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 11500, food: 6500, activities: 4500, transport: 5000, shopping: 1000 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "Inner Line Permit (ILP)", "Cash (ATMs often out of cash in Nubra/Pangong)"],
+      clothing: ["Down jacket (-5°C rating)", "Thermal innerwear (2 sets)", "Fleece gloves, woolen beanie & neck gaiter"],
+      gear: ["UV sunglasses with UV400 rating", "High capacity 20,000mAh power bank", "Lip balm SPF 30 & cold cream"],
+      health: ["Diamox (acetazolamide) under doctor advice", "ORS hydration packets", "Pain relievers & throat lozenges"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). Carry at least ₹8,000-₹10,000 in cash; card terminals do not work in Nubra or Pangong.",
+      transit: "Only union taxis from Leh are permitted for internal sightseeing routes.",
+      tipping: "₹400-₹500/day for private high-altitude mountain driver.",
+      emergency: "SNM Hospital Leh: 01982-252014 | Tourist Police: 01982-252018 | Emergency: 112.",
+      etiquette: "Always walk clockwise around Buddhist stupas, gompas, and mani prayer stones.",
+      phrases: [{ en: "Greetings / Thank you", local: "Julley" }]
+    }
+  },
+
+  agra: {
+    destination: "Agra, Uttar Pradesh",
+    days: 2,
+    title: "Mughal Grandeur & Taj Mahal: 2 Days in Agra",
+    subtitle: "From sunrise at the iconic Taj Mahal and imperial ramparts of Agra Fort to Mehtab Bagh sunset and ghost city of Fatehpur Sikri.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 9500,
+    currency: "INR (₹)",
+    coords: [27.1767, 78.0081], // Agra Center
+    nearbyAttractions: [
+      { name: "Taj Mahal Sunrise Monument of Love", category: "Heritage", coords: [27.1751, 78.0421], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "UNESCO World Heritage white marble mausoleum built by Mughal Emperor Shah Jahan for Mumtaz Mahal.", tip: "Gates open 30 mins before sunrise; closed on Fridays." },
+      { name: "Agra Fort & Jahangiri Mahal", category: "Fort", coords: [27.1795, 78.0211], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "Massive 16th-century red sandstone fortress with imperial quarters, Sheesh Mahal, and river view of the Taj.", tip: "Visit Musamman Burj where Shah Jahan spent his final years gazing at the Taj." },
+      { name: "Mehtab Bagh (Moonlight Sunset Garden)", category: "Scenic", coords: [27.1800, 78.0430], ticketCost: "₹25", costValue: 25, budgetTier: "budget", desc: "Charbagh complex perfectly aligned with the Taj Mahal across the Yamuna river for sunset viewing.", tip: "Best spot for crowd-free sunset photography of the Taj's reflection." },
+      { name: "Fatehpur Sikri & Buland Darwaza", category: "Heritage", coords: [27.0945, 77.6679], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "Preserved red sandstone royal city founded by Akbar with the 54-meter-high Victory Gateway.", tip: "Hire an approved ASI guide inside the courtyard." },
+      { name: "Sadar Bazaar & Authentic Agra Petha Market", category: "Shopping", coords: [27.1600, 78.0100], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Bustling market renowned for authentic Panchhi Petha (Kesar, Angoori, Paan) and leathercraft.", tip: "Look for the original Panchhi Petha store with government registration." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Taj Mahal Sunrise, Agra Fort & Mehtab Bagh",
+        overnight: "Overnight in Agra Hotel",
+        transitSummary: "Agra central circuit ~ 16 km",
+        stops: [
+          { time: "05:45 AM", name: "Taj Mahal Sunrise Monument of Love", category: "Heritage", cost: "₹50", costValue: 50, duration: "3.5h", desc: "Marvel at the translucent white marble changing shades as the morning sun rises.", tip: "Buy tickets online via ASI portal to skip the ticket window.", coords: [27.1751, 78.0421] },
+          { time: "10:30 AM", name: "Traditional Mughlai Breakfast & Brunch", category: "Dining", cost: "₹350", costValue: 350, duration: "1.5h", desc: "Hot Bedmi Puri with spicy Aloo Sabzi and sweet Jalebi.", tip: "Deviram Sweets in Sadar.", coords: [27.1650, 78.0120] },
+          { time: "01:30 PM", name: "Agra Fort & Jahangiri Mahal", category: "Fort", cost: "₹50", costValue: 50, duration: "2.5h", desc: "Explore the Diwan-i-Khas, Khas Mahal, and palatial apartments.", tip: "Composite entrance discounts apply if visiting Taj on same day.", coords: [27.1795, 78.0211] },
+          { time: "04:30 PM", name: "Mehtab Bagh (Moonlight Sunset Garden)", category: "Scenic", cost: "₹25", costValue: 25, duration: "2h", desc: "Watch dusk settle on the rear of the Taj Mahal with golden river reflections.", tip: "Photographs from the riverbank are spectacular.", coords: [27.1800, 78.0430] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Fatehpur Sikri Imperial City & Petha Shopping",
+        overnight: "Departure Transfer",
+        transitSummary: "Agra to Fatehpur Sikri ~ 38 km (1h)",
+        stops: [
+          { time: "09:00 AM", name: "Fatehpur Sikri & Buland Darwaza", category: "Heritage", cost: "₹50", costValue: 50, duration: "3.5h", desc: "Step through the world's highest gateway into the tomb of Sufi saint Salim Chishti.", tip: "Tie a sacred red thread on the marble jali screens for good fortune.", coords: [27.0945, 77.6679] },
+          { time: "01:30 PM", name: "Mughlai Royal Dining Lunch", category: "Dining", cost: "₹500", costValue: 500, duration: "1.5h", desc: "Taste authentic Murgh Mussallam, Dal Makhani, and Garlic Naan.", tip: "Pinch of Spice on Fatehabad Road.", coords: [27.1600, 78.0400] },
+          { time: "03:30 PM", name: "Sadar Bazaar & Authentic Agra Petha Market", category: "Shopping", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Sample crystal translucent pumpkin sweets in mango, chocolate, and kesar flavours.", tip: "Petha stays fresh for 10-15 days.", coords: [27.1600, 78.0100] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 3800, food: 2500, activities: 1200, transport: 1500, shopping: 500 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "Printed/Digital ASI ticket barcode", "Sun protection"],
+      clothing: ["Modest cotton clothes", "Slip-on walking shoes (shoe covers provided at Taj)", "Sunglasses"],
+      gear: ["Power bank", "Camera (tripods strictly banned inside Taj)", "Water bottle"],
+      health: ["Hand sanitizer", "Electrolyte powder", "Basic headache tablets"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). UPI accepted everywhere in Agra.",
+      transit: "Pre-booked private AC cab from Delhi or Agra Cantt railway station is most convenient.",
+      tipping: "7-10% at restaurants; ₹150/day for private driver.",
+      emergency: "Agra Tourist Police: 0562-2421204 | Emergency: 112.",
+      etiquette: "Taj Mahal is closed on Fridays. No food or smoking items permitted inside security check.",
+      phrases: [{ en: "Greetings", local: "Namaste" }, { en: "Thank you", local: "Shukriya" }]
+    }
+  },
+
+  amritsar: {
+    destination: "Amritsar, Punjab",
+    days: 2,
+    title: "Golden Temple & Patriotism: 2 Days in Amritsar",
+    subtitle: "From divine serenity at Sri Harmandir Sahib and Jallianwala Bagh to the high-energy Wagah Border beating retreat and authentic Amritsari kulchas.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 8500,
+    currency: "INR (₹)",
+    coords: [31.6340, 74.8723], // Amritsar Center
+    nearbyAttractions: [
+      { name: "Sri Harmandir Sahib (Golden Temple)", category: "Spiritual", coords: [31.6200, 74.8765], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Gilded sanctum of the Sikh faith standing in the center of the holy Amrit Sarovar lake.", tip: "Cover your head with a scarf and wash your feet at the entrance pool." },
+      { name: "Langar Hall of Golden Temple", category: "Culture", coords: [31.6190, 74.8770], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "World's largest free mega-kitchen serving hot dal, rotis, and kheer to 100,000 pilgrims daily.", tip: "Volunteering to roll rotis or wash plates is a deeply moving experience." },
+      { name: "Jallianwala Bagh National Memorial", category: "Heritage", coords: [31.6210, 74.8800], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Historic memorial park bearing bullet marks from the 1919 massacre and the Martyrs' Well.", tip: "Sound and light show in the evening." },
+      { name: "Attari-Wagah Border Beating Retreat Ceremony", category: "Patriotism", coords: [31.6040, 74.5730], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Thrilling military parade and simultaneous flag-lowering by Indian BSF and Pakistan Rangers.", tip: "Arrive by 3:00 PM to secure prime grandstand seating; bags not allowed." },
+      { name: "Partition Museum & Heritage Town Hall", category: "Heritage", coords: [31.6250, 74.8780], ticketCost: "₹10", costValue: 10, budgetTier: "budget", desc: "World's first museum chronicling the traumatic 1947 partition of India through letters and audio.", tip: "Allow at least 2 hours to walk through all 14 galleries." },
+      { name: "Kesar Da Dhaba for Authentic Kulcha & Dal", category: "Dining", coords: [31.6230, 74.8750], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Centenary dhaba established in 1916 serving slow-cooked Maa Ki Dal and layered butter parathas.", tip: "Wash it down with a giant brass tumbler of thick sweet lassi." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: Divine Golden Temple, Jallianwala Bagh & Langar",
+        overnight: "Overnight in Amritsar Hotel",
+        transitSummary: "Heritage street circuit ~ 6 km",
+        stops: [
+          { time: "08:30 AM", name: "Sri Harmandir Sahib (Golden Temple)", category: "Spiritual", cost: "Free Entry", costValue: 0, duration: "3h", desc: "Experience the calming Gurbani hymns and walk the Parikrama around the sacred sarovar.", tip: "Early morning or night illumination are both breathtaking.", coords: [31.6200, 74.8765] },
+          { time: "11:30 AM", name: "Langar Hall of Golden Temple", category: "Culture", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Partake in the sacred community meal served with unconditional equality and love.", tip: "Sit on the floor mats in straight rows." },
+          { time: "01:30 PM", name: "Jallianwala Bagh National Memorial", category: "Heritage", cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Pay homage at the eternal flame and inspect bullet marks preserved in the brick walls.", tip: "Located directly next to the Golden Temple plaza.", coords: [31.6210, 74.8800] },
+          { time: "03:30 PM", name: "Partition Museum & Heritage Town Hall", category: "Heritage", cost: "₹10", costValue: 10, duration: "2h", desc: "Explore newspaper clippings, voice recordings, and migrant refugee trunks.", tip: "Audioguides available.", coords: [31.6250, 74.8780] },
+          { time: "06:30 PM", name: "Kesar Da Dhaba for Authentic Kulcha & Dal", category: "Dining", cost: "₹350", costValue: 350, duration: "2h", desc: "Feast on slow-simmered 12-hour black dal and freshly roasted tandoori kulcha.", tip: "Order the Firni served in earthen pots for dessert.", coords: [31.6230, 74.8750] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Gobindgarh Fort & Wagah Border Ceremony",
+        overnight: "Departure Transfer",
+        transitSummary: "Amritsar to Wagah Border ~ 32 km (1h)",
+        stops: [
+          { time: "10:00 AM", name: "Gobindgarh Fort & Maharaja Ranjit Singh Museum", category: "Fort", coords: [31.6270, 74.8620], cost: "₹150", costValue: 150, duration: "2.5h", desc: "18th-century fortress guarding the Koh-i-Noor diamond with 7D show and martial arts.", tip: "Watch the Gatka Sikh martial arts performance.", coords: [31.6270, 74.8620] },
+          { time: "01:00 PM", name: "Amritsari Stuffed Kulcha & Chole Lunch", category: "Dining", cost: "₹250", costValue: 250, duration: "1.5h", desc: "Crispy flaky potato-onion stuffed bread crushed by hand with melting white butter.", tip: "Bhai Kulwant Singh Kulchian Wale.", coords: [31.6240, 74.8790] },
+          { time: "03:00 PM", name: "Attari-Wagah Border Beating Retreat Ceremony", category: "Patriotism", cost: "Free Entry", costValue: 0, duration: "3.5h", desc: "Experience the goose-stepping parade and thunderous cheers of Jai Hind.", tip: "Only carry your phone, wallet, and water bottle; handbags prohibited.", coords: [31.6040, 74.5730] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 3500, food: 2200, activities: 800, transport: 1500, shopping: 500 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "Cotton head scarf (mandatory at Golden Temple)", "Cash"],
+      clothing: ["Modest ethnic Indian wear", "Slip-on walking shoes", "Sunhat for Wagah border"],
+      gear: ["Power bank", "Camera", "Hand fan for Wagah ceremony"],
+      health: ["Hand sanitizer", "Indigestion antacid tablets", "Wet wipes"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). UPI accepted everywhere in Amritsar.",
+      transit: "Auto rickshaws for old town; dedicated AC cab for Wagah border.",
+      tipping: "7-10% in restaurants; ₹150 for cab driver.",
+      emergency: "Amritsar Tourist Police: 0183-2541314 | Emergency: 112.",
+      etiquette: "Cover your head completely before stepping into the Golden Temple perimeter. Tobacco is strictly banned.",
+      phrases: [{ en: "Greetings", local: "Sat Sri Akal" }, { en: "Thank you", local: "Dhanvaad" }]
+    }
+  },
+
+  shimla: {
+    destination: "Shimla, Himachal Pradesh",
+    days: 3,
+    title: "Colonial Charm & Pine Ridges: 3 Days in Shimla",
+    subtitle: "From the pedestrianized Ridge and historic Christ Church to Jakhoo Temple ropeway, Kufri alpine peaks, and Viceregal Lodge.",
+    party: "Couple",
+    budgetTier: "Moderate",
+    costPerPerson: 13500,
+    currency: "INR (₹)",
+    coords: [31.1048, 77.1734], // Shimla Ridge
+    nearbyAttractions: [
+      { name: "The Ridge & Neo-Gothic Christ Church", category: "Heritage", coords: [31.1048, 77.1750], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Spacious open pedestrian promenade built in 1857 overlooking snow-capped Shivalik mountain peaks.", tip: "Best evening walking spot in Himachal." },
+      { name: "Mall Road & Gaiety Heritage Theater", category: "Heritage", coords: [31.1030, 77.1720], ticketCost: "₹20", costValue: 20, budgetTier: "budget", desc: "Vehicle-free colonial avenue lined with Victorian lampposts, bookshops, and Himachali woolens.", tip: "Try the hot steamed momos at Tibetan Market." },
+      { name: "Jakhoo Hill & 108ft Giant Hanuman Statue", category: "Temple", coords: [31.1010, 77.1850], ticketCost: "₹500", costValue: 500, budgetTier: "premium", desc: "Shimla's highest peak (2,455 m) reachable by modern aerial ropeway featuring the towering orange statue.", tip: "Keep spectacles and bags secure as Jakhoo monkeys are very quick." },
+      { name: "Kufri Mahasu Peak & Himalayan Nature Park", category: "Nature", coords: [31.0980, 77.2680], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "Alpine ski resort destination with yak rides, deodar pine forests, and monal pheasant bird sanctuary.", tip: "Pony ride takes you to Mahasu peak." },
+      { name: "Indian Institute of Advanced Study (Viceregal Lodge)", category: "Heritage", coords: [31.1020, 77.1400], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "Scottish baronial summer residence of British Viceroys where historic Partition roundtables were held.", tip: "Guided interior tour runs every 45 minutes." }
+    ],
+    daysPlan: [
+      {
+        day: 1,
+        title: "Day 1: The Ridge, Mall Road & Jakhoo Ropeway",
+        overnight: "Overnight in Shimla Hotel",
+        transitSummary: "Shimla pedestrian town ~ 8 km",
+        stops: [
+          { time: "09:30 AM", name: "The Ridge & Neo-Gothic Christ Church", category: "Heritage", cost: "Free Entry", costValue: 0, duration: "2h", desc: "Admire the yellow neo-Gothic facade and stained-glass windows representing faith and hope.", tip: "Photograph the snow peak panorama from the Ridge railing.", coords: [31.1048, 77.1750] },
+          { time: "12:00 PM", name: "Jakhoo Hill & 108ft Giant Hanuman Statue", category: "Temple", cost: "₹500", costValue: 500, duration: "2.5h", desc: "Board the aerial ropeway from Ridge to the summit of Jakhoo in 6 scenic minutes.", tip: "Return ropeway ticket is ₹500/person.", coords: [31.1010, 77.1850] },
+          { time: "02:30 PM", name: "Mall Road Himachali Lunch & Stroll", category: "Dining", cost: "₹450", costValue: 450, duration: "2h", desc: "Savor Himachali Siddu with ghee, hot mutton thali, or wood-fired pizza at Cafe Sol.", tip: "Try the bakery pastries at Wake & Bake Cafe.", coords: [31.1030, 77.1720] },
+          { time: "05:00 PM", name: "Mall Road & Gaiety Heritage Theater", category: "Shopping", cost: "₹20", costValue: 20, duration: "2.5h", desc: "Browse Lakkar Bazaar for wooden toys, walking sticks, and Kullu wool shawls.", tip: "Look for certified Himachal handloom seals.", coords: [31.1030, 77.1720] }
+        ]
+      },
+      {
+        day: 2,
+        title: "Day 2: Kufri Alpine Snow Peaks & Nature Excursion",
+        overnight: "Overnight in Shimla Hotel",
+        transitSummary: "Shimla to Kufri ~ 16 km (45 mins)",
+        stops: [
+          { time: "09:30 AM", name: "Kufri Mahasu Peak & Himalayan Nature Park", category: "Nature", cost: "₹50", costValue: 50, duration: "3.5h", desc: "Ride ponies through pine forests and spot Himalayan monals, snow leopards, and brown bears.", tip: "Wear shoes with firm rubber grip.", coords: [31.0980, 77.2680] },
+          { time: "01:30 PM", name: "Pine Wood Valley Dhaba Lunch", category: "Dining", cost: "₹400", costValue: 400, duration: "1.5h", desc: "Hot Rajma Chawal, Kadhi Pakoda, and fresh butter parathas with mountain valley views.", tip: "Sip hot ginger tea.", coords: [31.1000, 77.2500] },
+          { time: "03:30 PM", name: "Green Valley Forest Overlook", category: "Scenic", coords: [31.1050, 77.2200], cost: "Free Entry", costValue: 0, duration: "1.5h", desc: "Dense deodar forest canopy stretching infinitely across the Himalayan folds.", tip: "Filming location for many classic Bollywood movies.", coords: [31.1050, 77.2200] }
+        ]
+      },
+      {
+        day: 3,
+        title: "Day 3: Viceregal Lodge, Toy Train & Departure",
+        overnight: "Departure Transfer to Kalka / Chandigarh",
+        transitSummary: "Shimla to Kalka / Chandigarh ~ 90 km (3h)",
+        stops: [
+          { time: "09:30 AM", name: "Indian Institute of Advanced Study (Viceregal Lodge)", category: "Heritage", cost: "₹50", costValue: 50, duration: "2.5h", desc: "Marvel at Burma teak wood ceilings, ballroom chandeliers, and manicured English lawns.", tip: "Walk around the botanical garden grounds.", coords: [31.1020, 77.1400] },
+          { time: "01:00 PM", name: "Kalka-Shimla Toy Train Joyride / Departure", category: "Heritage", coords: [31.1035, 77.1610], cost: "₹150", costValue: 150, duration: "2h", desc: "UNESCO mountain railway ride through 103 tunnels down to Kalka or transfer by road.", tip: "Drive back via the scenic 4-lane Himalayan expressway.", coords: [31.1035, 77.1610] }
+        ]
+      }
+    ],
+    budgetBreakdown: { stay: 5500, food: 3500, activities: 2000, transport: 2000, shopping: 500 },
+    packingList: {
+      essentials: ["Govt ID / Aadhaar card", "Cash for pony union", "Thermal layers / sweater"],
+      clothing: ["Fleece jacket", "Comfortable walking shoes (steep pedestrian inclines)", "Warm woolen cap"],
+      gear: ["Power bank", "Camera", "Compact umbrella for sudden mountain showers"],
+      health: ["Motion sickness tablets for mountain highway", "Moisturizer", "Throat lozenges"]
+    },
+    guide: {
+      currency: "Indian Rupees (₹). UPI works seamlessly across Shimla and Kufri.",
+      transit: "Mall Road is pedestrian-only; private cabs drop you at the lift or tourism parking.",
+      tipping: "7-10% at cafes; ₹200/day for private driver.",
+      emergency: "Shimla Tourist Police: 0177-2812344 | Emergency: 112.",
+      etiquette: "No vehicles allowed on Mall Road or the Ridge. Never feed monkeys on Jakhoo hill.",
+      phrases: [{ en: "Greetings", local: "Namaste" }, { en: "Thank you", local: "Dhanyawaad" }]
+    }
+  },
+
 };
 
 // Additional 40+ Indian Tourist Locations for Live Mapping & Nearby Detection
@@ -917,48 +1680,61 @@ async function handleFormSubmit(e) {
   document.getElementById('loadingPercent').textContent = "100%";
   await sleep(300);
 
-  // Generate Itinerary
-  const tripPlan = generateIndianTripPlan({
-    destination,
-    originCity,
-    startDate,
-    endDate,
-    baseCoords,
-    days,
-    adults,
-    children,
-    roomSharingPref,
-    transportPref,
-    travelStyle,
-    companion,
-    budgetTier,
-    dietary,
-    manualBudget: manualBudgetInput,
-    interests: selectedInterests,
-    radius: mapRadius,
-    mustVisit,
-    placesAvoid,
-    seniorFriendly,
-    childFriendly,
-    mountainPacing
-  });
-  currentTrip = tripPlan;
+  // Generate Itinerary safely with try...catch...finally to GUARANTEE loading never freezes at 100%
+  try {
+    const tripPlan = generateIndianTripPlan({
+      destination,
+      originCity,
+      startDate,
+      endDate,
+      baseCoords,
+      days,
+      adults,
+      children,
+      roomSharingPref,
+      transportPref,
+      travelStyle,
+      companion,
+      budgetTier,
+      dietary,
+      manualBudget: manualBudgetInput,
+      interests: selectedInterests,
+      radius: mapRadius,
+      mustVisit,
+      placesAvoid,
+      seniorFriendly,
+      childFriendly,
+      mountainPacing
+    });
+    currentTrip = tripPlan;
 
-  initManualBudgetState(tripPlan, manualBudgetInput);
-  renderDashboard(tripPlan);
-
-  // Reveal Dashboard
-  document.getElementById('loadingSection').classList.add('hidden');
-  document.getElementById('itineraryDashboard').classList.remove('hidden');
-
-  // Confetti
-  if (typeof confetti === 'function') {
-    confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+    initManualBudgetState(tripPlan, manualBudgetInput);
+    renderDashboard(tripPlan);
+    populateCustomPlaceDayOptions();
+  } catch (err) {
+    console.error("Critical error during dashboard generation:", err);
+  } finally {
+    // ALWAYS remove loading section and reveal dashboard!
+    const loadEl = document.getElementById('loadingSection');
+    const dashEl = document.getElementById('itineraryDashboard');
+    if (loadEl) loadEl.classList.add('hidden');
+    if (dashEl) dashEl.classList.remove('hidden');
   }
 
-  lucide.createIcons();
-  switchTab('map'); // Switch to map tab first as requested!
-  document.getElementById('itineraryDashboard').scrollIntoView({ behavior: 'smooth' });
+  // Post-render enhancements
+  try {
+    if (typeof confetti === 'function') {
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+    }
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      lucide.createIcons();
+    }
+    switchTab('itinerary'); // Switch directly to itinerary so user immediately sees their real locations & custom spot tool!
+    const dashEl = document.getElementById('itineraryDashboard');
+    if (dashEl) dashEl.scrollIntoView({ behavior: 'smooth' });
+  } catch (enhancementErr) {
+    console.warn("Post-render enhancement warning:", enhancementErr);
+  }
 }
 
 function sleep(ms) {
@@ -1128,16 +1904,63 @@ function createDynamicIndianCityPlan(params) {
   const budgetMultiplier = params.budgetTier === 'Luxury' ? 2.2 : (params.budgetTier === 'Economy' ? 0.6 : 1.0);
   const baseCost = Math.round(4800 * days * budgetMultiplier);
 
+  // Verified Real Landmarks & Attractions Registry across India
+  const INDIAN_CITY_REAL_ATTRACTIONS = {
+    delhi: [
+      { name: "Red Fort (Lal Qila) & Diwan-i-Khas", category: "Heritage", coords: [28.6562, 77.2410], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "17th-century Mughal red sandstone imperial palace citadel.", tip: "Sound and light show in the evening." },
+      { name: "Qutub Minar & Iron Pillar", category: "Heritage", coords: [28.5244, 77.1855], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "73-meter victory tower and ancient rust-resistant metallurgical marvel.", tip: "Arrive at sunrise for soft golden lighting on carvings." },
+      { name: "India Gate & Kartavya Path Promenade", category: "Patriotism", coords: [28.6129, 77.2295], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Iconic war memorial archway surrounded by sprawling lawns and evening fountains.", tip: "Try the street ice creams and bhelpuri." },
+      { name: "Lotus Temple (Bahá'í House of Worship)", category: "Spiritual", coords: [28.5535, 77.2588], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Pristine white Greek marble lotus petals open to all faiths for silent meditation.", tip: "Shoes removed at the manicured garden gate." },
+      { name: "Humayun's Tomb Garden Complex", category: "Heritage", coords: [28.5933, 77.2507], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "UNESCO World Heritage garden tomb that inspired the Taj Mahal.", tip: "Beautiful geometric water channels." },
+      { name: "Chandni Chowk & Paranthe Wali Gali", category: "Shopping", coords: [28.6505, 77.2303], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Centuries-old market lanes with deep-fried stuffed parathas and spice bazaar.", tip: "Take an e-rickshaw through the narrow alleys." },
+      { name: "Akshardham Grand Temple & Musical Fountain", category: "Spiritual", coords: [28.6127, 77.2773], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Ornate pink stone temple complex with robotic cultural exhibits and water show.", tip: "Mobile phones deposited securely at outer locker." },
+      { name: "Gurudwara Bangla Sahib & Pavitra Sarovar", category: "Spiritual", coords: [28.6263, 77.2090], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Prominent Sikh house of worship with golden dome, holy water pool, and 24/7 langar.", tip: "Head coverings available at entrance." }
+    ],
+    mumbai: [
+      { name: "Gateway of India & Mumbai Harbour", category: "Heritage", coords: [18.9220, 72.8347], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Iconic 1911 basalt arch monument facing the Arabian Sea and historic Taj Mahal Palace hotel.", tip: "Take a harbor ferry for sea breezes." },
+      { name: "Marine Drive Queen's Necklace Promenade", category: "Scenic", coords: [18.9430, 72.8230], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "3.6 km C-shaped coastal boulevard glistening with curved yellow streetlights at night.", tip: "Sit on the tetrapods and feel the Arabian sea spray." },
+      { name: "Elephanta Caves UNESCO Rock-cut Temples", category: "Heritage", coords: [18.9633, 72.9315], ticketCost: "₹40", costValue: 40, budgetTier: "budget", desc: "6th-century rock-cut cave temples dedicated to Shiva including the famous Trimurti sculpture.", tip: "Ferry leaves from Gateway of India every 30 mins." },
+      { name: "Chhatrapati Shivaji Maharaj Terminus (CSMT)", category: "Heritage", coords: [18.9398, 72.8355], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Victorian Gothic UNESCO railway headquarters illuminated in multi-colored LEDs at dusk.", tip: "Photograph from the heritage pedestrian viewing gallery." },
+      { name: "Bandra-Worli Sea Link & Bandstand", category: "Scenic", coords: [19.0300, 72.8200], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "8-lane cable-stayed bridge spanning the open sea with views of celebrity bungalows.", tip: "Walk along Bandstand rocks for sunset." },
+      { name: "Juhu Beach & Street Food Pav Bhaji", category: "Dining", coords: [19.0988, 72.8264], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Famous seaside sand stretch for buttery Mumbai Pav Bhaji, Sev Puri, and Kala Khatta gola.", tip: "Visit in the evening when stalls are bustling." },
+      { name: "Siddhivinayak Ganpati Temple", category: "Temple", coords: [19.0168, 72.8303], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Venerated 1801 Ganesha temple with gold-plated sanctum dome.", tip: "Tuesdays are especially auspicious; book online darshan." }
+    ],
+    kolkata: [
+      { name: "Victoria Memorial & Maidan Gardens", category: "Heritage", coords: [22.5448, 88.3426], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: "Magnificent white Makrana marble monument to Queen Victoria housing 25 art galleries.", tip: "Stroll the lush 64-acre landscaped gardens." },
+      { name: "Howrah Bridge & Hooghly Flower Market", category: "Heritage", coords: [22.5851, 88.3468], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Iconic cantilever steel bridge over the sacred Hooghly river and vibrant marigold flower bazaar.", tip: "Early morning flower auction is a photographer's dream." },
+      { name: "Dakshineswar Kali Temple & Belur Math", category: "Spiritual", coords: [22.6550, 88.3576], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "19th-century nine-spire Kali temple where mystic Ramakrishna Paramahamsa meditated.", tip: "Take a cross-river ferry to Belur Math." },
+      { name: "Park Street & Historic Flurys Tea Room", category: "Dining", coords: [22.5535, 88.3524], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Cosmopolitan avenue lined with heritage English tearooms, jazz cafes, and colonial bakeries.", tip: "Try the rum balls and Darjeeling first-flush tea at Flurys." },
+      { name: "Princep Ghat Riverfront Promenade", category: "Scenic", coords: [22.5560, 88.3320], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Colonial Greek-inlaid pavilion on the riverbank offering traditional wooden boat rides.", tip: "Enjoy hot tea and evening breeze under Vidyasagar Setu." }
+    ],
+    bengaluru: [
+      { name: "Bangalore Palace & Royal Courtyard", category: "Heritage", coords: [12.9988, 77.5921], ticketCost: "₹250", costValue: 250, budgetTier: "moderate", desc: "Tudor-style wooden palace inspired by Windsor Castle with turreted battlements.", tip: "Audioguide included with entry." },
+      { name: "Lalbagh Botanical Garden & Glass House", category: "Nature", coords: [12.9507, 77.5848], ticketCost: "₹25", costValue: 25, budgetTier: "budget", desc: "240-acre botanical haven founded by Hyder Ali with century-old trees and lotus pond.", tip: "Modeled after London's Crystal Palace." },
+      { name: "Cubbon Park & Vidhana Soudha", category: "Heritage", coords: [12.9797, 77.5908], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Lush green lung of Bangalore adjacent to the grand Neo-Dravidian granite legislative assembly.", tip: "Sunday mornings are vehicle-free for cycling." },
+      { name: "Tipu Sultan's Summer Palace", category: "Heritage", coords: [12.9593, 77.5737], ticketCost: "₹20", costValue: 20, budgetTier: "budget", desc: "1791 ornate teakwood palace with carved pillars, balconies, and floral frescoes.", tip: "Small archaeological museum inside." },
+      { name: "Commercial Street & MTR Traditional Dosa", category: "Shopping", coords: [12.9822, 77.6083], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: "Vibrant shopping arcade for silks and Mysore sandalwood followed by crispy Benne Masala Dosa.", tip: "Try Mavalli Tiffin Room (MTR) filter coffee." }
+    ]
+  };
+
+  // Check if destination matches any known city
+  let matchedCityPois = null;
+  const cleanDest = dest.toLowerCase();
+  for (const cName in INDIAN_CITY_REAL_ATTRACTIONS) {
+    if (cleanDest.includes(cName)) {
+      matchedCityPois = INDIAN_CITY_REAL_ATTRACTIONS[cName];
+      break;
+    }
+  }
+
   // Generate realistic nearby tourist attractions with real computed distances
-  const nearbyAttractions = [
-    { name: `${dest} Historic Fort & Heritage Complex`, category: "Fort", coords: [coords[0] + 0.018, coords[1] + 0.012], desc: `Historic ramparts guarding the heritage center of ${dest}.`, tip: "Arrive in the morning to beat the queues." },
-    { name: `Ancient Sacred Temple & Spiritual Kund`, category: "Temple", coords: [coords[0] - 0.014, coords[1] + 0.018], desc: `Century-old stone temple revered by pilgrims across the region.`, tip: "Dress modestly covering shoulders and knees." },
-    { name: `${dest} Valley Viewpoint & Sunset Ridge`, category: "Scenic", coords: [coords[0] + 0.038, coords[1] - 0.025], desc: `Elevated panoramic ridge looking over the surrounding hills and river valleys.`, tip: "Best photography light starts 45 mins before sunset." },
-    { name: `Cascading Forest Waterfall & Nature Trail`, category: "Waterfall", coords: [coords[0] - 0.045, coords[1] - 0.035], desc: `Natural mountain stream cascading into rock pools amidst dense greenery.`, tip: "Wear trekking shoes with good grip." },
-    { name: `Central Heritage Bazaar & Clock Tower`, category: "Shopping", coords: [coords[0] + 0.003, coords[1] + 0.004], desc: `Bustling market arcades with regional spices, handicrafts, and sweet shops.`, tip: "Try the hot jalebis and local snacks." },
-    { name: `Botanical Garden & Boating Lake`, category: "Nature", coords: [coords[0] + 0.022, coords[1] - 0.012], desc: `Lush manicured gardens with paddle boats and walking trails.`, tip: "Ideal for a relaxing afternoon stroll." },
-    { name: `Royal Palace & Museum Gallery`, category: "Heritage", coords: [coords[0] - 0.025, coords[1] + 0.030], desc: `Palace architecture showcasing royal palanquins, armor, and miniature art.`, tip: "Audio guide is recommended." },
-    { name: `Riverside Ghat & Evening Aarti Spot`, category: "Culture", coords: [coords[0] + 0.012, coords[1] + 0.024], desc: `Stone steps leading to the sacred river where evening lamps are floated.`, tip: "Experience the mesmerizing brass lamp aarti ceremony." }
+  const nearbyAttractions = matchedCityPois ? JSON.parse(JSON.stringify(matchedCityPois)) : [
+    { name: `${dest} Historic Fort & Heritage Ramparts`, category: "Fort", coords: [coords[0] + 0.018, coords[1] + 0.012], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: `Historic ramparts guarding the heritage center of ${dest}.`, tip: "Arrive in the morning to beat the queues." },
+    { name: `${dest} Sacred Ancient Temple & Teerth Kund`, category: "Temple", coords: [coords[0] - 0.014, coords[1] + 0.018], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Century-old stone temple revered by pilgrims across ${dest}.`, tip: "Dress modestly covering shoulders and knees." },
+    { name: `${dest} Valley Viewpoint & Sunset Ridge`, category: "Scenic", coords: [coords[0] + 0.038, coords[1] - 0.025], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Elevated panoramic ridge looking over surrounding hills and valleys of ${dest}.`, tip: "Best photography light starts 45 mins before sunset." },
+    { name: `${dest} Cascading Forest Waterfall & Nature Trail`, category: "Nature", coords: [coords[0] - 0.045, coords[1] - 0.035], ticketCost: "₹30", costValue: 30, budgetTier: "budget", desc: `Natural mountain stream cascading into rock pools amidst dense greenery.`, tip: "Wear trekking shoes with good grip." },
+    { name: `${dest} Central Heritage Bazaar & Clock Tower`, category: "Shopping", coords: [coords[0] + 0.003, coords[1] + 0.004], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Bustling market arcades with regional spices, handicrafts, and sweet shops.`, tip: "Try hot local snacks and traditional sweets." },
+    { name: `${dest} Botanical Lake Promenade & Boating Club`, category: "Nature", coords: [coords[0] + 0.022, coords[1] - 0.012], ticketCost: "₹100", costValue: 100, budgetTier: "budget", desc: `Lush manicured gardens with paddle boats and walking trails.`, tip: "Ideal for a relaxing afternoon stroll." },
+    { name: `${dest} Royal Palace & Archaeological Museum`, category: "Heritage", coords: [coords[0] - 0.025, coords[1] + 0.030], ticketCost: "₹75", costValue: 75, budgetTier: "budget", desc: `Palace architecture showcasing royal palanquins, armor, and miniature art.`, tip: "Audio guide is recommended." },
+    { name: `${dest} Riverfront Ghat & Evening Aarti Spot`, category: "Culture", coords: [coords[0] + 0.012, coords[1] + 0.024], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Stone steps leading to the sacred river where evening lamps are floated.`, tip: "Experience the mesmerizing brass lamp aarti ceremony." }
   ];
 
   nearbyAttractions.forEach(poi => {
@@ -1464,6 +2287,9 @@ function renderMapAndNearbyAttractions(trip) {
   // Render Nearby Attractions List
   renderNearbyAttractionsList(trip);
 
+  // Safely check if Leaflet (L) library is available
+  if (typeof L === 'undefined') return;
+
   // Initialize or Center Leaflet Map
   if (!leafletMap) {
     leafletMap = L.map('mapContainer', {
@@ -1636,35 +2462,116 @@ function filterMapDay(day) {
 }
 
 // RENDER NEARBY ATTRACTIONS LIST WITH KM DISTANCES
+let currentAttractionBudgetFilter = 'all';
+
+function filterAttractionsByBudget(filterType) {
+  currentAttractionBudgetFilter = filterType;
+
+  // Update button active state
+  document.querySelectorAll('.budget-filter-pill').forEach(btn => {
+    btn.classList.remove('bg-blue-600', 'text-white', 'font-bold', 'shadow-xs');
+    btn.classList.add('bg-white');
+  });
+
+  const activeBtn = document.getElementById('budgetFilterBtn-' + filterType);
+  if (activeBtn) {
+    activeBtn.classList.remove('bg-white');
+    activeBtn.classList.add('bg-blue-600', 'text-white', 'font-bold', 'shadow-xs');
+  }
+
+  if (currentTrip) {
+    renderNearbyAttractionsList(currentTrip);
+    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+  }
+}
+
 function renderNearbyAttractionsList(trip) {
   const container = document.getElementById('nearbyAttractionsList');
+  if (!container) return;
   container.innerHTML = '';
 
-  const places = trip.nearbyAttractions || [];
-  document.getElementById('nearbyCountPill').textContent = `${places.length} Spots`;
+  let places = (trip.nearbyAttractions || []).map(p => {
+    // Normalise ticket cost & budget tier if missing
+    let costVal = p.costValue !== undefined ? p.costValue : 0;
+    if (costVal === 0 && p.ticketCost && p.ticketCost !== 'Free Entry' && p.ticketCost !== '₹0') {
+      costVal = parseInt(String(p.ticketCost).replace(/[^0-9]/g, '')) || 0;
+    }
+    let costText = p.ticketCost || (costVal > 0 ? formatINR(costVal) : 'Free Entry');
+    let tier = p.budgetTier;
+    if (!tier) {
+      if (costVal === 0 || costText === 'Free Entry') tier = 'free';
+      else if (costVal <= 100) tier = 'budget';
+      else if (costVal <= 500) tier = 'moderate';
+      else tier = 'premium';
+    }
+    return { ...p, costValue: costVal, ticketCost: costText, budgetTier: tier };
+  });
+
+  // Apply Budget Filter
+  if (currentAttractionBudgetFilter === 'free') {
+    places = places.filter(p => p.costValue === 0 || p.ticketCost === 'Free Entry');
+  } else if (currentAttractionBudgetFilter === 'budget') {
+    places = places.filter(p => p.costValue > 0 && p.costValue <= 100);
+  } else if (currentAttractionBudgetFilter === 'moderate') {
+    places = places.filter(p => p.costValue > 100 && p.costValue <= 500);
+  } else if (currentAttractionBudgetFilter === 'premium') {
+    places = places.filter(p => p.costValue > 500);
+  } else if (currentAttractionBudgetFilter === 'sort_cost') {
+    places.sort((a, b) => a.costValue - b.costValue);
+  }
+
+  const countPill = document.getElementById('nearbyCountPill');
+  if (countPill) countPill.textContent = `${places.length} Spots`;
+
+  if (places.length === 0) {
+    container.innerHTML = `
+      <div class="p-6 text-center text-xs text-slate-500 bg-white rounded-xl border border-dashed border-slate-200">
+        <i data-lucide="info" class="w-5 h-5 mx-auto text-slate-400 mb-1"></i>
+        <span>No tourist places in this budget filter category. Select 'All Spots' to see all ${trip.nearbyAttractions?.length || 0} locations.</span>
+      </div>
+    `;
+    return;
+  }
 
   places.forEach((poi, index) => {
+    let budgetBadge = '';
+    if (poi.costValue === 0 || poi.ticketCost === 'Free Entry') {
+      budgetBadge = '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">🟢 Free Entry</span>';
+    } else if (poi.costValue <= 100) {
+      budgetBadge = `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">🟡 ${poi.ticketCost}</span>`;
+    } else if (poi.costValue <= 500) {
+      budgetBadge = `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">🔵 ${poi.ticketCost}</span>`;
+    } else {
+      budgetBadge = `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200">🟣 ${poi.ticketCost}</span>`;
+    }
+
     container.innerHTML += `
-      <div class="p-2.5 rounded-lg bg-white border border-slate-200 hover:border-blue-400 hover:shadow-sm transition text-left cursor-pointer group" onclick="focusMapLocation(${poi.coords[0]}, ${poi.coords[1]}, '${poi.name.replace(/'/g, "\\'")}')">
+      <div class="p-3 rounded-xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-sm transition text-left group">
         <div class="flex items-start justify-between gap-2">
-          <div>
-            <h5 class="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition leading-snug">
+          <div class="flex-grow">
+            <h5 class="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition leading-snug cursor-pointer" onclick="focusMapLocation(${poi.coords[0]}, ${poi.coords[1]}, '${poi.name.replace(/'/g, "\\'")}')">
               ${poi.name}
             </h5>
-            <span class="text-[10px] text-slate-500 font-medium">${poi.category || 'Sightseeing'}</span>
+            <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+              <span class="text-[10px] text-slate-500 font-medium">${poi.category || 'Sightseeing'}</span>
+              <span class="text-slate-300">&bull;</span>
+              ${budgetBadge}
+            </div>
           </div>
           <span class="text-[11px] font-extrabold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 shrink-0">
-            ${poi.distKm} km
+            ${poi.distKm || 0} km
           </span>
         </div>
-        <p class="text-[11px] text-slate-600 mt-1 line-clamp-2 leading-relaxed">
-          ${poi.desc}
+        <p class="text-[11px] text-slate-600 mt-1.5 line-clamp-2 leading-relaxed">
+          ${poi.desc || ''}
         </p>
-        <div class="mt-1.5 flex items-center justify-between text-[10px]">
-          <span class="text-blue-600 font-bold group-hover:underline flex items-center gap-0.5">
-            <i data-lucide="crosshair" class="w-2.5 h-2.5"></i> Locate on Map
-          </span>
-          <span class="text-emerald-700 font-semibold">📍 Nearby</span>
+        <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+          <button type="button" onclick="focusMapLocation(${poi.coords[0]}, ${poi.coords[1]}, '${poi.name.replace(/'/g, "\\'")}')" class="text-blue-600 hover:underline font-bold flex items-center gap-1">
+            <i data-lucide="crosshair" class="w-3 h-3"></i> View on Map
+          </button>
+          <button type="button" onclick="promptAddAttractionToDay('${poi.name.replace(/'/g, "\\'")}', '${poi.category || 'Sightseeing'}', '${poi.ticketCost}', ${poi.coords[0]}, ${poi.coords[1]})" class="btn-white px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 rounded-lg flex items-center gap-1">
+            <i data-lucide="plus" class="w-3 h-3"></i> Add to Day
+          </button>
         </div>
       </div>
     `;
@@ -1735,7 +2642,7 @@ function renderItineraryTimeline(daysPlan) {
   const container = document.getElementById('itineraryDaysContainer');
   container.innerHTML = '';
 
-  daysPlan.forEach(day => {
+  daysPlan.forEach((day, dayIndex) => {
     let stopsHtml = '';
     day.stops.forEach((stop, index) => {
       const categoryColor = getCategoryColor(stop.category);
@@ -1757,8 +2664,9 @@ function renderItineraryTimeline(daysPlan) {
               <div class="text-xs font-bold text-slate-800">${stop.cost !== '₹0' && stop.cost !== '$0' ? `Est. ${stop.cost}` : 'Free Entry'}</div>
             </div>
 
-            <h4 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition flex items-center gap-2">
-              ${stop.name}
+            <h4 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition flex items-center gap-2 flex-wrap">
+              <span>${stop.name}</span>
+              ${stop.isCustom ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">✨ Custom Spot</span>` : ''}
             </h4>
             
             <p class="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
@@ -1776,6 +2684,7 @@ function renderItineraryTimeline(daysPlan) {
               <button onclick="focusMapLocation(${stop.coords[0]}, ${stop.coords[1]}, '${stop.name.replace(/'/g, "\\'")}')" class="text-blue-600 hover:text-blue-700 flex items-center gap-1 font-semibold transition">
                 <i data-lucide="map-pin" class="w-3 h-3"></i> View on Map
               </button>
+              ${stop.isCustom ? `<button onclick="removeCustomTouristPlace(${dayIndex}, ${index})" class="text-rose-600 hover:text-rose-700 flex items-center gap-1 font-semibold transition text-xs ml-3"><i data-lucide="trash-2" class="w-3 h-3"></i> Remove</button>` : ''}
               <label class="flex items-center gap-1.5 cursor-pointer text-slate-500 hover:text-slate-800">
                 <input type="checkbox" onchange="toggleDone(this)" class="accent-blue-600 rounded cursor-pointer" />
                 <span>Mark Visited</span>
@@ -2006,6 +2915,7 @@ function updateBudgetTotalsAndChart() {
 
   const ctx = document.getElementById('budgetChartCanvas');
   if (!ctx) return;
+  if (typeof Chart === 'undefined') return;
 
   if (budgetChart) {
     budgetChart.destroy();
@@ -2413,7 +3323,7 @@ function openBookNowOnTripmozy() {
 
 function showBookingConfirmToast(destination, days, adults, budget, hotelUrl) {
   var existing = document.getElementById('bookingToast');
-  if (existing) existing.remove();
+  if (existing && existing.remove) existing.remove(); else if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
 
   if (!document.getElementById('toastStyle')) {
     var style = document.createElement('style');
@@ -2842,4 +3752,205 @@ function handleQuickRefine(type) {
     renderDashboard(currentTrip);
     alert("🌲 Added serene forest trail and waterfall spots to your days!");
   }
+}
+
+
+// ==========================================
+// CUSTOM TOURIST PLACE MANAGEMENT FUNCTIONS
+// ==========================================
+
+function toggleCustomPlaceForm(forceOpen) {
+  const card = document.getElementById('customPlaceFormCard');
+  if (!card) return;
+  const isCurrentlyOpen = !card.classList.contains('hidden');
+  const shouldOpen = forceOpen !== undefined ? forceOpen : !isCurrentlyOpen;
+
+  if (shouldOpen) {
+    card.classList.remove('hidden');
+    populateCustomPlaceDayOptions();
+    const nameInput = document.getElementById('customPlaceName');
+    if (nameInput) setTimeout(() => nameInput.focus(), 100);
+  } else {
+    card.classList.add('hidden');
+  }
+}
+
+function populateCustomPlaceDayOptions() {
+  const daySelect = document.getElementById('customPlaceDay');
+  if (!daySelect || !currentTrip || !currentTrip.daysPlan) return;
+
+  daySelect.innerHTML = '';
+  currentTrip.daysPlan.forEach((d, idx) => {
+    const opt = document.createElement('option');
+    opt.value = d.day || (idx + 1);
+    opt.textContent = `Day ${d.day || (idx + 1)}: ${d.title ? d.title.split(':')[1] || d.title : 'Exploring ' + currentTrip.destination}`;
+    daySelect.appendChild(opt);
+  });
+}
+
+function handleCustomPlaceSubmit(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  if (!currentTrip || !currentTrip.daysPlan) {
+    alert("Please generate an itinerary first.");
+    return;
+  }
+
+  const nameInput = document.getElementById('customPlaceName');
+  const daySelect = document.getElementById('customPlaceDay');
+  const timeSelect = document.getElementById('customPlaceTime');
+  const catSelect = document.getElementById('customPlaceCategory');
+  const costInput = document.getElementById('customPlaceCost');
+  const tipInput = document.getElementById('customPlaceTip');
+
+  const name = nameInput ? nameInput.value.trim() : '';
+  if (!name) {
+    alert("Please enter a tourist place name.");
+    return;
+  }
+
+  const dayNum = parseInt(daySelect ? daySelect.value : 1) || 1;
+  const dayIndex = Math.max(0, Math.min(currentTrip.daysPlan.length - 1, dayNum - 1));
+  const timeVal = timeSelect ? timeSelect.value : "03:30 PM";
+  const catVal = catSelect ? catSelect.value : "Sightseeing";
+  const costNum = parseInt(costInput ? costInput.value : 0) || 0;
+  const costFormatted = costNum > 0 ? formatINR(costNum) : "Free Entry";
+  const tipVal = tipInput && tipInput.value.trim() ? tipInput.value.trim() : "Custom tourist spot added by you.";
+
+  // Determine Coordinates: check lookup table or place near the day's existing spots
+  let resolvedCoords = null;
+  const cleanName = name.toLowerCase();
+  for (const k in INDIAN_COORDS_LOOKUP) {
+    if (cleanName.includes(k)) {
+      resolvedCoords = INDIAN_COORDS_LOOKUP[k];
+      break;
+    }
+  }
+
+  if (!resolvedCoords) {
+    const dayStops = currentTrip.daysPlan[dayIndex]?.stops;
+    if (dayStops && dayStops.length > 0 && dayStops[0].coords) {
+      const baseLat = dayStops[0].coords[0];
+      const baseLng = dayStops[0].coords[1];
+      const offsetLat = (Math.random() - 0.5) * 0.02;
+      const offsetLng = (Math.random() - 0.5) * 0.02;
+      resolvedCoords = [baseLat + offsetLat, baseLng + offsetLng];
+    } else {
+      resolvedCoords = [currentTrip.coords[0] + 0.01, currentTrip.coords[1] + 0.01];
+    }
+  }
+
+  const newStop = {
+    time: timeVal,
+    name: name,
+    category: catVal,
+    cost: costFormatted,
+    costValue: costNum,
+    duration: "2h",
+    desc: `Custom-added tourist place in ${currentTrip.destination} added by traveler.`,
+    tip: tipVal,
+    coords: resolvedCoords,
+    isCustom: true
+  };
+
+  // Add to Day's stops
+  if (!currentTrip.daysPlan[dayIndex].stops) currentTrip.daysPlan[dayIndex].stops = [];
+  currentTrip.daysPlan[dayIndex].stops.push(newStop);
+
+  // Also add to nearbyAttractions so it appears on the Map and Tourist Places list
+  if (!currentTrip.nearbyAttractions) currentTrip.nearbyAttractions = [];
+  const dist = getDistanceKm(currentTrip.coords[0], currentTrip.coords[1], resolvedCoords[0], resolvedCoords[1]);
+  currentTrip.nearbyAttractions.unshift({
+    name: name,
+    category: catVal,
+    coords: resolvedCoords,
+    distKm: dist,
+    ticketCost: costFormatted,
+    costValue: costNum,
+    budgetTier: costNum === 0 ? 'free' : (costNum <= 100 ? 'budget' : (costNum <= 500 ? 'moderate' : 'premium')),
+    desc: `Custom-added tourist spot: ${tipVal}`,
+    tip: tipVal,
+    isCustom: true
+  });
+
+  // Re-render Timeline and Map
+  renderItineraryTimeline(currentTrip.daysPlan);
+  renderMapAndNearbyAttractions(currentTrip);
+
+  // Reset & close form
+  if (nameInput) nameInput.value = '';
+  if (costInput) costInput.value = '';
+  if (tipInput) tipInput.value = '';
+  toggleCustomPlaceForm(false);
+
+  // Show Toast
+  showCustomSpotToast(`Added "${name}" to Day ${dayNum} itinerary!`);
+
+  // Switch to that day's filter so user sees the newly added stop right away
+  filterDay(dayNum);
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+}
+
+function removeCustomTouristPlace(dayIndex, stopIndex) {
+  if (!currentTrip || !currentTrip.daysPlan || !currentTrip.daysPlan[dayIndex]) return;
+  const removed = currentTrip.daysPlan[dayIndex].stops.splice(stopIndex, 1);
+  renderItineraryTimeline(currentTrip.daysPlan);
+  renderMapAndNearbyAttractions(currentTrip);
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+  showCustomSpotToast(`Removed "${removed[0]?.name || 'place'}" from Day ${dayIndex + 1}.`);
+}
+
+function promptAddAttractionToDay(poiName, category, ticketCost, lat, lng) {
+  if (!currentTrip || !currentTrip.daysPlan) return;
+  const totalDays = currentTrip.daysPlan.length;
+  const chosenDayStr = prompt(`Add "${poiName}" to which day? (Enter 1 to ${totalDays}):`, "1");
+  if (!chosenDayStr) return;
+  const dayNum = parseInt(chosenDayStr);
+  if (isNaN(dayNum) || dayNum < 1 || dayNum > totalDays) {
+    alert(`Please enter a valid day between 1 and ${totalDays}.`);
+    return;
+  }
+
+  const dayIndex = dayNum - 1;
+  const costNum = parseInt(String(ticketCost).replace(/[^0-9]/g, '')) || 0;
+  const newStop = {
+    time: "03:30 PM",
+    name: poiName,
+    category: category || "Sightseeing",
+    cost: ticketCost || "Free Entry",
+    costValue: costNum,
+    duration: "2h",
+    desc: `Tourist place added from nearby attractions list.`,
+    tip: "Added from recommended places list.",
+    coords: [lat, lng],
+    isCustom: true
+  };
+
+  currentTrip.daysPlan[dayIndex].stops.push(newStop);
+  renderItineraryTimeline(currentTrip.daysPlan);
+  renderMapAndNearbyAttractions(currentTrip);
+  switchTab('itinerary');
+  filterDay(dayNum);
+  showCustomSpotToast(`Added "${poiName}" to Day ${dayNum} itinerary!`);
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+}
+
+function showCustomSpotToast(msg) {
+  const existing = document.getElementById('customSpotToast');
+  if (existing && typeof existing.remove === 'function') {
+    existing.remove();
+  } else if (existing && existing.parentNode) {
+    existing.parentNode.removeChild(existing);
+  }
+
+  const toast = document.createElement('div');
+  toast.id = 'customSpotToast';
+  toast.className = 'fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 text-xs sm:text-sm font-semibold flex items-center gap-2.5 transition-all transform duration-300';
+  toast.innerHTML = `<span class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">✓</span> <span>${msg}</span>`;
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(10px)';
+    setTimeout(() => { if (toast && toast.remove) toast.remove(); else if (toast && toast.parentNode) toast.parentNode.removeChild(toast); }, 350);
+  }, 3200);
 }

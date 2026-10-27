@@ -738,6 +738,25 @@
                 <span id="nearbyCountPill" class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">12 Spots</span>
               </div>
 
+              <!-- Budget Filter Pills for Tourist Places -->
+              <div class="pb-2 mb-2 border-b border-slate-200/80">
+                <div class="flex items-center justify-between text-[10px] font-bold text-slate-600 mb-1.5">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="filter" class="w-2.5 h-2.5 text-blue-600"></i> Filter by Budget:
+                  </span>
+                  <button type="button" onclick="filterAttractionsByBudget('sort_cost')" class="text-blue-600 hover:underline flex items-center gap-0.5 font-bold">
+                    <i data-lucide="arrow-down-up" class="w-2.5 h-2.5"></i> Price: Low to High
+                  </button>
+                </div>
+                <div class="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-none" id="attractionsBudgetFilter">
+                  <button type="button" id="budgetFilterBtn-all" onclick="filterAttractionsByBudget('all')" class="budget-filter-pill active px-2 py-0.5 rounded-md text-[10px] bg-blue-600 text-white font-bold transition whitespace-nowrap shadow-xs">All Spots</button>
+                  <button type="button" id="budgetFilterBtn-free" onclick="filterAttractionsByBudget('free')" class="budget-filter-pill px-2 py-0.5 rounded-md text-[10px] bg-white text-emerald-700 border border-slate-200 hover:border-emerald-500 font-semibold transition whitespace-nowrap">🟢 Free Entry</button>
+                  <button type="button" id="budgetFilterBtn-budget" onclick="filterAttractionsByBudget('budget')" class="budget-filter-pill px-2 py-0.5 rounded-md text-[10px] bg-white text-amber-800 border border-slate-200 hover:border-amber-500 font-semibold transition whitespace-nowrap">🟡 Under ₹100</button>
+                  <button type="button" id="budgetFilterBtn-moderate" onclick="filterAttractionsByBudget('moderate')" class="budget-filter-pill px-2 py-0.5 rounded-md text-[10px] bg-white text-blue-700 border border-slate-200 hover:border-blue-500 font-semibold transition whitespace-nowrap">🔵 ₹100-₹500</button>
+                  <button type="button" id="budgetFilterBtn-premium" onclick="filterAttractionsByBudget('premium')" class="budget-filter-pill px-2 py-0.5 rounded-md text-[10px] bg-white text-purple-700 border border-slate-200 hover:border-purple-500 font-semibold transition whitespace-nowrap">🟣 ₹500+</button>
+                </div>
+              </div>
+
               <!-- Scrollable Attractions List -->
               <div class="flex-grow overflow-y-auto space-y-2 pr-1" id="nearbyAttractionsList">
                 <!-- Dynamically rendered nearby places cards -->
@@ -760,9 +779,126 @@
 
       <!-- TAB 2: DAY-BY-DAY SCHEDULE TIMELINE -->
       <div id="view-itinerary" class="tab-view hidden space-y-6">
-        <!-- Day filter pills -->
-        <div class="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none" id="dayFilterChips">
-          <!-- Dynamically populated -->
+        
+        <!-- Action Header: Day Filter Pills + Add Custom Tourist Place Button -->
+        <div class="p-3 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none flex-grow" id="dayFilterChips">
+            <!-- Dynamically populated day filter chips -->
+          </div>
+          <button type="button" onclick="toggleCustomPlaceForm()" id="toggleCustomPlaceBtn" class="btn-gradient px-4 py-2 text-xs font-bold rounded-xl shadow-md flex items-center justify-center gap-1.5 shrink-0 self-start md:self-auto">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span>Add Custom Tourist Place</span>
+          </button>
+        </div>
+
+        <!-- Collapsible Custom Tourist Place Form Modal / Drawer -->
+        <div id="customPlaceFormCard" class="hidden ui-card p-5 sm:p-6 bg-gradient-to-br from-blue-50/90 via-white to-emerald-50/90 border-2 border-blue-200 rounded-2xl shadow-lg transition-all">
+          <div class="flex items-start justify-between gap-3 pb-3 border-b border-slate-200/80 mb-4">
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-xs">📍</span>
+                <span>Add Custom Tourist Place to Itinerary</span>
+              </h3>
+              <p class="text-xs text-slate-600 mt-0.5">
+                Put your own spots, local dhabas, viewpoints, or adventure activities directly into any day.
+              </p>
+            </div>
+            <button type="button" onclick="toggleCustomPlaceForm(false)" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <form id="addCustomSpotForm" onsubmit="handleCustomPlaceSubmit(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Tourist Place Name <span class="text-rose-600">*</span></label>
+                <input 
+                  type="text" 
+                  id="customPlaceName" 
+                  required 
+                  placeholder="e.g. Solang Snow Quad Bike / Cafe 1947" 
+                  class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Select Day <span class="text-rose-600">*</span></label>
+                <select 
+                  id="customPlaceDay" 
+                  required
+                  class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                >
+                  <option value="1">Day 1</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Preferred Time Slot</label>
+                <select 
+                  id="customPlaceTime"
+                  class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                >
+                  <option value="09:30 AM">Morning (09:30 AM)</option>
+                  <option value="12:30 PM">Afternoon (12:30 PM)</option>
+                  <option value="03:30 PM" selected>Late Afternoon (03:30 PM)</option>
+                  <option value="06:30 PM">Sunset / Evening (06:30 PM)</option>
+                  <option value="08:30 PM">Night / Dinner (08:30 PM)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Category</label>
+                <select 
+                  id="customPlaceCategory"
+                  class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                >
+                  <option value="Sightseeing">Sightseeing &amp; Attractions</option>
+                  <option value="Temple">Temple / Spiritual Shrine</option>
+                  <option value="Nature">Nature Viewpoint &amp; Forest</option>
+                  <option value="Heritage">Fort / Heritage Palace</option>
+                  <option value="Adventure">Adventure &amp; Snow Activity</option>
+                  <option value="Dining">Dining, Cafe &amp; Dhabba</option>
+                  <option value="Shopping">Local Bazaars &amp; Handicrafts</option>
+                  <option value="Relaxation">Relaxation &amp; Sunset Walk</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Estimated Cost / Entry Fee (₹)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">₹</span>
+                  <input 
+                    type="number" 
+                    id="customPlaceCost" 
+                    min="0" 
+                    step="50" 
+                    placeholder="0 (Free Entry)" 
+                    class="w-full text-xs font-semibold pl-7 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Insider Tip / Notes (Optional)</label>
+                <input 
+                  type="text" 
+                  id="customPlaceTip" 
+                  placeholder="e.g. Great sunset views, arrive by 5 PM" 
+                  class="w-full text-xs font-medium px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                />
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2.5 pt-2">
+              <button type="button" onclick="toggleCustomPlaceForm(false)" class="btn-white px-4 py-2 text-xs font-semibold rounded-xl">
+                Cancel
+              </button>
+              <button type="submit" class="btn-gradient px-5 py-2 text-xs font-bold rounded-xl shadow-md flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                <span>Add to Itinerary</span>
+              </button>
+            </div>
+          </form>
         </div>
 
         <!-- Days timeline container -->
