@@ -369,6 +369,7 @@
     var isInsufficient = false;
     var minimumAmountNeeded = costPerPerson;
     var insufficientNote = '';
+    var insufficientReason = '';
 
     if (targetBudgetPerPerson > 0) {
       var targetTotalTrip = targetBudgetPerPerson * totalPax;
@@ -379,6 +380,7 @@
         budgetStatus = 'shortfall';
         isInsufficient = true;
         minimumAmountNeeded = minRequiredPerPerson;
+        insufficientReason = "For a " + days + "-day trip to " + (params.destination || "your destination") + " for " + totalPax + " traveler" + (totalPax > 1 ? "s" : "") + ", essential baseline expenses (clean verified room/homestay, dedicated cab/transit, 3 daily meals, and monument tickets) require at least ₹" + minRequiredPerPerson.toLocaleString('en-IN') + " per person. Your entered amount of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + " is too low to cover basic accommodation and travel safely.";
         insufficientNote = "The amount you entered (₹" + targetBudgetPerPerson.toLocaleString('en-IN') + ") isn't sufficient for this " + days + "-day trip, so please increase it to ₹" + minRequiredPerPerson.toLocaleString('en-IN') + " per person (the minimum amount needed). Here is your complete itinerary planned with the realistic minimum amount needed.";
         budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person is lower than the realistic minimum cost (₹" + minRequiredPerPerson.toLocaleString('en-IN') + "/person). The amount you entered isn't sufficient for the trip, so please increase it to ₹" + minRequiredPerPerson.toLocaleString('en-IN') + " per person.";
 
@@ -424,6 +426,7 @@
         budgetStatus = 'shortfall';
         isInsufficient = true;
         minimumAmountNeeded = costPerPerson;
+        insufficientReason = "You selected " + tier + " tier comfort which costs ₹" + costPerPerson.toLocaleString('en-IN') + " per person for this " + days + "-day trip. Your entered budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + " cannot cover " + tier + " hotels and private cab. The minimum amount needed for " + tier + " tier is ₹" + costPerPerson.toLocaleString('en-IN') + " per person (or minimum ₹" + minRequiredPerPerson.toLocaleString('en-IN') + " for budget homestays).";
         insufficientNote = "The amount you entered (₹" + targetBudgetPerPerson.toLocaleString('en-IN') + ") isn't sufficient for the " + tier + " tier comfort (needs ₹" + costPerPerson.toLocaleString('en-IN') + "/person). Please increase it to ₹" + costPerPerson.toLocaleString('en-IN') + " per person (or minimum ₹" + minRequiredPerPerson.toLocaleString('en-IN') + "/person for budget homestays).";
         var deficitPerPax = Math.round(Math.abs(varianceAmount) / totalPax);
         budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person is ₹" + deficitPerPax.toLocaleString('en-IN') + " lower than the realistic " + tier + " tier cost (₹" + costPerPerson.toLocaleString('en-IN') + "/person). The amount you entered isn't sufficient for the trip, so please increase it to ₹" + costPerPerson.toLocaleString('en-IN') + " per person.";
@@ -555,6 +558,7 @@
         minimumAmountNeeded: minimumAmountNeeded,
         minRequiredPerPerson: minRequiredPerPerson,
         insufficientNote: insufficientNote,
+        insufficientReason: insufficientReason,
         targetPerPerson: targetBudgetPerPerson,
         calculatedPerPerson: costPerPerson,
         variancePerPerson: Math.round(varianceAmount / totalPax),

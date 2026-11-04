@@ -1545,14 +1545,14 @@ function loadIndianCircuit(key) {
     if (manualInput) {
       manualInput.value = INDIA_DESTINATIONS[key].costPerPerson;
     }
-    handleFormSubmit(new Event('submit'));
+    handleFormSubmit(typeof Event !== 'undefined' ? new Event('submit') : { preventDefault: function(){} });
   } else {
     // Lookup generic Indian destination
     const cleanKey = key.toLowerCase();
     for (const name in INDIAN_COORDS_LOOKUP) {
       if (name.includes(cleanKey)) {
         setDestination(name.charAt(0).toUpperCase() + name.slice(1) + ", India");
-        handleFormSubmit(new Event('submit'));
+        handleFormSubmit(typeof Event !== 'undefined' ? new Event('submit') : { preventDefault: function(){} });
         return;
       }
     }
@@ -1639,6 +1639,31 @@ async function handleFormSubmit(e) {
 
   const selectedInterests = Array.from(document.querySelectorAll('.interest-chip.active'))
     .map(c => c.getAttribute('data-interest'));
+
+  // Validate budget sufficiency before navigating to loading / next page
+  if (manualBudgetInput > 0) {
+    const preCheck = (window.TripMozyEngine && window.TripMozyEngine.calculateAccurateTripBudget)
+      ? window.TripMozyEngine.calculateAccurateTripBudget({
+          destination,
+          days,
+          adults,
+          children,
+          roomSharingPref,
+          transportPref,
+          budgetTier,
+          dietaryPref: dietary,
+          targetBudget: manualBudgetInput
+        })
+      : null;
+
+    if (preCheck && preCheck.budgetAnalysis && preCheck.budgetAnalysis.isInsufficient) {
+      showFormBudgetError(preCheck.budgetAnalysis, destination, days, adults + children);
+      return; // STOP! Do not let the user advance to the next page!
+    }
+  }
+
+  // Clear budget error state if valid
+  clearBudgetError();
 
   // Switch to Loading Screen
   document.getElementById('heroSection').classList.add('hidden');
@@ -4237,4 +4262,78 @@ function renderPrintableItineraryDoc(trip) {
 
     </div>
   `;
+}
+
+
+// ==========================================
+// FORM BUDGET VALIDATION (PREVENT NEXT PAGE)
+// ==========================================
+
+window.lastCalculatedMinAmount = 0;
+
+function showFormBudgetError(analysis, destination, days, totalPax) {
+  const errorBox = document.getElementById('formBudgetErrorBox');
+  const inputEl = document.getElementById('manualTargetBudgetInput');
+  const reasonEl = document.getElementById('formBudgetReasonText');
+  const minAmtEl = document.getElementById('formBudgetMinAmount');
+  const minBadgeEl = document.getElementById('formBudgetMinBadge');
+  const btnTextEl = document.getElementById('applyMinBudgetBtnText');
+
+  const minAmt = analysis.minimumAmountNeeded || analysis.calculatedPerPerson || 8500;
+  const targetAmt = analysis.targetPerPerson || 0;
+  const reason = analysis.insufficientReason || analysis.insufficientNote || 
+    `The amount of ${formatINR(targetAmt)} per person is insufficient to cover baseline expenses (verified stays, dedicated cab/transit, 3 daily meals, and entry tickets) for a ${days}-day trip to ${destination}. Minimum needed is ${formatINR(minAmt)} per person.`;
+
+  window.lastCalculatedMinAmount = minAmt;
+
+  if (reasonEl) reasonEl.textContent = reason;
+  if (minAmtEl) minAmtEl.textContent = formatINR(minAmt);
+  if (minBadgeEl) minBadgeEl.textContent = "Minimum " + formatINR(minAmt) + " Needed";
+  if (btnTextEl) btnTextEl.textContent = `Set Budget to ${formatINR(minAmt)} & Continue`;
+
+  if (errorBox) {
+    errorBox.classList.remove('hidden');
+    try {
+      errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (e) {}
+  }
+
+  if (inputEl) {
+    inputEl.classList.add('border-rose-500', 'bg-rose-50/50', 'ring-2', 'ring-rose-200');
+    try {
+      inputEl.focus();
+    } catch (e) {}
+  }
+
+  if (typeof lucide !== 'undefined' && lucide.createIcons) {
+    lucide.createIcons();
+  }
+}
+
+function clearBudgetError() {
+  const errorBox = document.getElementById('formBudgetErrorBox');
+  const inputEl = document.getElementById('manualTargetBudgetInput');
+  if (errorBox) errorBox.classList.add('hidden');
+  if (inputEl) {
+    inputEl.classList.remove('border-rose-500', 'bg-rose-50/50', 'ring-2', 'ring-rose-200');
+  }
+}
+
+function applyMinimumBudgetAndProceed() {
+  const minAmt = window.lastCalculatedMinAmount;
+  const inputEl = document.getElementById('manualTargetBudgetInput');
+  if (inputEl && minAmt) {
+    inputEl.value = minAmt;
+  }
+  clearBudgetError();
+  const form = document.getElementById('tripPlannerForm');
+  if (form) {
+    if (typeof form.requestSubmit === 'function') {
+      form.requestSubmit();
+    } else {
+      handleFormSubmit(typeof Event !== 'undefined' ? new Event('submit') : { preventDefault: function(){} });
+    }
+  } else {
+    handleFormSubmit(typeof Event !== 'undefined' ? new Event('submit') : { preventDefault: function(){} });
+  }
 }

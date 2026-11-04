@@ -306,9 +306,10 @@
                 <input 
                   type="number" 
                   id="manualTargetBudgetInput" 
+                  oninput="clearBudgetError()"
                   placeholder="e.g. 15000, 25000, 40000" 
                   step="1000"
-                  class="w-full pl-8 pr-4 py-2.5 rounded-lg ui-input text-base text-slate-900 font-bold"
+                  class="w-full pl-8 pr-4 py-2.5 rounded-lg ui-input text-base text-slate-900 font-bold transition"
                 />
               </div>
             </div>
@@ -465,6 +466,44 @@
                 <input type="checkbox" id="mountainPacingCb" class="rounded accent-blue-600" />
                 <span>🏔️ High-Altitude Easy Pacing</span>
               </label>
+            </div>
+          </div>
+
+          <!-- INSUFFICIENT BUDGET VALIDATION ALERT (PREVENTS ADVANCING TO NEXT PAGE) -->
+          <div id="formBudgetErrorBox" class="hidden p-4 sm:p-5 rounded-2xl bg-rose-50 border-2 border-rose-300 text-rose-950 shadow-md transition-all">
+            <div class="flex items-start gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0 font-black text-xl shadow-2xs">
+                ⚠️
+              </div>
+              <div class="flex-grow">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                  <h4 class="text-sm sm:text-base font-extrabold text-rose-900">
+                    Budget is Insufficient for this Trip
+                  </h4>
+                  <span id="formBudgetMinBadge" class="text-xs font-bold text-rose-900 bg-rose-200/90 px-3 py-1 rounded-full border border-rose-300 w-fit">
+                    Minimum Amount Needed
+                  </span>
+                </div>
+                <p id="formBudgetReasonText" class="text-xs sm:text-sm text-rose-900/90 mt-1.5 leading-relaxed font-medium">
+                  The amount you entered isn't sufficient to cover baseline expenses (verified stays, dedicated cab/transit, meals, and tickets).
+                </p>
+                <div class="mt-3.5 pt-3 border-t border-rose-200 flex flex-wrap items-center justify-between gap-3">
+                  <div class="text-xs font-bold text-rose-800">
+                    <span>Minimum Amount Needed: </span>
+                    <span id="formBudgetMinAmount" class="text-base font-black text-rose-950 font-heading">₹8,500</span>
+                    <span class="text-[11px] font-normal text-rose-700"> / person</span>
+                  </div>
+                  <button 
+                    type="button" 
+                    id="applyMinBudgetBtn" 
+                    onclick="applyMinimumBudgetAndProceed()" 
+                    class="btn-gradient px-4 py-2 text-xs font-bold rounded-xl shadow-md text-white flex items-center gap-1.5 active:scale-[0.98] transition-all cursor-pointer"
+                  >
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-300"></i>
+                    <span id="applyMinBudgetBtnText">Set Budget to Minimum &amp; Continue</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
