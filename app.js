@@ -1814,8 +1814,22 @@ function generateIndianTripPlan(params) {
       preset.children = params.children || 0;
       preset.accurateBudget = accurateBudget;
       if (accurateBudget) {
-        preset.costPerPerson = accurateBudget.costPerPerson;
-        preset.grandTotalTrip = accurateBudget.grandTotalTrip;
+        if (accurateBudget.budgetAnalysis && accurateBudget.budgetAnalysis.isInsufficient) {
+          preset.costPerPerson = accurateBudget.budgetAnalysis.minimumAmountNeeded || accurateBudget.costPerPerson;
+          preset.grandTotalTrip = preset.costPerPerson * (accurateBudget.totalPax || 1);
+          if (accurateBudget.budgetAnalysis.optimizedPlan && accurateBudget.budgetAnalysis.optimizedPlan.breakdownPerPerson) {
+            preset.budgetBreakdown = {
+              stay: accurateBudget.budgetAnalysis.optimizedPlan.breakdownPerPerson.stay,
+              food: accurateBudget.budgetAnalysis.optimizedPlan.breakdownPerPerson.food,
+              activities: accurateBudget.budgetAnalysis.optimizedPlan.breakdownPerPerson.activities,
+              transport: accurateBudget.budgetAnalysis.optimizedPlan.breakdownPerPerson.transport,
+              shopping: accurateBudget.budgetAnalysis.optimizedPlan.breakdownPerPerson.shopping
+            };
+          }
+        } else {
+          preset.costPerPerson = accurateBudget.costPerPerson;
+          preset.grandTotalTrip = accurateBudget.grandTotalTrip;
+        }
         preset.roomAllocation = accurateBudget.roomAllocation;
         preset.vehicleAllocation = accurateBudget.vehicleAllocation;
       }
@@ -1866,6 +1880,7 @@ function generateIndianTripPlan(params) {
   }
 
   // Open-World Generative Planner for Any Indian Town / City
+  params.accurateBudget = accurateBudget;
   return createDynamicIndianCityPlan(params);
 }
 
@@ -1902,7 +1917,14 @@ function createDynamicIndianCityPlan(params) {
   const radius = params.radius;
 
   const budgetMultiplier = params.budgetTier === 'Luxury' ? 2.2 : (params.budgetTier === 'Economy' ? 0.6 : 1.0);
-  const baseCost = Math.round(4800 * days * budgetMultiplier);
+  let baseCost = Math.round(4800 * days * budgetMultiplier);
+  if (params.accurateBudget) {
+    if (params.accurateBudget.budgetAnalysis && params.accurateBudget.budgetAnalysis.isInsufficient) {
+      baseCost = params.accurateBudget.budgetAnalysis.minimumAmountNeeded || params.accurateBudget.costPerPerson;
+    } else {
+      baseCost = params.accurateBudget.costPerPerson;
+    }
+  }
 
   // Verified Real Landmarks & Attractions Registry across India
   const INDIAN_CITY_REAL_ATTRACTIONS = {
@@ -2050,9 +2072,14 @@ function createDynamicIndianCityPlan(params) {
     currency: "INR (₹)",
     coords: coords,
     radius: radius,
+    accurateBudget: params.accurateBudget || null,
+    roomAllocation: params.accurateBudget ? params.accurateBudget.roomAllocation : null,
+    vehicleAllocation: params.accurateBudget ? params.accurateBudget.vehicleAllocation : null,
     nearbyAttractions: nearbyAttractions,
     daysPlan: daysPlan,
-    budgetBreakdown: {
+    budgetBreakdown: (params.accurateBudget && params.accurateBudget.budgetAnalysis && params.accurateBudget.budgetAnalysis.optimizedPlan) 
+      ? params.accurateBudget.budgetAnalysis.optimizedPlan.breakdownPerPerson 
+      : {
       stay: Math.round(baseCost * 0.40),
       food: Math.round(baseCost * 0.28),
       activities: Math.round(baseCost * 0.16),
@@ -2081,6 +2108,10 @@ function createDynamicIndianCityPlan(params) {
 
 // INITIALIZE MANUAL BUDGET
 function initManualBudgetState(trip, manualBudgetInput) {
+  const analysis = trip.accurateBudget?.budgetAnalysis;
+  if (analysis && analysis.isInsufficient) {
+    manualBudgetInput = analysis.minimumAmountNeeded || trip.costPerPerson;
+  }
   const b = trip.budgetBreakdown;
   if (manualBudgetInput && manualBudgetInput > 0) {
     const aiTotal = b.stay + b.food + b.activities + b.transport + b.shopping;
@@ -2157,6 +2188,32 @@ function renderDashboard(trip) {
   // Render Packing & Guide
   renderPacking(trip);
   renderGuide(trip);
+
+  // Handle Insufficient Budget Notice Banner
+  var analysis = trip.accurateBudget?.budgetAnalysis;
+  var insuffBanner = document.getElementById('insufficientBudgetBanner');
+  var insuffText = document.getElementById('insufficientBudgetText');
+  var insuffBadge = document.getElementById('insufficientBudgetMinBadge');
+
+  if (analysis && analysis.isInsufficient && analysis.targetPerPerson > 0) {
+    if (insuffBanner) insuffBanner.classList.remove('hidden');
+    var minAmt = analysis.minimumAmountNeeded || trip.costPerPerson;
+    if (insuffText) {
+      insuffText.innerHTML = `The amount you entered (<strong>${formatINR(analysis.targetPerPerson)}</strong>) isn't sufficient for this ${trip.days}-day trip, so please increase it to <strong>${formatINR(minAmt)}</strong> per person (the minimum amount needed). Here is your complete itinerary planned with the realistic minimum amount needed.`;
+    }
+    if (insuffBadge) {
+      insuffBadge.textContent = "Minimum " + formatINR(minAmt) + " Needed";
+    }
+    var totalBudgetEl = document.getElementById('dashTotalBudget');
+    if (totalBudgetEl) {
+      totalBudgetEl.textContent = formatINR(minAmt);
+    }
+  } else {
+    if (insuffBanner) insuffBanner.classList.add('hidden');
+  }
+
+  // Pre-render printable itinerary document
+  renderPrintableItineraryDoc(trip);
 }
 
 // DUAL-PLAN COMPARISON ENGINE
@@ -2178,9 +2235,17 @@ function renderDualPlanComparison(trip) {
 
     if (costRecEl) costRecEl.textContent = formatINR(rec.costPerPerson);
     if (costOptEl) costOptEl.textContent = formatINR(opt.costPerPerson);
-    if (titleOptEl) titleOptEl.textContent = "Custom Plan (Under ₹" + Number(analysis.targetPerPerson).toLocaleString('en-IN') + " Limit)";
-    if (descOptEl) {
-      descOptEl.textContent = "Analyzed strictly under your ₹" + Number(analysis.targetPerPerson).toLocaleString('en-IN') + "/person limit: verified clean homestays, smart transfers, and regional dhabas.";
+    
+    if (analysis.isInsufficient) {
+      if (titleOptEl) titleOptEl.textContent = "Minimum Feasible Plan (₹" + Number(analysis.minimumAmountNeeded).toLocaleString('en-IN') + " Needed)";
+      if (descOptEl) {
+        descOptEl.textContent = "The amount you entered (₹" + Number(analysis.targetPerPerson).toLocaleString('en-IN') + ") isn't sufficient for this " + trip.days + "-day trip. We calculated the realistic minimum needed: ₹" + Number(analysis.minimumAmountNeeded).toLocaleString('en-IN') + "/person for verified homestay, smart cab & meals.";
+      }
+    } else {
+      if (titleOptEl) titleOptEl.textContent = "Custom Plan (Under ₹" + Number(analysis.targetPerPerson).toLocaleString('en-IN') + " Limit)";
+      if (descOptEl) {
+        descOptEl.textContent = "Analyzed strictly under your ₹" + Number(analysis.targetPerPerson).toLocaleString('en-IN') + "/person limit: verified clean homestays, smart transfers, and regional dhabas.";
+      }
     }
 
     // Default to the optimized plan so the customer immediately sees their trip under their limit
@@ -3953,4 +4018,223 @@ function showCustomSpotToast(msg) {
     toast.style.transform = 'translateY(10px)';
     setTimeout(() => { if (toast && toast.remove) toast.remove(); else if (toast && toast.parentNode) toast.parentNode.removeChild(toast); }, 350);
   }, 3200);
+}
+
+
+// ==========================================
+// TRIPMOZY OFFICIAL PRINTABLE PDF ITINERARY
+// ==========================================
+
+function downloadItineraryPDF() {
+  if (!currentTrip) {
+    alert("Please enter a destination and generate an itinerary first.");
+    return;
+  }
+
+  // Ensure printable document has fresh data
+  renderPrintableItineraryDoc(currentTrip);
+
+  // Set document title so 'Save as PDF' uses this default filename
+  var originalTitle = document.title;
+  var destName = (currentTrip.destination || 'India').replace(/[^a-zA-Z0-9]/g, '_');
+  document.title = "TripMozy_Itinerary_" + destName + "_" + currentTrip.days + "Days";
+
+  // Trigger print / PDF dialog
+  window.print();
+
+  // Restore title after dialog
+  setTimeout(function() {
+    document.title = originalTitle;
+  }, 1000);
+}
+
+function renderPrintableItineraryDoc(trip) {
+  var container = document.getElementById('printableItineraryDoc');
+  if (!container || !trip) return;
+
+  var analysis = trip.accurateBudget?.budgetAnalysis;
+  var isInsuff = analysis && analysis.isInsufficient;
+  var targetPerPerson = analysis?.targetPerPerson || 0;
+  var minNeeded = analysis?.minimumAmountNeeded || trip.costPerPerson;
+
+  var daysHtml = '';
+  (trip.daysPlan || []).forEach(function(day, dIdx) {
+    var stopsHtml = '';
+    (day.stops || []).forEach(function(stop, sIdx) {
+      stopsHtml += `
+        <div class="pdf-stop-item" style="display: flex; gap: 14px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #e2e8f0;">
+          <div style="min-width: 82px; font-weight: 800; font-size: 11px; color: #1e40af; text-align: right; padding-top: 1px;">
+            ${stop.time}
+          </div>
+          <div style="flex-grow: 1;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+              <span style="font-weight: 800; font-size: 13px; color: #0f172a;">${stop.name}</span>
+              <span style="font-size: 11px; font-weight: 700; color: #334155; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; border: 1px solid #e2e8f0; white-space: nowrap;">
+                ${stop.cost || 'Free Entry'}
+              </span>
+            </div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+              <span style="font-weight: 700; color: #2563eb;">${stop.category || 'Sightseeing'}</span> &bull; 
+              <span>Duration: ${stop.duration || '2h'}</span>
+            </div>
+            <p style="font-size: 11px; color: #334155; margin: 4px 0 0 0; line-height: 1.45;">
+              ${stop.desc || ''}
+            </p>
+            ${stop.tip ? `
+              <div style="margin-top: 5px; font-size: 10.5px; color: #92400e; background: #fef3c7; padding: 4px 8px; border-radius: 4px; border-left: 3px solid #f59e0b;">
+                <strong>💡 TripMozy Insider:</strong> ${stop.tip}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    });
+
+    daysHtml += `
+      <div class="pdf-day-card" style="margin-bottom: 20px; border: 1px solid #cbd5e1; border-radius: 10px; overflow: hidden; page-break-inside: avoid; break-inside: avoid;">
+        <div style="background: #1e3a8a; color: #ffffff; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <span style="font-size: 10.5px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; opacity: 0.9;">
+              Day ${day.day || (dIdx + 1)}
+            </span>
+            <h4 style="margin: 0; font-size: 14px; font-weight: 800;">
+              ${day.title || ('Exploring ' + trip.destination)}
+            </h4>
+          </div>
+          <div style="text-align: right; font-size: 11px; font-weight: 700;">
+            ${day.dateStr ? `<div>📅 ${day.dateStr}</div>` : ''}
+            <div>🏨 ${day.overnight || ('Overnight in ' + trip.destination)}</div>
+          </div>
+        </div>
+        <div style="padding: 14px 16px; background: #ffffff;">
+          ${stopsHtml}
+        </div>
+      </div>
+    `;
+  });
+
+  var durationStr = trip.days + " Days / " + Math.max(1, trip.days - 1) + " Nights" + (trip.startDate && trip.endDate ? " (" + trip.startDate + " to " + trip.endDate + ")" : '');
+  var partyStr = (trip.adults || 2) + " Adults" + (trip.children ? ", " + trip.children + " Kids" : "") + (trip.party ? " (" + trip.party + ")" : '');
+  var vehicleStr = trip.vehicleAllocation ? trip.vehicleAllocation.label : "Dedicated Private Cab";
+  var stayStr = trip.roomAllocation ? trip.roomAllocation.description : "Verified Double Rooms";
+
+  container.innerHTML = `
+    <div style="max-width: 820px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #0f172a; line-height: 1.45;">
+      
+      <!-- OFFICIAL HEADER -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 2.5px solid #2563eb; margin-bottom: 16px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 36px; height: 36px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 900; font-size: 20px;">
+              T
+            </div>
+            <div>
+              <h1 style="margin: 0; font-size: 24px; font-weight: 900; color: #1e3a8a; letter-spacing: -0.5px;">
+                TripMozy.com
+              </h1>
+              <span style="font-size: 10.5px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
+                TripMozy Private Limited &bull; Official Travel Itinerary &amp; Voucher
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <div style="text-align: right; font-size: 11.5px; color: #334155;">
+          <div style="font-weight: 900; font-size: 14px; color: #1e3a8a;">
+            📞 Support &amp; Bookings: +91 9641866181
+          </div>
+          <div style="margin-top: 2px;">
+            ✉️ Email: <a href="mailto:tripmozy@gmail.com" style="color: #2563eb; text-decoration: none; font-weight: 600;">tripmozy@gmail.com</a>
+          </div>
+          <div style="margin-top: 2px;">
+            🌐 Website: <a href="https://www.tripmozy.com" style="color: #2563eb; text-decoration: none; font-weight: 600;">www.tripmozy.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRIP SUMMARY CARD -->
+      <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 18px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 12px;">
+          <div>
+            <span style="font-size: 10.5px; font-weight: 800; text-transform: uppercase; color: #2563eb; background: #dbeafe; padding: 2px 8px; border-radius: 4px; display: inline-block;">
+              📍 ${trip.destination}
+            </span>
+            <h2 style="margin: 6px 0 0 0; font-size: 18px; font-weight: 900; color: #0f172a;">
+              ${trip.title}
+            </h2>
+            <p style="margin: 4px 0 0 0; font-size: 11.5px; color: #475569;">
+              ${trip.subtitle}
+            </p>
+          </div>
+          <div style="text-align: right; background: #ffffff; padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 8px; shrink-0; min-width: 140px;">
+            <span style="font-size: 10px; color: #64748b; font-weight: 700; text-transform: uppercase; display: block;">Total Budget</span>
+            <span style="font-size: 20px; font-weight: 900; color: #1e3a8a;">${formatINR(minNeeded)}</span>
+            <span style="font-size: 9.5px; color: #64748b; display: block;">per person (₹ INR)</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0; font-size: 11px;">
+          <div>
+            <span style="color: #64748b; display: block; font-size: 10px; text-transform: uppercase; font-weight: 700;">Duration</span>
+            <strong style="color: #0f172a;">${durationStr}</strong>
+          </div>
+          <div>
+            <span style="color: #64748b; display: block; font-size: 10px; text-transform: uppercase; font-weight: 700;">Travelers</span>
+            <strong style="color: #0f172a;">${partyStr}</strong>
+          </div>
+          <div>
+            <span style="color: #64748b; display: block; font-size: 10px; text-transform: uppercase; font-weight: 700;">Cab Allocation</span>
+            <strong style="color: #0f172a;">${vehicleStr}</strong>
+          </div>
+          <div>
+            <span style="color: #64748b; display: block; font-size: 10px; text-transform: uppercase; font-weight: 700;">Stay Comfort</span>
+            <strong style="color: #0f172a;">${stayStr}</strong>
+          </div>
+        </div>
+
+        ${isInsuff ? `
+          <!-- INSUFFICIENT BUDGET NOTICE BOX -->
+          <div style="margin-top: 12px; padding: 10px 12px; background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 8px; font-size: 11px; color: #92400e; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 18px;">⚠️</span>
+            <span>
+              <strong>Budget Notice:</strong> The amount you entered (<strong>${formatINR(targetPerPerson)}</strong>) isn't sufficient for this trip, so please increase it to <strong>${formatINR(minNeeded)}</strong> per person (the minimum amount needed). This itinerary is planned with the realistic minimum amount of <strong>${formatINR(minNeeded)}</strong> per person.
+            </span>
+          </div>
+        ` : ''}
+      </div>
+
+      <!-- DAY-BY-DAY SCHEDULE (THE CORE DETAILS NEEDED) -->
+      <div style="margin-bottom: 18px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 12px 0; padding-bottom: 4px; border-bottom: 1.5px solid #cbd5e1;">
+          Day-by-Day Itinerary &amp; Attractions
+        </h3>
+        ${daysHtml}
+      </div>
+
+      <!-- ESSENTIAL GUIDELINES & INCLUSIONS -->
+      <div style="margin-bottom: 18px; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 10.5px; color: #334155; page-break-inside: avoid; break-inside: avoid;">
+        <strong style="color: #1e3a8a; font-size: 11px; display: block; margin-bottom: 6px;">TripMozy Assured Inclusions:</strong>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+          <div>✓ Dedicated Sanitized Vehicle with verified tourist permit &amp; commercial insurance</div>
+          <div>✓ Verified Homestays / Hotels with hot water, clean linen &amp; Wi-Fi</div>
+          <div>✓ Experienced local commercial driver allowance, hill toll taxes &amp; parking</div>
+          <div>✓ 24/7 Dedicated TripMozy Emergency Support (+91 9641866181) &bull; National Emergency: 112</div>
+        </div>
+      </div>
+
+      <!-- OFFICIAL FOOTER -->
+      <div style="padding-top: 12px; border-top: 2.5px solid #2563eb; text-align: center; font-size: 11.5px; color: #475569; page-break-inside: avoid; break-inside: avoid;">
+        <div style="font-weight: 900; color: #1e3a8a; font-size: 13px;">
+          TripMozy.com &bull; TripMozy Private Limited
+        </div>
+        <div style="margin-top: 3px;">
+          For hotel reservations, customized package modifications, or private cab bookings, chat with us on WhatsApp or call <strong>+91 9641866181</strong> | Email: <strong>tripmozy@gmail.com</strong>
+        </div>
+        <div style="margin-top: 5px; font-size: 10px; color: #94a3b8;">
+          &copy; ${new Date().getFullYear()} TripMozy.com. All rights reserved. Registered Indian Tourism Partner.
+        </div>
+      </div>
+
+    </div>
+  `;
 }

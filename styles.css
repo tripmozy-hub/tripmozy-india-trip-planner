@@ -334,16 +334,53 @@ input[type=number] {
   animation: pulseRing 2.5s infinite ease-in-out;
 }
 
-/* Print Styles */
+/* Printable Itinerary Document (Screen: Hidden) */
+#printableItineraryDoc {
+  display: none;
+}
+
+/* Print Styles: Downloads & Prints ONLY the Itinerary Voucher */
 @media print {
-  body {
-    background-color: #ffffff !important;
-    color: #0f172a !important;
+  @page {
+    size: A4 portrait;
+    margin: 12mm 15mm 15mm 15mm;
   }
-  .no-print, nav, header, #heroSection, #promoBar, footer, #quoteModal, #aiRefineBox, #mapContainer, .tab-btn {
+
+  html, body {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Hide entire interactive web app */
+  nav, header, #heroSection, #loadingSection, #itineraryDashboard, #promoBar, footer,
+  #quoteModal, #customPlaceFormCard, #aiRefineBox, #mapContainer, .tab-btn, .no-print,
+  button, input, select, textarea, .btn-gradient, .btn-white, .btn-blue {
     display: none !important;
   }
-  #itineraryDashboard, #view-itinerary, #view-budget {
+
+  /* Display only the dedicated printable itinerary */
+  #printableItineraryDoc {
     display: block !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .pdf-day-card {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 16px !important;
+  }
+
+  .pdf-stop-item {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 }

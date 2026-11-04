@@ -510,6 +510,28 @@
     <!-- RESULTS ITINERARY DASHBOARD -->
     <div id="itineraryDashboard" class="hidden space-y-6">
       
+      <!-- INSUFFICIENT BUDGET NOTICE BANNER -->
+      <div id="insufficientBudgetBanner" class="hidden p-4 sm:p-5 rounded-2xl bg-amber-50/95 border-2 border-amber-300 text-amber-950 shadow-sm transition-all">
+        <div class="flex items-start gap-3.5">
+          <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 font-bold text-lg shadow-2xs">
+            ⚠️
+          </div>
+          <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+              <h4 class="text-sm sm:text-base font-extrabold text-amber-900 flex items-center gap-2">
+                <span>Budget Adjustment Notice: Entered Budget is Insufficient</span>
+              </h4>
+              <span id="insufficientBudgetMinBadge" class="text-xs font-bold text-amber-900 bg-amber-200/90 px-2.5 py-0.5 rounded-full border border-amber-300 w-fit">
+                Realistic Minimum Required
+              </span>
+            </div>
+            <p id="insufficientBudgetText" class="text-xs sm:text-sm text-amber-900/90 mt-1 leading-relaxed">
+              The amount you entered isn't sufficient for this trip, so please increase it to the amount calculated below. Here is your itinerary planned with the realistic minimum amount needed.
+            </p>
+          </div>
+        </div>
+      </div>
+      
       <!-- SUMMARY HERO CARD -->
       <div class="ui-card p-6 sm:p-7 bg-white border border-slate-200 shadow-sm">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -541,9 +563,9 @@
             </div>
 
             <div class="grid grid-cols-3 sm:flex items-center gap-2 w-full sm:w-auto">
-              <button onclick="window.print()" class="btn-white px-2.5 sm:px-3 py-2 sm:py-1.5 text-xs font-semibold flex items-center justify-center gap-1.5 rounded-xl shadow-2xs">
-                <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-600"></i>
-                <span>Print</span>
+              <button onclick="downloadItineraryPDF()" class="btn-gradient px-3 py-2 sm:py-1.5 text-xs font-bold flex items-center justify-center gap-1.5 rounded-xl shadow-xs text-white" title="Download clean official PDF itinerary with TripMozy details">
+                <i data-lucide="file-down" class="w-3.5 h-3.5"></i>
+                <span>Download PDF</span>
               </button>
               <button onclick="shareTrip()" class="btn-white px-2.5 sm:px-3 py-2 sm:py-1.5 text-xs font-semibold flex items-center justify-center gap-1.5 rounded-xl shadow-2xs">
                 <i data-lucide="share-2" class="w-3.5 h-3.5 text-slate-600"></i>
@@ -785,10 +807,16 @@
           <div class="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none flex-grow" id="dayFilterChips">
             <!-- Dynamically populated day filter chips -->
           </div>
-          <button type="button" onclick="toggleCustomPlaceForm()" id="toggleCustomPlaceBtn" class="btn-gradient px-4 py-2 text-xs font-bold rounded-xl shadow-md flex items-center justify-center gap-1.5 shrink-0 self-start md:self-auto">
-            <i data-lucide="plus-circle" class="w-4 h-4"></i>
-            <span>Add Custom Tourist Place</span>
-          </button>
+          <div class="flex items-center gap-2 shrink-0 self-start md:self-auto">
+            <button type="button" onclick="downloadItineraryPDF()" class="btn-white px-3.5 py-2 text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 border border-slate-300 hover:border-blue-400 text-slate-800" title="Download clean PDF itinerary with official TripMozy details">
+              <i data-lucide="file-down" class="w-4 h-4 text-blue-600"></i>
+              <span>Download PDF</span>
+            </button>
+            <button type="button" onclick="toggleCustomPlaceForm()" id="toggleCustomPlaceBtn" class="btn-gradient px-4 py-2 text-xs font-bold rounded-xl shadow-md flex items-center justify-center gap-1.5">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span>Add Custom Tourist Place</span>
+            </button>
+          </div>
         </div>
 
         <!-- Collapsible Custom Tourist Place Form Modal / Drawer -->
@@ -1284,5 +1312,7 @@
     </div>
   </div>
 
+  <!-- DEDICATED OFFICIAL PRINTABLE ITINERARY (SHOWN ONLY DURING PRINT / PDF DOWNLOAD) -->
+  <div id="printableItineraryDoc"></div>
 </body>
 </html>

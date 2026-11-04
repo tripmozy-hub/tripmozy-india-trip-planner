@@ -345,82 +345,150 @@
     var costPerPerson = Math.round(grandTotalTrip / (totalPax || 1));
     var costPerDay = Math.round(grandTotalTrip / (days || 1));
 
+    // Calculate the absolute minimum realistic amount needed per person for this trip in India
+    var econRoomRate = HOTEL_TIER_RATES.Economy.baseRatePerRoom; // ₹1,600/room/night
+    var minStayTotal = (roomAlloc.roomsCount * econRoomRate * nights) + 
+                       (roomAlloc.extraBedsKids * HOTEL_TIER_RATES.Economy.extraBedChild * nights) +
+                       (roomAlloc.extraBedsAdults * HOTEL_TIER_RATES.Economy.extraBedAdult * nights);
+    var minDailyTransit = isHilly ? 1800 : 1400; // Economy cab / verified local transport
+    var minTransitTotal = minDailyTransit * days;
+    var minDailyMeal = 400; // Clean authentic regional dhabas
+    var minFoodTotal = minDailyMeal * totalPax * days;
+    var minActivitiesTotal = 200 * totalPax * days;
+    var minSubtotal = minStayTotal + minTransitTotal + minFoodTotal + minActivitiesTotal + permitsAndFees;
+    var minContingency = Math.max(300, Math.round(minSubtotal * 0.05));
+    var minFeasibleTotalTrip = minSubtotal + minContingency;
+    var minRequiredPerPerson = Math.round(minFeasibleTotalTrip / (totalPax || 1));
+
     // Target Budget Analysis (Shortfall or Surplus detection)
     var targetBudgetPerPerson = Number(params.targetBudget) || 0;
     var budgetStatus = 'unspecified';
     var varianceAmount = 0;
     var budgetRecommendation = '';
     var optimizedPlan = null;
+    var isInsufficient = false;
+    var minimumAmountNeeded = costPerPerson;
+    var insufficientNote = '';
 
     if (targetBudgetPerPerson > 0) {
       var targetTotalTrip = targetBudgetPerPerson * totalPax;
       varianceAmount = targetTotalTrip - grandTotalTrip;
 
-      // Build Target Budget Optimized Plan (Strictly <= targetBudgetPerPerson)
-      var optTotalTrip = targetTotalTrip;
-      var optStayAmount = Math.round(optTotalTrip * 0.38);
-      var optRoomRate = Math.max(900, Math.round(optStayAmount / (roomAlloc.roomsCount * nights)));
-      var totalOptStay = optRoomRate * roomAlloc.roomsCount * nights;
-
-      var optTransitAmount = Math.round(optTotalTrip * 0.28);
-      var optDailyTransit = Math.max(800, Math.round(optTransitAmount / days));
-      var totalOptTransit = optDailyTransit * days;
-
-      var optMealAmount = Math.round(optTotalTrip * 0.18);
-      var optDailyMeal = Math.max(300, Math.round(optMealAmount / (totalPax * days)));
-      var totalOptFood = optDailyMeal * totalPax * days;
-
-      var totalOptActivities = Math.round(optTotalTrip * 0.10);
-
-      var optSubtotal = totalOptStay + totalOptTransit + totalOptFood + totalOptActivities;
-      var totalOptBuffer = Math.max(250, optTotalTrip - optSubtotal);
-      var optFinalGrandTotal = optSubtotal + totalOptBuffer;
-      var optFinalPerPerson = Math.round(optFinalGrandTotal / totalPax);
-
-      optimizedPlan = {
-        title: "Your Budget Plan (Under ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + " Limit)",
-        targetBudgetPerPerson: targetBudgetPerPerson,
-        costPerPerson: optFinalPerPerson,
-        grandTotalTrip: optFinalGrandTotal,
-        tierName: "Budget Homestay / Value Standard",
-        stay: {
-          label: "Verified Budget Homestay / Clean Hotel (" + nights + " Nights, " + roomAlloc.description + ")",
-          dailyRate: optRoomRate,
-          amount: totalOptStay
-        },
-        transport: {
-          label: "Smart Cab / Shared Transfers (" + days + " Days)",
-          dailyRate: optDailyTransit,
-          amount: totalOptTransit
-        },
-        food: {
-          label: "Regional Thalis & Authentic Dhabas (₹" + optDailyMeal + "/person/day)",
-          amount: totalOptFood
-        },
-        activities: {
-          label: "Core Viewpoints, Temples & Nature Trails",
-          amount: totalOptActivities
-        },
-        contingency: {
-          label: "Emergency Buffer & Reserves",
-          amount: totalOptBuffer
-        },
-        breakdownPerPerson: {
-          stay: Math.round(totalOptStay / totalPax),
-          transport: Math.round(totalOptTransit / totalPax),
-          food: Math.round(totalOptFood / totalPax),
-          activities: Math.round(totalOptActivities / totalPax),
-          shopping: Math.round(totalOptBuffer / totalPax)
-        }
-      };
-
-      if (varianceAmount >= 0) {
-        budgetStatus = 'surplus';
-        budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person comfortably covers this " + tier + " tier itinerary with a planning buffer of ₹" + Math.round(varianceAmount / totalPax).toLocaleString('en-IN') + "/person.";
-      } else {
+      if (targetBudgetPerPerson < minRequiredPerPerson) {
+        // User budget is below absolute minimum feasible cost
         budgetStatus = 'shortfall';
+        isInsufficient = true;
+        minimumAmountNeeded = minRequiredPerPerson;
+        insufficientNote = "The amount you entered (₹" + targetBudgetPerPerson.toLocaleString('en-IN') + ") isn't sufficient for this " + days + "-day trip, so please increase it to ₹" + minRequiredPerPerson.toLocaleString('en-IN') + " per person (the minimum amount needed). Here is your complete itinerary planned with the realistic minimum amount needed.";
+        budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person is lower than the realistic minimum cost (₹" + minRequiredPerPerson.toLocaleString('en-IN') + "/person). The amount you entered isn't sufficient for the trip, so please increase it to ₹" + minRequiredPerPerson.toLocaleString('en-IN') + " per person.";
+
+        optimizedPlan = {
+          title: "Minimum Feasible Plan (₹" + minRequiredPerPerson.toLocaleString('en-IN') + " Needed)",
+          targetBudgetPerPerson: targetBudgetPerPerson,
+          costPerPerson: minRequiredPerPerson,
+          grandTotalTrip: minFeasibleTotalTrip,
+          tierName: "Verified Budget Homestay / Smart Value",
+          isInsufficient: true,
+          stay: {
+            label: "Verified Budget Homestay (" + nights + " Nights, " + roomAlloc.description + ")",
+            dailyRate: econRoomRate,
+            amount: minStayTotal
+          },
+          transport: {
+            label: "Smart Cab / Shared Transit (" + days + " Days)",
+            dailyRate: minDailyTransit,
+            amount: minTransitTotal
+          },
+          food: {
+            label: "Regional Thalis & Authentic Dhabas (₹" + minDailyMeal + "/person/day)",
+            amount: minFoodTotal
+          },
+          activities: {
+            label: "Core Viewpoints, Temples & Nature Trails",
+            amount: minActivitiesTotal
+          },
+          contingency: {
+            label: "Emergency Buffer & Reserves",
+            amount: minContingency
+          },
+          breakdownPerPerson: {
+            stay: Math.round(minStayTotal / totalPax),
+            transport: Math.round(minTransitTotal / totalPax),
+            food: Math.round(minFoodTotal / totalPax),
+            activities: Math.round(minActivitiesTotal / totalPax),
+            shopping: Math.round(minContingency / totalPax)
+          }
+        };
+      } else if (targetBudgetPerPerson < costPerPerson) {
+        // User budget is below requested tier cost (e.g. Moderate/Luxury)
+        budgetStatus = 'shortfall';
+        isInsufficient = true;
+        minimumAmountNeeded = costPerPerson;
+        insufficientNote = "The amount you entered (₹" + targetBudgetPerPerson.toLocaleString('en-IN') + ") isn't sufficient for the " + tier + " tier comfort (needs ₹" + costPerPerson.toLocaleString('en-IN') + "/person). Please increase it to ₹" + costPerPerson.toLocaleString('en-IN') + " per person (or minimum ₹" + minRequiredPerPerson.toLocaleString('en-IN') + "/person for budget homestays).";
         var deficitPerPax = Math.round(Math.abs(varianceAmount) / totalPax);
-        budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person is ₹" + deficitPerPax.toLocaleString('en-IN') + " lower than the realistic " + tier + " tier cost (₹" + costPerPerson.toLocaleString('en-IN') + "/person). We have analyzed both options for you: 1) TripMozy Recommended Plan (₹" + costPerPerson.toLocaleString('en-IN') + "/person with 3★ comfort), and 2) Custom Plan (₹" + optFinalPerPerson.toLocaleString('en-IN') + "/person fitted strictly under your ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + " budget).";
+        budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person is ₹" + deficitPerPax.toLocaleString('en-IN') + " lower than the realistic " + tier + " tier cost (₹" + costPerPerson.toLocaleString('en-IN') + "/person). The amount you entered isn't sufficient for the trip, so please increase it to ₹" + costPerPerson.toLocaleString('en-IN') + " per person.";
+
+        var optTotalTrip = targetTotalTrip;
+        var optStayAmount = Math.round(optTotalTrip * 0.38);
+        var optRoomRate = Math.max(1200, Math.round(optStayAmount / (roomAlloc.roomsCount * nights)));
+        var totalOptStay = optRoomRate * roomAlloc.roomsCount * nights;
+
+        var optTransitAmount = Math.round(optTotalTrip * 0.28);
+        var optDailyTransit = Math.max(900, Math.round(optTransitAmount / days));
+        var totalOptTransit = optDailyTransit * days;
+
+        var optMealAmount = Math.round(optTotalTrip * 0.18);
+        var optDailyMeal = Math.max(350, Math.round(optMealAmount / (totalPax * days)));
+        var totalOptFood = optDailyMeal * totalPax * days;
+
+        var totalOptActivities = Math.round(optTotalTrip * 0.10);
+        var optSubtotal = totalOptStay + totalOptTransit + totalOptFood + totalOptActivities;
+        var totalOptBuffer = Math.max(250, optTotalTrip - optSubtotal);
+        var optFinalGrandTotal = optSubtotal + totalOptBuffer;
+        var optFinalPerPerson = Math.round(optFinalGrandTotal / totalPax);
+
+        optimizedPlan = {
+          title: "Custom Plan (₹" + optFinalPerPerson.toLocaleString('en-IN') + " per person)",
+          targetBudgetPerPerson: targetBudgetPerPerson,
+          costPerPerson: optFinalPerPerson,
+          grandTotalTrip: optFinalGrandTotal,
+          tierName: "Budget Homestay / Value Standard",
+          isInsufficient: false,
+          stay: {
+            label: "Verified Budget Homestay / Clean Hotel (" + nights + " Nights, " + roomAlloc.description + ")",
+            dailyRate: optRoomRate,
+            amount: totalOptStay
+          },
+          transport: {
+            label: "Smart Cab / Shared Transfers (" + days + " Days)",
+            dailyRate: optDailyTransit,
+            amount: totalOptTransit
+          },
+          food: {
+            label: "Regional Thalis & Authentic Dhabas (₹" + optDailyMeal + "/person/day)",
+            amount: totalOptFood
+          },
+          activities: {
+            label: "Core Viewpoints, Temples & Nature Trails",
+            amount: totalOptActivities
+          },
+          contingency: {
+            label: "Emergency Buffer & Reserves",
+            amount: totalOptBuffer
+          },
+          breakdownPerPerson: {
+            stay: Math.round(totalOptStay / totalPax),
+            transport: Math.round(totalOptTransit / totalPax),
+            food: Math.round(totalOptFood / totalPax),
+            activities: Math.round(totalOptActivities / totalPax),
+            shopping: Math.round(totalOptBuffer / totalPax)
+          }
+        };
+      } else {
+        budgetStatus = 'surplus';
+        isInsufficient = false;
+        minimumAmountNeeded = costPerPerson;
+        budgetRecommendation = "Your target budget of ₹" + targetBudgetPerPerson.toLocaleString('en-IN') + "/person comfortably covers this " + tier + " tier itinerary with a planning buffer of ₹" + Math.round(varianceAmount / totalPax).toLocaleString('en-IN') + "/person.";
       }
     }
 
@@ -483,6 +551,10 @@
       budgetAnalysis: {
         status: budgetStatus,
         hasTarget: targetBudgetPerPerson > 0,
+        isInsufficient: isInsufficient,
+        minimumAmountNeeded: minimumAmountNeeded,
+        minRequiredPerPerson: minRequiredPerPerson,
+        insufficientNote: insufficientNote,
         targetPerPerson: targetBudgetPerPerson,
         calculatedPerPerson: costPerPerson,
         variancePerPerson: Math.round(varianceAmount / totalPax),
