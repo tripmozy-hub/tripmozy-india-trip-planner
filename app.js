@@ -1861,17 +1861,20 @@ function generateIndianTripPlan(params) {
 
       // Scale days if needed
       if (params.days !== preset.days) {
-        const factor = params.days / preset.days;
         preset.days = params.days;
-        preset.costPerPerson = Math.round(preset.costPerPerson * factor);
-        preset.budgetBreakdown = {
-          stay: Math.round(preset.budgetBreakdown.stay * factor),
-          food: Math.round(preset.budgetBreakdown.food * factor),
-          activities: Math.round(preset.budgetBreakdown.activities * factor),
-          transport: Math.round(preset.budgetBreakdown.transport * factor),
-          shopping: Math.round(preset.budgetBreakdown.shopping * factor)
-        };
         preset.daysPlan = scaleIndianDaysPlan(preset.daysPlan, params.days, preset.destination, preset.coords);
+        // Only scale budget if accurateBudget was not available; otherwise accurateBudget is ALREADY calculated for params.days!
+        if (!accurateBudget) {
+          const factor = params.days / preset.days;
+          preset.costPerPerson = Math.round(preset.costPerPerson * factor);
+          preset.budgetBreakdown = {
+            stay: Math.round(preset.budgetBreakdown.stay * factor),
+            food: Math.round(preset.budgetBreakdown.food * factor),
+            activities: Math.round(preset.budgetBreakdown.activities * factor),
+            transport: Math.round(preset.budgetBreakdown.transport * factor),
+            shopping: Math.round(preset.budgetBreakdown.shopping * factor)
+          };
+        }
       }
 
       // Compute distances from base coordinates to all attractions
@@ -2136,6 +2139,7 @@ function initManualBudgetState(trip, manualBudgetInput) {
   const analysis = trip.accurateBudget?.budgetAnalysis;
   if (analysis && analysis.isInsufficient) {
     manualBudgetInput = analysis.minimumAmountNeeded || trip.costPerPerson;
+    trip.costPerPerson = manualBudgetInput;
   }
   const b = trip.budgetBreakdown;
   if (manualBudgetInput && manualBudgetInput > 0) {
@@ -2223,6 +2227,7 @@ function renderDashboard(trip) {
   if (analysis && analysis.isInsufficient && analysis.targetPerPerson > 0) {
     if (insuffBanner) insuffBanner.classList.remove('hidden');
     var minAmt = analysis.minimumAmountNeeded || trip.costPerPerson;
+    trip.costPerPerson = minAmt;
     if (insuffText) {
       insuffText.innerHTML = `The amount you entered (<strong>${formatINR(analysis.targetPerPerson)}</strong>) isn't sufficient for this ${trip.days}-day trip, so please increase it to <strong>${formatINR(minAmt)}</strong> per person (the minimum amount needed). Here is your complete itinerary planned with the realistic minimum amount needed.`;
     }
@@ -2299,10 +2304,14 @@ function selectActiveBudgetPlan(planType) {
   var totalBudgetEl = document.getElementById('dashTotalBudget');
 
   if (planType === 'target') {
-    // Select Target Plan (Under Budget)
+    // Select Target Plan (Under Budget / Minimum Feasible)
     currentTrip.activePlanType = 'target';
-    currentTrip.costPerPerson = opt.costPerPerson;
-    currentTrip.grandTotalTrip = opt.grandTotalTrip;
+    var activeCost = opt.costPerPerson;
+    if (analysis.isInsufficient && analysis.minimumAmountNeeded) {
+      activeCost = analysis.minimumAmountNeeded;
+    }
+    currentTrip.costPerPerson = activeCost;
+    currentTrip.grandTotalTrip = activeCost * ((currentTrip.adults || 2) + (currentTrip.children || 0));
     currentTrip.selectedPlanTitle = opt.title;
 
     manualBudgetState = {
@@ -2324,7 +2333,7 @@ function selectActiveBudgetPlan(planType) {
     if (badgeRec) badgeRec.classList.add('hidden');
 
     if (totalBudgetEl) {
-      totalBudgetEl.textContent = formatINR(opt.costPerPerson);
+      totalBudgetEl.textContent = formatINR(activeCost);
       totalBudgetEl.className = 'text-2xl font-black text-emerald-700 font-heading';
     }
   } else {
@@ -4085,7 +4094,11 @@ function renderPrintableItineraryDoc(trip) {
   var analysis = trip.accurateBudget?.budgetAnalysis;
   var isInsuff = analysis && analysis.isInsufficient;
   var targetPerPerson = analysis?.targetPerPerson || 0;
-  var minNeeded = analysis?.minimumAmountNeeded || trip.costPerPerson;
+  var minNeeded = trip.costPerPerson;
+  if (isInsuff && analysis && analysis.minimumAmountNeeded) {
+    minNeeded = analysis.minimumAmountNeeded;
+    trip.costPerPerson = minNeeded;
+  }
 
   var daysHtml = '';
   (trip.daysPlan || []).forEach(function(day, dIdx) {
