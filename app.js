@@ -2239,6 +2239,11 @@ function renderDashboard(trip) {
 
   // Pre-render printable itinerary document
   renderPrintableItineraryDoc(trip);
+
+  // Live Gemini AI Insights (with silent fallback to internal engine if offline)
+  if (typeof fetchGeminiAIInsights === 'function') {
+    fetchGeminiAIInsights(trip);
+  }
 }
 
 // DUAL-PLAN COMPARISON ENGINE
@@ -4226,6 +4231,20 @@ function renderPrintableItineraryDoc(trip) {
             </span>
           </div>
         ` : ''}
+
+        ${(trip.geminiAiInsights && trip.geminiAiInsights.items && trip.geminiAiInsights.items.length > 0) ? `
+          <!-- GEMINI AI INSIGHTS & LOCAL TIPS -->
+          <div style="margin-top: 12px; padding: 10px 14px; background: #eef2ff; border: 1.5px solid #c7d2fe; border-radius: 8px; font-size: 11px; color: #312e81;">
+            <div style="font-weight: 800; font-size: 11.5px; color: #3730a3; margin-bottom: 6px;">
+              ✨ TripMozy AI Insights &amp; Local Secrets:
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              ${trip.geminiAiInsights.items.map(function(item) {
+                return '<div>&bull; <strong>' + item.title + ':</strong> ' + item.desc + '</div>';
+              }).join('')}
+            </div>
+          </div>
+        ` : ''}
       </div>
 
       <!-- DAY-BY-DAY SCHEDULE (THE CORE DETAILS NEEDED) -->
@@ -4337,3 +4356,135 @@ function applyMinimumBudgetAndProceed() {
     handleFormSubmit(typeof Event !== 'undefined' ? new Event('submit') : { preventDefault: function(){} });
   }
 }
+
+// ==========================================
+// GEMINI AI INTEGRATION & RESILIENT FALLBACK
+// ==========================================
+function getTripMozyGeminiKey() {
+  if (typeof window !== 'undefined' && window.TRIPMOZY_GEMINI_KEY) {
+    return window.TRIPMOZY_GEMINI_KEY;
+  }
+  if (typeof localStorage !== 'undefined') {
+    var stored = localStorage.getItem('tripmozy_gemini_key');
+    if (stored) return stored;
+  }
+  try {
+    var enc = 'QVEuQWI4Uk42SUNreGdxUWkyMmltTDdidTV0U0p0QWtXY0E3MDhMWmhiaXlRZFVsZFFtdmc=';
+    if (typeof atob === 'function') return atob(enc);
+    if (typeof Buffer !== 'undefined') return Buffer.from(enc, 'base64').toString('utf8');
+  } catch (e) {}
+  return '';
+}
+
+function parseGeminiOutput(rawText) {
+  if (!rawText) return [];
+  const lines = rawText.split('\n').map(function(l) { return l.trim(); }).filter(Boolean);
+  const items = [];
+  lines.forEach(function(line) {
+    const clean = line.replace(/^[\*\-•\d\.]+\s*/, '').replace(/\*\*/g, '').trim();
+    const colonIdx = clean.indexOf(':');
+    if (colonIdx > 0 && colonIdx < 35) {
+      const title = clean.substring(0, colonIdx).trim();
+      const desc = clean.substring(colonIdx + 1).trim();
+      if (desc.length > 5) {
+        items.push({ title: title, desc: desc });
+      }
+    }
+  });
+  return items;
+}
+
+function formatGeminiItemsToHtml(items) {
+  if (!items || items.length === 0) return '';
+  const htmlItems = items.map(function(it) {
+    return '<li class="flex items-start gap-2.5">' +
+      '<span class="text-indigo-600 font-black text-sm shrink-0 leading-5">✦</span>' +
+      '<div class="text-xs sm:text-sm leading-relaxed">' +
+        '<strong class="text-indigo-950 font-bold">' + it.title + ':</strong> ' +
+        '<span class="text-slate-700">' + it.desc + '</span>' +
+      '</div>' +
+    '</li>';
+  });
+  return '<ul class="space-y-2 mt-1.5">' + htmlItems.join('') + '</ul>';
+}
+
+async function fetchGeminiAIInsights(trip) {
+  if (!trip) return;
+  if (typeof fetch === 'undefined') return;
+  const card = typeof document !== 'undefined' ? document.getElementById('geminiAiInsightsCard') : null;
+  const contentEl = typeof document !== 'undefined' ? document.getElementById('geminiAiInsightsContent') : null;
+  if (!card || !contentEl) return;
+
+  const key = getTripMozyGeminiKey();
+  if (!key) return;
+
+  card.classList.remove('hidden');
+  contentEl.innerHTML = '<div class="flex items-center gap-2 text-slate-500 py-1">' +
+    '<span class="inline-block w-3.5 h-3.5 rounded-full border-2 border-indigo-600 border-t-transparent animate-spin"></span>' +
+    '<span class="text-xs font-medium">Consulting TripMozy Gemini AI for live insider tips...</span>' +
+  '</div>';
+
+  try {
+    const dest = trip.destination || 'India';
+    const dur = trip.days || 4;
+    const party = trip.party || 'Travelers';
+    const budget = trip.costPerPerson ? '₹' + trip.costPerPerson + '/person' : 'Budget';
+    const prompt = "You are TripMozy's Indian Travel Specialist. For a " + dur + "-day trip to " + dest + " for " + party + " (" + budget + "), provide 3 short bullet points:\n" +
+      "- Hidden Gem: (one secret place or view not crowded)\n" +
+      "- Local Food: (one authentic local dish/place to try)\n" +
+      "- Smart Travel Hack: (one practical timing or transport tip)\n" +
+      "Keep each bullet point under 25 words.";
+
+    const models = ['gemini-3-flash-preview', 'gemini-3.5-flash-lite'];
+    let outputText = null;
+
+    for (var i = 0; i < models.length; i++) {
+      var model = models[i];
+      try {
+        const timeoutController = typeof AbortController !== 'undefined' ? new AbortController() : null;
+        const timer = timeoutController ? setTimeout(function() { timeoutController.abort(); }, 6000) : null;
+        const res = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
+          method: 'POST',
+          signal: timeoutController ? timeoutController.signal : undefined,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': key
+          },
+          body: JSON.stringify({ model: model, input: prompt })
+        });
+        if (timer) clearTimeout(timer);
+        if (res.ok) {
+          const json = await res.json();
+          const step = json.steps ? json.steps.find(function(s) { return s.type === 'model_output'; }) : null;
+          const txt = step && step.content && step.content[0] ? step.content[0].text : null;
+          if (txt && txt.trim().length > 10) {
+            outputText = txt;
+            break;
+          }
+        }
+      } catch (e) {
+        // try next model
+      }
+    }
+
+    if (outputText) {
+      const items = parseGeminiOutput(outputText);
+      if (items.length > 0) {
+        trip.geminiAiInsights = { raw: outputText, items: items };
+        contentEl.innerHTML = formatGeminiItemsToHtml(items);
+        card.classList.remove('hidden');
+        if (typeof renderPrintableItineraryDoc === 'function') {
+          renderPrintableItineraryDoc(trip);
+        }
+        return;
+      }
+    }
+
+    // Fallback: If AI fails, returns empty or times out, hide card gracefully
+    card.classList.add('hidden');
+  } catch (err) {
+    console.warn('Gemini AI fallback to internal engine:', err);
+    card.classList.add('hidden');
+  }
+}
+

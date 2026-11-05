@@ -711,6 +711,29 @@
         </div>
       </div>
 
+      <!-- GEMINI AI INSIGHTS & LOCAL INTELLIGENCE CARD -->
+      <div id="geminiAiInsightsCard" class="hidden p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-purple-50/90 via-indigo-50/80 to-blue-50/90 border-2 border-indigo-200/90 text-indigo-950 shadow-sm transition-all">
+        <div class="flex items-start gap-3 sm:gap-3.5">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center shrink-0 font-bold text-base sm:text-lg shadow-sm">
+            ✨
+          </div>
+          <div class="flex-grow min-w-0">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
+              <h4 class="text-sm sm:text-base font-extrabold text-indigo-950 flex items-center gap-2 flex-wrap">
+                <span>TripMozy AI Intelligence</span>
+                <span class="text-[10px] font-black uppercase tracking-wider bg-purple-200/90 text-purple-900 px-2 py-0.5 rounded-full border border-purple-300">Live Gemini AI</span>
+              </h4>
+              <span class="text-[11px] font-semibold text-indigo-700 bg-white/90 px-2.5 py-0.5 rounded-full border border-indigo-100 shadow-2xs w-fit">
+                Personalized Local Advice
+              </span>
+            </div>
+            <div id="geminiAiInsightsContent" class="text-xs sm:text-sm text-slate-800 leading-relaxed">
+              <!-- Rendered dynamically from Gemini API or hidden if offline -->
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- TRIPMOZY VERIFIED AI DISCLAIMER (PHASE 9) -->
       <div class="p-3.5 bg-amber-50/90 border border-amber-200/90 rounded-2xl flex items-start gap-3 text-xs text-amber-900 shadow-2xs">
         <i data-lucide="shield-check" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
