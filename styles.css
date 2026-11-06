@@ -1,13 +1,16 @@
-/* TripMozy.com - Official Theme & UI/UX Styling */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+/* TripMozy.com - Official Luxury Theme & Prestige Typography */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
 
 :root {
-  --primary: #1967d2;
-  --primary-hover: #1251a8;
-  --primary-gradient: linear-gradient(135deg, #1967d2 0%, #3b82f6 50%, #4f46e5 100%);
-  --dark-navy: #0e1c2e;
-  --text-dark: #1a2b49;
-  --text-muted: #5e6d77;
+  --primary: #0f243e;
+  --primary-hover: #17365d;
+  --primary-gradient: linear-gradient(135deg, #0a1829 0%, #112845 45%, #183a65 100%);
+  --gold-primary: #d4af37;
+  --gold-amber: #d97706;
+  --gold-light: #fef3c7;
+  --dark-navy: #08101a;
+  --text-dark: #0f1d2e;
+  --text-muted: #536473;
   --bg-page: #f8fafc;
   --bg-card: #ffffff;
   --border-light: #eaeeef;
@@ -18,7 +21,7 @@
 /* Base & Universal Mobile Resets */
 *, *::before, *::after {
   box-sizing: border-box;
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -29,20 +32,26 @@ html {
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: #f8fafc;
-  color: #1a2b49;
+  color: #0f1d2e;
   overflow-x: hidden;
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading {
-  font-family: 'Poppins', sans-serif;
+h1, h2, h3, .font-heading, .luxury-heading {
+  font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
-  color: #1a2b49;
-  letter-spacing: -0.02em;
+  color: #08101a;
+  letter-spacing: -0.015em;
+}
+
+h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  color: #0f1d2e;
 }
 
 /* Fast-touch manipulation for zero click-delay on mobile browsers */
@@ -71,13 +80,13 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
   height: 100vh;
   z-index: -10;
   pointer-events: none;
-  background-color: #0b1523;
+  background-color: #08101a;
   background-image: 
     linear-gradient(180deg, 
-      rgba(10, 20, 36, 0.60) 0%, 
-      rgba(14, 28, 46, 0.68) 280px, 
-      rgba(241, 245, 249, 0.88) 720px, 
-      rgba(248, 250, 252, 0.96) 100%),
+      rgba(8, 16, 26, 0.65) 0%, 
+      rgba(11, 24, 38, 0.72) 280px, 
+      rgba(241, 245, 249, 0.90) 720px, 
+      rgba(248, 250, 252, 0.97) 100%),
     url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=2400&q=85');
   background-position: center top;
   background-size: cover;
@@ -87,11 +96,11 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
 }
 
 .luxury-hero-showcase {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(245, 158, 11, 0.18);
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(217, 119, 6, 0.22);
 }
 
 .travel-hero-mesh {
@@ -101,11 +110,13 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
 
 /* Luxury Aesthetics & Phone-Optimized Styling */
 .luxury-gold-shimmer {
-  background: linear-gradient(135deg, #b45309 0%, #d97706 25%, #f59e0b 50%, #b45309 85%, #d97706 100%);
+  background: linear-gradient(135deg, #92400e 0%, #b45309 20%, #d97706 40%, #f59e0b 55%, #fbbf24 70%, #d97706 85%, #92400e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% auto;
-  animation: goldSheen 6s linear infinite;
+  animation: goldSheen 5s linear infinite;
+  display: inline-block;
+  text-shadow: 0 2px 20px rgba(245, 158, 11, 0.25);
 }
 
 @keyframes goldSheen {
@@ -115,9 +126,9 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
 }
 
 .luxury-badge {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(254, 243, 199, 0.5) 100%);
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  box-shadow: 0 2px 8px -1px rgba(217, 119, 6, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(254, 243, 199, 0.6) 100%);
+  border: 1px solid rgba(217, 119, 6, 0.4);
+  box-shadow: 0 3px 12px -1px rgba(217, 119, 6, 0.16);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -145,10 +156,10 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
 
 /* TripMozy Topbar */
 .bravo_topbar {
-  background-color: #0e1c2e;
+  background-color: #08101a;
   color: #c5d0db;
   font-size: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.22);
 }
 .bravo_topbar a {
   color: #c5d0db;
@@ -156,7 +167,7 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
   transition: color 0.15s ease;
 }
 .bravo_topbar a:hover {
-  color: #ffffff;
+  color: #fbbf24;
 }
 
 /* TripMozy Header */
@@ -165,34 +176,37 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
   border-bottom: 1px solid #eaeeef;
 }
 
-/* Eye-Catching Gradient Button */
+/* Eye-Catching Luxury Gradient Button */
 .btn-gradient {
-  background: linear-gradient(135deg, #1967d2 0%, #2563eb 50%, #4338ca 100%);
+  background: linear-gradient(135deg, #0a1829 0%, #112845 45%, #183a65 100%);
   color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 700;
-  border-radius: 12px;
-  border: none;
+  border-radius: 14px;
+  border: 1.5px solid rgba(212, 175, 55, 0.65);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(25, 103, 210, 0.35);
+  box-shadow: 0 6px 20px -2px rgba(10, 24, 41, 0.45), 0 0 14px rgba(212, 175, 55, 0.22);
   position: relative;
   overflow: hidden;
+  letter-spacing: 0.01em;
 }
 .btn-gradient:hover {
-  background: linear-gradient(135deg, #1251a8 0%, #1d4ed8 50%, #3730a3 100%);
-  box-shadow: 0 8px 24px rgba(25, 103, 210, 0.45);
-  transform: translateY(-1.5px);
+  background: linear-gradient(135deg, #112845 0%, #193c68 50%, #214f8a 100%);
+  border-color: #f59e0b;
+  box-shadow: 0 10px 28px -3px rgba(10, 24, 41, 0.55), 0 0 22px rgba(245, 158, 11, 0.45);
+  transform: translateY(-2px);
 }
 .btn-gradient:active {
-  transform: translateY(0) scale(0.98);
-  box-shadow: 0 2px 8px rgba(25, 103, 210, 0.3);
+  transform: translateY(0) scale(0.985);
+  box-shadow: 0 3px 10px rgba(10, 24, 41, 0.4);
 }
 
-/* Shimmer Highlight on Action Buttons */
+/* Gold Shimmer Sweep across Luxury Button */
 .btn-gradient::after {
   content: '';
   position: absolute;
@@ -200,9 +214,9 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  background: linear-gradient(60deg, transparent, rgba(254, 240, 138, 0.28), transparent);
   transform: rotate(25deg);
-  animation: buttonShimmer 5s infinite;
+  animation: buttonShimmer 4.5s infinite;
 }
 
 @keyframes buttonShimmer {
@@ -211,16 +225,20 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
 }
 
 .btn-blue {
-  background-color: #1967d2;
+  background: linear-gradient(135deg, #0f243e 0%, #16365c 100%);
   color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 600;
   border-radius: 0.75rem;
-  transition: all 0.15s ease;
-  box-shadow: 0 2px 8px rgba(25, 103, 210, 0.25);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(15, 36, 62, 0.25);
 }
 .btn-blue:hover {
-  background-color: #1251a8;
+  background: linear-gradient(135deg, #16365c 0%, #1e4a7d 100%);
+  border-color: #f59e0b;
   transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(15, 36, 62, 0.35);
 }
 .btn-blue:active {
   transform: translateY(0);
@@ -228,15 +246,17 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
 
 .btn-white {
   background-color: #ffffff;
-  border: 1px solid #eaeeef;
-  color: #1a2b49;
+  border: 1.5px solid #e2e8f0;
+  color: #0f1d2e;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 600;
   border-radius: 0.75rem;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 .btn-white:hover {
-  background-color: #f8fafc;
-  border-color: #cbd5e1;
+  background-color: #fdfbf7;
+  border-color: rgba(217, 119, 6, 0.5);
+  color: #92400e;
   transform: translateY(-1px);
 }
 .btn-white:active {
@@ -245,12 +265,12 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
 
 /* Elevated Luxury Frosted Glass Cards */
 .ui-card {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(226, 232, 240, 0.95);
   border-radius: 20px;
-  box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .ui-card-hover {
@@ -297,14 +317,14 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
   transform: translateY(-1px);
 }
 .chip.active {
-  background-color: #eff6ff !important;
-  border-color: #1967d2 !important;
-  color: #1967d2 !important;
-  box-shadow: 0 2px 10px rgba(25, 103, 210, 0.15);
+  background: linear-gradient(135deg, #fffdfa 0%, #fef3c7 100%) !important;
+  border-color: #d97706 !important;
+  color: #92400e !important;
+  box-shadow: 0 4px 14px -2px rgba(217, 119, 6, 0.22), inset 0 0 0 1px rgba(217, 119, 6, 0.25);
   font-weight: 700;
 }
 .chip.active i, .chip.active span {
-  color: #1967d2 !important;
+  color: #92400e !important;
 }
 
 /* Mobile-Friendly Range Slider */
@@ -323,24 +343,24 @@ input[type=range]::-webkit-slider-thumb {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: #1967d2;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
   border: 3px solid #ffffff;
-  box-shadow: 0 2px 8px rgba(25, 103, 210, 0.4);
+  box-shadow: 0 2px 10px rgba(217, 119, 6, 0.45);
   cursor: pointer;
-  transition: transform 0.15s ease, background-color 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 input[type=range]::-webkit-slider-thumb:hover,
 input[type=range]::-webkit-slider-thumb:active {
   transform: scale(1.15);
-  background: #1251a8;
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.6);
 }
 input[type=range]::-moz-range-thumb {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: #1967d2;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
   border: 3px solid #ffffff;
-  box-shadow: 0 2px 8px rgba(25, 103, 210, 0.4);
+  box-shadow: 0 2px 10px rgba(217, 119, 6, 0.45);
   cursor: pointer;
 }
 
@@ -352,11 +372,11 @@ input[type=range]::-moz-range-thumb {
 }
 .leaflet-popup-content-wrapper {
   background: #ffffff !important;
-  color: #1a2b49 !important;
-  border-radius: 12px !important;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12) !important;
-  border: 1px solid #eaeeef !important;
-  font-family: 'Poppins', sans-serif !important;
+  color: #0f1d2e !important;
+  border-radius: 14px !important;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.18) !important;
+  border: 1px solid rgba(217, 119, 6, 0.25) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
   padding: 2px !important;
 }
 .leaflet-popup-tip {
