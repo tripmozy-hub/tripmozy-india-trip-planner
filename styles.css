@@ -62,12 +62,41 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
 }
 
 /* Eye-Catching Travel Atmospheric Background Mesh */
+/* Luxury Fixed Tour Background with Cinematic Overlay */
+.luxury-bg-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  pointer-events: none;
+  background-color: #0b1523;
+  background-image: 
+    linear-gradient(180deg, 
+      rgba(10, 20, 36, 0.60) 0%, 
+      rgba(14, 28, 46, 0.68) 280px, 
+      rgba(241, 245, 249, 0.88) 720px, 
+      rgba(248, 250, 252, 0.96) 100%),
+    url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=2400&q=85');
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+.luxury-hero-showcase {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(245, 158, 11, 0.18);
+}
+
 .travel-hero-mesh {
-  background: 
-    radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.08) 0%, rgba(248, 250, 252, 0) 65%),
-    radial-gradient(circle at 10% 15%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 50%),
-    radial-gradient(circle at 90% 25%, rgba(245, 158, 11, 0.07) 0%, rgba(248, 250, 252, 0) 50%),
-    linear-gradient(180deg, #fdfbf7 0%, #f8fafc 100%);
+  position: relative;
+  min-height: 100vh;
 }
 
 /* Luxury Aesthetics & Phone-Optimized Styling */
@@ -214,26 +243,28 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
   transform: translateY(0);
 }
 
-/* Elevated Clean Modern Cards */
+/* Elevated Luxury Frosted Glass Cards */
 .ui-card {
-  background: #ffffff;
-  border: 1px solid #eaeeef;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .ui-card-hover {
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .ui-card-hover:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.08);
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 16px 36px -4px rgba(15, 23, 42, 0.1), 0 4px 12px -2px rgba(217, 119, 6, 0.08);
   transform: translateY(-2px);
 }
 
-/* Custom Eye-Catching Inputs */
+/* Custom Luxury Inputs */
 .ui-input {
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.95);
   border: 1.5px solid #cbd5e1;
   color: #1a2b49;
   border-radius: 12px;
@@ -242,8 +273,8 @@ button, a, input, select, textarea, .chip, .interest-chip, .tab-btn {
 }
 .ui-input:focus {
   outline: none;
-  border-color: #1967d2;
-  box-shadow: 0 0 0 4px rgba(25, 103, 210, 0.12);
+  border-color: #d97706;
+  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.14);
   background-color: #ffffff;
 }
 

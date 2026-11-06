@@ -49,6 +49,36 @@
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen travel-hero-mesh flex flex-col justify-between selection:bg-blue-600 selection:text-white">
 
+  <!-- LUXURY TOUR FIXED BACKGROUND WITH CINEMATIC OVERLAY -->
+  <div class="luxury-bg-fixed" aria-hidden="true"></div>
+
+  <!-- LUXURY CONCIERGE TOPBAR -->
+  <div class="bravo_topbar py-2 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex items-center justify-between text-[11px] sm:text-xs">
+      <div class="flex items-center gap-3 sm:gap-6">
+        <a href="tel:+919641866181" class="flex items-center gap-1.5 hover:text-amber-400 font-semibold transition">
+          <i data-lucide="phone" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>+91 9641866181</span>
+        </a>
+        <a href="mailto:tripmozy@gmail.com" class="hidden sm:flex items-center gap-1.5 hover:text-amber-400 font-semibold transition">
+          <i data-lucide="mail" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>tripmozy@gmail.com</span>
+        </a>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-3 text-slate-300">
+        <span class="inline-flex items-center gap-1 text-amber-300 font-medium">
+          <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span class="hidden xs:inline">TripMozy</span> Luxury Tour Concierge
+        </span>
+        <span class="text-slate-600">|</span>
+        <span class="text-emerald-400 font-semibold flex items-center gap-1">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          24/7 Verified India Itineraries
+        </span>
+      </div>
+    </div>
+  </div>
+
   <!-- MAIN NAVIGATION BAR -->
   <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
@@ -163,7 +193,7 @@
     <div id="heroSection" class="space-y-6 sm:space-y-8">
       
       <!-- Clear Hero Headline with Eye-Catching Gradient & Badges -->
-      <div class="text-center max-w-3xl mx-auto px-1 sm:px-2">
+      <div class="luxury-hero-showcase text-center max-w-4xl mx-auto px-4 sm:px-8 py-6 sm:py-8 rounded-2xl sm:rounded-3xl shadow-xl relative overflow-hidden">
         <!-- Luxury Concierge Badge -->
         <div class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full luxury-badge text-slate-800 text-[10px] sm:text-xs font-black tracking-widest uppercase mb-3.5 sm:mb-4 shadow-xs">
           <span class="text-amber-500 font-bold text-xs sm:text-sm leading-none">✦</span>
@@ -1235,70 +1265,86 @@
 
   </main>
 
-  <!-- CLEAN STANDARD FOOTER (100% INDIA) -->
-  <footer class="bg-white border-t border-slate-200 py-10 mt-16 text-slate-600 text-xs">
+  <!-- CLEAN LUXURY FOOTER (100% INDIA) -->
+  <footer class="bg-[#0a121e] border-t border-amber-900/30 py-10 sm:py-12 mt-16 text-slate-400 text-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Brand Description -->
         <div class="space-y-3">
           <div class="flex items-center space-x-2">
-            <img src="logo.png" alt="TripMozy" class="h-9 w-auto object-contain" />
+            <img src="logo.png" alt="TripMozy" class="h-9 w-auto object-contain brightness-110" />
           </div>
-          <p class="text-slate-500 text-xs leading-relaxed">
-            Incredible India AI Travel Planner. Geocoding tourist destinations across India, identifying nearby attractions, and building day-by-day itineraries with exact Indian Rupee (₹) budgets.
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Incredible India Luxury AI Travel Planner. Geocoding tourist destinations across India, identifying nearby attractions, and building day-by-day itineraries with exact Indian Rupee (₹) budgets.
           </p>
-          <div class="text-emerald-700 font-semibold text-[11px] flex items-center gap-1">
+          <div class="text-amber-400 font-semibold text-[11px] flex items-center gap-1">
             <span>🇮🇳 Exclusively for Indian Tourist Destinations</span>
+          </div>
+          <div class="pt-2 text-slate-300 space-y-1">
+            <div class="flex items-center gap-2 text-xs">
+              <i data-lucide="phone" class="w-3.5 h-3.5 text-amber-400"></i>
+              <a href="tel:+919641866181" class="hover:text-amber-400 font-semibold transition">+91 9641866181</a>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <i data-lucide="mail" class="w-3.5 h-3.5 text-amber-400"></i>
+              <a href="mailto:tripmozy@gmail.com" class="hover:text-amber-400 font-semibold transition">tripmozy@gmail.com</a>
+            </div>
           </div>
         </div>
 
         <!-- North & Himalayan Destinations -->
         <div>
-          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">North India & Mountains</h4>
-          <ul class="space-y-2 text-slate-600">
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('manali')" class="hover:text-blue-600 transition">Manali & Solang Valley</a></li>
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('kashmir')" class="hover:text-blue-600 transition">Srinagar, Gulmarg & Pahalgam</a></li>
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('ladakh')" class="hover:text-blue-600 transition">Leh & Pangong Tso (Ladakh)</a></li>
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('rishikesh')" class="hover:text-blue-600 transition">Rishikesh & Mussoorie</a></li>
-            <li><a href="javascript:void(0)" onclick="setDestination('Shimla, Himachal Pradesh')" class="hover:text-blue-600 transition">Shimla & Kufri</a></li>
+          <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <span class="text-amber-400">✦</span> North India &amp; Mountains
+          </h4>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('manali')" class="hover:text-amber-400 transition">Manali &amp; Solang Valley</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('kashmir')" class="hover:text-amber-400 transition">Srinagar, Gulmarg &amp; Pahalgam</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('ladakh')" class="hover:text-amber-400 transition">Leh &amp; Pangong Tso (Ladakh)</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('rishikesh')" class="hover:text-amber-400 transition">Rishikesh &amp; Mussoorie</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Shimla, Himachal Pradesh')" class="hover:text-amber-400 transition">Shimla &amp; Kufri</a></li>
           </ul>
         </div>
 
         <!-- South & Coastal Destinations -->
         <div>
-          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">South & Coastal India</h4>
-          <ul class="space-y-2 text-slate-600">
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('goa')" class="hover:text-blue-600 transition">Goa Beaches & Heritage Forts</a></li>
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('kerala')" class="hover:text-blue-600 transition">Kerala Backwaters & Munnar</a></li>
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('ooty')" class="hover:text-blue-600 transition">Ooty & Coonoor Nilgiris</a></li>
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('hampi')" class="hover:text-blue-600 transition">Hampi UNESCO Ruins</a></li>
-            <li><a href="javascript:void(0)" onclick="setDestination('Coorg, Karnataka')" class="hover:text-blue-600 transition">Coorg Coffee Plantations</a></li>
+          <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <span class="text-amber-400">✦</span> South &amp; Coastal India
+          </h4>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('goa')" class="hover:text-amber-400 transition">Goa Beaches &amp; Heritage Forts</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('kerala')" class="hover:text-amber-400 transition">Kerala Backwaters &amp; Munnar</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('ooty')" class="hover:text-amber-400 transition">Ooty &amp; Coonoor Nilgiris</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('hampi')" class="hover:text-amber-400 transition">Hampi UNESCO Ruins</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Coorg, Karnataka')" class="hover:text-amber-400 transition">Coorg Coffee Plantations</a></li>
           </ul>
         </div>
 
         <!-- Heritage & East/Northeast -->
         <div>
-          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Heritage & Northeast</h4>
-          <ul class="space-y-2 text-slate-600">
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('rajasthan')" class="hover:text-blue-600 transition">Jaipur & Royal Rajasthan</a></li>
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('varanasi')" class="hover:text-blue-600 transition">Varanasi Ghats & Kashi Vishwanath</a></li>
-            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('darjeeling')" class="hover:text-blue-600 transition">Darjeeling & Gangtok (Sikkim)</a></li>
-            <li><a href="javascript:void(0)" onclick="setDestination('Shillong, Meghalaya')" class="hover:text-blue-600 transition">Meghalaya & Living Root Bridges</a></li>
-            <li><a href="javascript:void(0)" onclick="setDestination('Kaziranga, Assam')" class="hover:text-blue-600 transition">Kaziranga National Park (Assam)</a></li>
+          <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <span class="text-amber-400">✦</span> Heritage &amp; Northeast
+          </h4>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('rajasthan')" class="hover:text-amber-400 transition">Jaipur &amp; Royal Rajasthan</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('varanasi')" class="hover:text-amber-400 transition">Varanasi Ghats &amp; Kashi Vishwanath</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('darjeeling')" class="hover:text-amber-400 transition">Darjeeling &amp; Gangtok (Sikkim)</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Shillong, Meghalaya')" class="hover:text-amber-400 transition">Meghalaya &amp; Living Root Bridges</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Kaziranga, Assam')" class="hover:text-amber-400 transition">Kaziranga National Park (Assam)</a></li>
           </ul>
         </div>
       </div>
 
-      <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+      <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
         <div>
-          © 2026 Tripmozy.com. Dedicated to Incredible India.
+          &copy; 2026 TripMozy.com. Dedicated to Incredible India Luxury Tourism.
         </div>
         <div class="flex items-center space-x-4">
-          <span>🇮🇳 100% Indian Tourism Focus</span>
-          <span>•</span>
+          <span class="text-amber-400 font-semibold">&bull; TripMozy Concierge: +91 9641866181</span>
+          <span>&bull;</span>
           <span>GPS Map Routing</span>
-          <span>•</span>
+          <span>&bull;</span>
           <span>INR (₹) Standard</span>
         </div>
       </div>
