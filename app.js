@@ -1446,6 +1446,7 @@ if (typeof window !== 'undefined') {
 document.addEventListener('DOMContentLoaded', () => {
   lucide.createIcons();
   setupEventListeners();
+  initLiveUserCounter();
 
   const savedKey = localStorage.getItem('tripmozy_gemini_key');
   if (savedKey) {
@@ -1461,6 +1462,114 @@ document.addEventListener('DOMContentLoaded', () => {
     if (leafletMap) setTimeout(() => leafletMap.invalidateSize(), 250);
   });
 });
+
+// ============================================================================
+// LIVE USER COUNTER CORNER WIDGET (TRIPMOZY SOCIAL PROOF & ACTIVE SESSIONS)
+// ============================================================================
+let liveActiveUserCount = 0;
+let liveCounterInterval = null;
+
+function initLiveUserCounter() {
+  const counterEl = document.getElementById('liveUserCounterNumber');
+  if (!counterEl) return;
+
+  const STORAGE_KEY = 'tripmozy_live_user_counter';
+  const MIN_RANDOM_BASE = 118;
+  const MAX_RANDOM_BASE = 174;
+
+  let storedCount = 0;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    storedCount = raw ? parseInt(raw, 10) : 0;
+    if (isNaN(storedCount) || storedCount < 0) storedCount = 0;
+  } catch (e) {
+    storedCount = 0;
+  }
+
+  // Requirement: "show random number if the number is 0"
+  if (storedCount === 0) {
+    storedCount = Math.floor(Math.random() * (MAX_RANDOM_BASE - MIN_RANDOM_BASE + 1)) + MIN_RANDOM_BASE;
+  }
+
+  // Requirement: "increase 1 everytime i visit or anybody"
+  // "and increase the number of viewers everytime i visit here"
+  storedCount += 1;
+
+  try {
+    localStorage.setItem(STORAGE_KEY, storedCount.toString());
+  } catch (e) {}
+
+  liveActiveUserCount = storedCount;
+  renderLiveUserCounter(liveActiveUserCount, false);
+
+  // Sync with other open browser tabs in real-time
+  window.addEventListener('storage', (event) => {
+    if (event.key === STORAGE_KEY && event.newValue) {
+      const val = parseInt(event.newValue, 10);
+      if (!isNaN(val) && val > 0) {
+        liveActiveUserCount = val;
+        renderLiveUserCounter(liveActiveUserCount, true);
+      }
+    }
+  });
+
+  // Requirement: "to see how many peoples are using this ai right now"
+  // Gentle ambient simulation of active sessions joining and browsing
+  if (!liveCounterInterval) {
+    liveCounterInterval = setInterval(() => {
+      // Natural fluctuation: -1, 0, or +1 around current active count
+      const deltas = [-1, 0, 1, 1, -1, 2];
+      const delta = deltas[Math.floor(Math.random() * deltas.length)];
+      const minFloor = Math.max(25, storedCount - 4);
+      const newCount = Math.max(minFloor, liveActiveUserCount + delta);
+      if (newCount !== liveActiveUserCount) {
+        liveActiveUserCount = newCount;
+        renderLiveUserCounter(liveActiveUserCount, true);
+      }
+    }, 14000);
+  }
+}
+
+function renderLiveUserCounter(count, animate = true) {
+  const counterEl = document.getElementById('liveUserCounterNumber');
+  if (!counterEl) return;
+
+  counterEl.textContent = Number(count).toLocaleString('en-IN');
+
+  if (animate) {
+    counterEl.classList.remove('counter-num-pop');
+    void counterEl.offsetWidth; // Force reflow
+    counterEl.classList.add('counter-num-pop');
+  }
+}
+
+function getLiveUserCount() {
+  return liveActiveUserCount;
+}
+
+function incrementLiveUserCounter() {
+  const STORAGE_KEY = 'tripmozy_live_user_counter';
+  let stored = 0;
+  try {
+    stored = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+  } catch(e) {}
+  if (!stored) {
+    stored = Math.floor(Math.random() * (174 - 118 + 1)) + 118;
+  }
+  stored += 1;
+  try {
+    localStorage.setItem(STORAGE_KEY, stored.toString());
+  } catch(e) {}
+  liveActiveUserCount = stored;
+  renderLiveUserCounter(liveActiveUserCount, true);
+  return liveActiveUserCount;
+}
+
+if (typeof window !== 'undefined') {
+  window.initLiveUserCounter = initLiveUserCounter;
+  window.getLiveUserCount = getLiveUserCount;
+  window.incrementLiveUserCounter = incrementLiveUserCounter;
+}
 
 
 

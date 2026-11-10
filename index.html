@@ -1318,6 +1318,29 @@
     </div>
   </footer>
 
+  <!-- LIVE ACTIVE USER COUNTER CORNER WIDGET -->
+  <aside id="liveUserCounterWidget" aria-label="Live Active Travelers Counter" class="fixed bottom-4 left-4 sm:bottom-5 sm:left-5 z-40 no-print transition-all duration-300">
+    <div class="luxury-glass-card flex items-center gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full border border-amber-900/15 shadow-xl shadow-slate-900/10 backdrop-blur-md bg-white/95 text-slate-800 text-xs font-semibold select-none cursor-default group hover:shadow-2xl hover:border-amber-500/50 transition-all">
+      <!-- Pulsing Live Emerald Beacon -->
+      <span class="relative flex h-2 sm:h-2.5 w-2 sm:w-2.5 shrink-0" title="Active live session">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 sm:h-2.5 w-2 sm:w-2.5 bg-emerald-500 shadow-xs"></span>
+      </span>
+      
+      <!-- Users Icon & Live Count -->
+      <div class="flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
+        <i data-lucide="users" class="w-3.5 h-3.5 text-blue-600 group-hover:scale-110 transition-transform"></i>
+        <span id="liveUserCounterNumber" class="font-extrabold text-slate-900 font-heading text-xs sm:text-sm tracking-tight">--</span>
+        <span class="text-slate-600 font-medium text-[11px] sm:text-xs">viewers online</span>
+      </div>
+
+      <!-- Pulse Activity Indicator (small pill) -->
+      <span class="hidden sm:inline-flex items-center text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/80 tracking-wider">
+        LIVE
+      </span>
+    </div>
+  </aside>
+
   <!-- App Script -->
   <script src="tripmozy_catalog.js"></script>
   <script src="india_travel_engine.js"></script>

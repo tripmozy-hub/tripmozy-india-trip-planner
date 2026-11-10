@@ -429,6 +429,31 @@ input[type=number] {
   animation: pulseRing 2.5s infinite ease-in-out;
 }
 
+/* Live User Counter Corner Widget */
+#liveUserCounterWidget {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  z-index: 40;
+}
+
+@media (max-width: 640px) {
+  #liveUserCounterWidget {
+    bottom: max(14px, env(safe-area-inset-bottom, 14px));
+    left: 12px;
+  }
+}
+
+.counter-num-pop {
+  animation: counterPop 0.35s ease-out;
+}
+
+@keyframes counterPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.22); color: #059669; }
+  100% { transform: scale(1); }
+}
+
 /* Printable Itinerary Document (Screen: Hidden) */
 #printableItineraryDoc {
   display: none;
