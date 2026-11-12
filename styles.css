@@ -454,6 +454,16 @@ input[type=number] {
   100% { transform: scale(1); }
 }
 
+.counter-num-drop {
+  animation: counterDrop 0.35s ease-out;
+}
+
+@keyframes counterDrop {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.88); color: #d97706; }
+  100% { transform: scale(1); }
+}
+
 /* Printable Itinerary Document (Screen: Hidden) */
 #printableItineraryDoc {
   display: none;

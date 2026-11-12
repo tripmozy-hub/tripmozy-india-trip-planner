@@ -1514,32 +1514,41 @@ function initLiveUserCounter() {
   });
 
   // Requirement: "to see how many peoples are using this ai right now"
-  // Gentle ambient simulation of active sessions joining and browsing
+  // "also decrese the live viewers online count sometime"
+  // Gentle ambient simulation of active sessions joining and departing
   if (!liveCounterInterval) {
     liveCounterInterval = setInterval(() => {
-      // Natural fluctuation: -1, 0, or +1 around current active count
-      const deltas = [-1, 0, 1, 1, -1, 2];
+      // Natural fluctuation: decreases (-1, -2, -3) and increases (+1, +2, +3)
+      const deltas = [-3, -2, -2, -1, -1, -1, 0, 1, 1, 1, 2, 2, 3];
       const delta = deltas[Math.floor(Math.random() * deltas.length)];
-      const minFloor = Math.max(25, storedCount - 4);
-      const newCount = Math.max(minFloor, liveActiveUserCount + delta);
+      if (delta === 0) return;
+
+      const minFloor = Math.max(24, storedCount - 18);
+      const maxCeil = storedCount + 22;
+      const newCount = Math.min(maxCeil, Math.max(minFloor, liveActiveUserCount + delta));
       if (newCount !== liveActiveUserCount) {
+        const direction = newCount < liveActiveUserCount ? 'down' : 'up';
         liveActiveUserCount = newCount;
-        renderLiveUserCounter(liveActiveUserCount, true);
+        renderLiveUserCounter(liveActiveUserCount, true, direction);
       }
-    }, 14000);
+    }, 9000);
   }
 }
 
-function renderLiveUserCounter(count, animate = true) {
+function renderLiveUserCounter(count, animate = true, direction = 'up') {
   const counterEl = document.getElementById('liveUserCounterNumber');
   if (!counterEl) return;
 
   counterEl.textContent = Number(count).toLocaleString('en-IN');
 
   if (animate) {
-    counterEl.classList.remove('counter-num-pop');
+    counterEl.classList.remove('counter-num-pop', 'counter-num-drop');
     void counterEl.offsetWidth; // Force reflow
-    counterEl.classList.add('counter-num-pop');
+    if (direction === 'down') {
+      counterEl.classList.add('counter-num-drop');
+    } else {
+      counterEl.classList.add('counter-num-pop');
+    }
   }
 }
 
@@ -1547,7 +1556,8 @@ function getLiveUserCount() {
   return liveActiveUserCount;
 }
 
-function incrementLiveUserCounter() {
+function incrementLiveUserCounter(amount = 1) {
+  const inc = Math.max(1, parseInt(amount, 10) || 1);
   const STORAGE_KEY = 'tripmozy_live_user_counter';
   let stored = 0;
   try {
@@ -1556,12 +1566,20 @@ function incrementLiveUserCounter() {
   if (!stored) {
     stored = Math.floor(Math.random() * (174 - 118 + 1)) + 118;
   }
-  stored += 1;
+  stored += inc;
   try {
     localStorage.setItem(STORAGE_KEY, stored.toString());
   } catch(e) {}
-  liveActiveUserCount = stored;
-  renderLiveUserCounter(liveActiveUserCount, true);
+  liveActiveUserCount = Math.max(liveActiveUserCount + inc, stored);
+  renderLiveUserCounter(liveActiveUserCount, true, 'up');
+  return liveActiveUserCount;
+}
+
+function decrementLiveUserCounter(amount = 1) {
+  const dec = Math.max(1, parseInt(amount, 10) || 1);
+  const minFloor = 24;
+  liveActiveUserCount = Math.max(minFloor, liveActiveUserCount - dec);
+  renderLiveUserCounter(liveActiveUserCount, true, 'down');
   return liveActiveUserCount;
 }
 
@@ -1569,6 +1587,8 @@ if (typeof window !== 'undefined') {
   window.initLiveUserCounter = initLiveUserCounter;
   window.getLiveUserCount = getLiveUserCount;
   window.incrementLiveUserCounter = incrementLiveUserCounter;
+  window.decrementLiveUserCounter = decrementLiveUserCounter;
+  window.renderLiveUserCounter = renderLiveUserCounter;
 }
 
 
@@ -2874,7 +2894,6 @@ function renderItineraryTimeline(daysPlan) {
                 <span class="text-xs text-slate-500 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${stop.duration}</span>
                 ${distFromCenter !== null ? `<span class="text-xs text-blue-600 font-bold bg-blue-50/80 px-2 py-0.5 rounded">📍 ${distFromCenter} km</span>` : ''}
               </div>
-              <div class="text-xs font-bold text-slate-800">${stop.cost !== '₹0' && stop.cost !== '$0' ? `Est. ${stop.cost}` : 'Free Entry'}</div>
             </div>
 
             <h4 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition flex items-center gap-2 flex-wrap">
@@ -3551,7 +3570,7 @@ function showBookingConfirmToast(destination, days, adults, budget, hotelUrl) {
   toast.innerHTML = '<div style="font-size:28px">&#127881;</div>' +
     '<div style="flex:1;">' +
       '<div style="font-weight:800;font-size:14px;margin-bottom:2px;">Opening Tripmozy Hotels!</div>' +
-      '<div style="font-size:12px;opacity:0.9;">' + destination + ' &middot; ' + days + ' Days &middot; ' + adults + ' Adults &middot; Est. ' + budget + '/person</div>' +
+      '<div style="font-size:12px;opacity:0.9;">' + destination + ' &middot; ' + days + ' Days &middot; ' + adults + ' Adults &middot; ' + budget + '/person</div>' +
       '<div style="font-size:11px;margin-top:4px;opacity:0.8;">' +
         '<a href="' + hotelUrl + '" target="_blank" style="color:#bbf7d0;text-decoration:underline;">View Hotels &rarr;</a>' +
         ' &nbsp;|&nbsp; ' +
@@ -4221,9 +4240,6 @@ function renderPrintableItineraryDoc(trip) {
           <div style="flex-grow: 1;">
             <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
               <span style="font-weight: 800; font-size: 13px; color: #0f172a;">${stop.name}</span>
-              <span style="font-size: 11px; font-weight: 700; color: #334155; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; border: 1px solid #e2e8f0; white-space: nowrap;">
-                ${stop.cost || 'Free Entry'}
-              </span>
             </div>
             <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
               <span style="font-weight: 700; color: #2563eb;">${stop.category || 'Sightseeing'}</span> &bull; 
@@ -4378,7 +4394,7 @@ function renderPrintableItineraryDoc(trip) {
       </div>
 
       <!-- ESSENTIAL GUIDELINES & INCLUSIONS -->
-      <div style="margin-bottom: 18px; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 10.5px; color: #334155; page-break-inside: avoid; break-inside: avoid;">
+      <div style="margin-bottom: 14px; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 10.5px; color: #334155; page-break-inside: avoid; break-inside: avoid;">
         <strong style="color: #1e3a8a; font-size: 11px; display: block; margin-bottom: 6px;">TripMozy Assured Inclusions:</strong>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
           <div>✓ Dedicated Sanitized Vehicle with verified tourist permit &amp; commercial insurance</div>
@@ -4386,6 +4402,12 @@ function renderPrintableItineraryDoc(trip) {
           <div>✓ Experienced local commercial driver allowance, hill toll taxes &amp; parking</div>
           <div>✓ 24/7 Dedicated TripMozy Emergency Support (+91 9641866181) &bull; National Emergency: 112</div>
         </div>
+      </div>
+
+      <!-- AI-GENERATED ITINERARY DISCLAIMER -->
+      <div style="margin-bottom: 16px; padding: 10px 14px; background: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid #f59e0b; border-radius: 6px; font-size: 10px; color: #78350f; line-height: 1.45; page-break-inside: avoid; break-inside: avoid;">
+        <strong style="color: #92400e; display: block; margin-bottom: 2px;">🤖 AI-Generated Itinerary Disclaimer:</strong>
+        This itinerary, route plan, and daily timetable are generated using Artificial Intelligence (AI) for planning and informational reference. Actual road conditions, visiting hours, local weather, and entry requirements may vary. For guaranteed hotel allocations, private cab bookings, and customized packages, contact <strong>TripMozy Private Limited</strong> directly at <strong>+91 9641866181</strong> or visit <strong>www.tripmozy.com</strong>.
       </div>
 
       <!-- OFFICIAL FOOTER -->

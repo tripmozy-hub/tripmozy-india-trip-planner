@@ -36,6 +36,7 @@ assert('HTML marks counter widget with no-print class', indexHtml.includes('id="
 assert('CSS has fixed positioning for #liveUserCounterWidget', stylesCss.includes('#liveUserCounterWidget') && stylesCss.includes('position: fixed;'));
 assert('CSS includes safe area support on mobile', stylesCss.includes('safe-area-inset-bottom'));
 assert('CSS includes .counter-num-pop animation', stylesCss.includes('.counter-num-pop') && stylesCss.includes('@keyframes counterPop'));
+assert('CSS includes .counter-num-drop animation for decreases', stylesCss.includes('.counter-num-drop') && stylesCss.includes('@keyframes counterDrop'));
 
 // 3. Logic & Behavior testing via Simulated Environment
 function createMockEnvironment(initialStorageValue = null) {
@@ -54,8 +55,9 @@ function createMockEnvironment(initialStorageValue = null) {
     textContent: '',
     classList: {
       classes: new Set(),
-      add: function(c) { this.classes.add(c); },
-      remove: function(c) { this.classes.delete(c); }
+      add: function(...args) { args.forEach(c => this.classes.add(c)); },
+      remove: function(...args) { args.forEach(c => this.classes.delete(c)); },
+      contains: function(c) { return this.classes.has(c); }
     },
     offsetWidth: 100
   };
@@ -100,7 +102,7 @@ function createMockEnvironment(initialStorageValue = null) {
   assert('First visit: Sets textContent in DOM', parseInt(mockElement.textContent.replace(/,/g, ''), 10) === savedCount, `Actual: ${mockElement.textContent}`);
 }
 
-// Test Case B: Repeat visit (Stored count is e.g. 150) -> Increments exactly by 1 to 151
+// Test Case B: Repeat visit (Stored count is e.g. 150) -> Increments exactly by 1 to 151, then tests increment & decrement
 {
   const { sandbox, store, mockElement } = createMockEnvironment(150);
   
@@ -116,8 +118,19 @@ function createMockEnvironment(initialStorageValue = null) {
 
   // Test manual incrementLiveUserCounter function
   vm.runInNewContext('incrementLiveUserCounter()', sandbox);
-  const incrementedAgain = parseInt(store['tripmozy_live_user_counter'], 10);
-  assert('Further visit/invocation: Increments counter again (151 -> 152)', incrementedAgain === 152, `Actual: ${incrementedAgain}`);
+  assert('Manual increment: Increments counter to 152', sandbox.getLiveUserCount() === 152, `Actual: ${sandbox.getLiveUserCount()}`);
+  assert('Manual increment: Applies pop animation class', mockElement.classList.contains('counter-num-pop'));
+
+  // Test manual decrementLiveUserCounter function (user request: "also decrese the live viewers online count sometime")
+  vm.runInNewContext('decrementLiveUserCounter(1)', sandbox);
+  assert('Manual decrement: Decreases counter from 152 to 151', sandbox.getLiveUserCount() === 151, `Actual: ${sandbox.getLiveUserCount()}`);
+  assert('Manual decrement: Updates DOM textContent to 151', mockElement.textContent === '151', `Actual: ${mockElement.textContent}`);
+  assert('Manual decrement: Applies drop animation class', mockElement.classList.contains('counter-num-drop'));
+
+  // Multi-unit decrement test
+  vm.runInNewContext('decrementLiveUserCounter(3)', sandbox);
+  assert('Multi-unit decrement: Decreases counter by 3 to 148', sandbox.getLiveUserCount() === 148, `Actual: ${sandbox.getLiveUserCount()}`);
+  assert('Multi-unit decrement: Updates DOM textContent to 148', mockElement.textContent === '148', `Actual: ${mockElement.textContent}`);
 }
 
 console.log('\n================================================================');
