@@ -588,7 +588,7 @@
           }
         }
       },
-      disclaimer: "All budget figures are realistic verified estimates for Indian tourism conditions. Final room and cab rates are confirmed at time of booking with TripMozy Private Limited (+91 9641866181)."
+      disclaimer: "This itinerary and budget are generated using Artificial Intelligence (AI) for travel planning. All figures are realistic estimates for Indian tourism conditions. Final room and cab rates are confirmed at time of booking with TripMozy Private Limited (+91 9641866181)."
     };
   }
 
