@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1967d2" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>Tripmozy.com — Incredible India AI Trip Planner & Nearby Tourist Attractions Map</title>
+  <meta name="description" content="India's dedicated AI travel planner. Discover tourist attractions nearby any Indian city, with interactive GPS route maps, day-by-day itineraries, and manual INR (₹) budgets." />
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <!-- Google Fonts: Luxury Playfair Display & Ultra-Crisp Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            luxury: {
+              gold: '#d4af37',
+              amber: '#d97706',
+              champagne: '#fef3c7',
+              navy: '#0b1626',
+              obsidian: '#070d18',
+            },
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Leaflet CSS & JS for Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Chart.js for Budget Breakdown -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom Clean Light CSS -->
+  <link rel="stylesheet" href="styles.css?v=2.2" />
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen travel-hero-mesh flex flex-col justify-between selection:bg-blue-600 selection:text-white">
+
+  <!-- LUXURY TOUR FIXED BACKGROUND WITH CINEMATIC OVERLAY -->
+  <div class="luxury-bg-fixed" aria-hidden="true"></div>
+
+  <!-- LUXURY CONCIERGE TOPBAR -->
+  <div class="bravo_topbar py-2 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex items-center justify-between text-[11px] sm:text-xs">
+      <div class="flex items-center gap-3 sm:gap-6">
+        <a href="tel:+919641866181" class="flex items-center gap-1.5 hover:text-amber-400 font-semibold transition">
+          <i data-lucide="phone" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>+91 9641866181</span>
+        </a>
+        <a href="mailto:tripmozy@gmail.com" class="hidden sm:flex items-center gap-1.5 hover:text-amber-400 font-semibold transition">
+          <i data-lucide="mail" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>tripmozy@gmail.com</span>
+        </a>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-3 text-slate-300">
+        <span class="text-emerald-400 font-semibold flex items-center gap-1.5">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          24/7 Verified India Itineraries
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-amber-900/10 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="javascript:void(0)" onclick="window.location.reload()" class="flex items-center space-x-2 no-underline group py-0.5" title="TripMozy - Memories Begin With a Booking">
+        <img src="logo.png" alt="TripMozy - Memories Begin With a Booking" class="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105" />
+      </a>
+
+      <!-- Quick Indian Tourist Circuits Navigation -->
+      <nav class="hidden lg:flex items-center space-x-5 text-sm font-semibold text-slate-700">
+        <a href="#plannerForm" class="text-amber-600 hover:text-amber-700 transition flex items-center gap-1.5 font-bold">
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i> Plan Trip
+        </a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('goa')" class="hover:text-amber-600 transition">Goa &amp; Beaches</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('kerala')" class="hover:text-amber-600 transition">Kerala Backwaters</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('manali')" class="hover:text-amber-600 transition">Himachal &amp; Manali</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('kashmir')" class="hover:text-amber-600 transition">Kashmir Valley</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('rajasthan')" class="hover:text-amber-600 transition">Rajasthan Forts</a>
+        <a href="javascript:void(0)" onclick="loadIndianCircuit('varanasi')" class="hover:text-amber-600 transition">Varanasi Ghats</a>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <!-- Sample India Itineraries Dropdown -->
+        <div class="relative group hidden sm:block">
+          <button class="px-3 py-1.5 rounded-lg text-xs font-semibold btn-white flex items-center space-x-1.5">
+            <i data-lucide="map" class="w-3.5 h-3.5 text-blue-600"></i>
+            <span>Indian Circuits</span>
+            <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
+          </button>
+          <div class="absolute right-0 mt-2 w-72 rounded-xl bg-white shadow-xl border border-slate-200 py-2 hidden group-hover:block z-50">
+            <div class="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">North &amp; Himalayas</div>
+            <button onclick="loadIndianCircuit('manali')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🏔️ Manali &amp; Solang Valley</span>
+              <span class="text-blue-600 font-bold">₹18,500</span>
+            </button>
+            <button onclick="loadIndianCircuit('kashmir')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>❄️ Kashmir: Srinagar &amp; Gulmarg</span>
+              <span class="text-blue-600 font-bold">₹26,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('ladakh')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🏍️ Ladakh: Leh &amp; Pangong Lake</span>
+              <span class="text-blue-600 font-bold">₹32,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('rishikesh')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🕉️ Rishikesh &amp; Mussoorie</span>
+              <span class="text-blue-600 font-bold">₹15,000</span>
+            </button>
+            <div class="my-1 border-t border-slate-100"></div>
+            <div class="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">South &amp; Coastal</div>
+            <button onclick="loadIndianCircuit('goa')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🏖️ Goa Coastal Tour</span>
+              <span class="text-blue-600 font-bold">₹22,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('kerala')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🌴 Kerala Backwaters &amp; Munnar</span>
+              <span class="text-blue-600 font-bold">₹28,500</span>
+            </button>
+            <button onclick="loadIndianCircuit('ooty')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>☕ Ooty &amp; Coonoor Tea Estates</span>
+              <span class="text-blue-600 font-bold">₹16,500</span>
+            </button>
+            <div class="my-1 border-t border-slate-100"></div>
+            <div class="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">Heritage &amp; Royal</div>
+            <button onclick="loadIndianCircuit('rajasthan')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🏰 Jaipur &amp; Royal Forts</span>
+              <span class="text-blue-600 font-bold">₹24,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('varanasi')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🛕 Varanasi Ghats &amp; Ganga Aarti</span>
+              <span class="text-blue-600 font-bold">₹14,000</span>
+            </button>
+            <button onclick="loadIndianCircuit('darjeeling')" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-between">
+              <span>🫖 Darjeeling &amp; Gangtok</span>
+              <span class="text-blue-600 font-bold">₹25,000</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE TOUCH-FRIENDLY CIRCUITS BAR (INSTANT TAP FOR PHONES & TABLETS) -->
+  <div class="lg:hidden bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-3 py-2.5 overflow-x-auto scrollbar-none flex items-center gap-2 text-xs shadow-2xs">
+    <span class="text-blue-900 font-bold uppercase text-[10px] tracking-wider shrink-0 flex items-center gap-1 pl-1">
+      <i data-lucide="compass" class="w-3.5 h-3.5 text-blue-600"></i>
+      <span>Popular:</span>
+    </span>
+    <button type="button" onclick="loadIndianCircuit('manali')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🏔️ Manali</button>
+    <button type="button" onclick="loadIndianCircuit('goa')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🏖️ Goa</button>
+    <button type="button" onclick="loadIndianCircuit('kerala')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🌴 Kerala</button>
+    <button type="button" onclick="loadIndianCircuit('kashmir')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">❄️ Kashmir</button>
+    <button type="button" onclick="loadIndianCircuit('rajasthan')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🏰 Jaipur</button>
+    <button type="button" onclick="loadIndianCircuit('varanasi')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🛕 Varanasi</button>
+    <button type="button" onclick="loadIndianCircuit('ladakh')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🏍️ Ladakh</button>
+    <button type="button" onclick="loadIndianCircuit('rishikesh')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🕉️ Rishikesh</button>
+    <button type="button" onclick="loadIndianCircuit('ooty')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">☕ Ooty</button>
+    <button type="button" onclick="loadIndianCircuit('darjeeling')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 active:bg-blue-600 active:text-white border border-slate-200 text-slate-700 font-semibold whitespace-nowrap transition flex items-center gap-1">🫖 Darjeeling</button>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-5xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10">
+
+    <!-- HERO & PLANNER SECTION -->
+    <div id="heroSection" class="space-y-6 sm:space-y-8">
+      
+      <!-- Clear Hero Headline with Eye-Catching Gradient & Badges -->
+      <div class="luxury-hero-showcase text-center max-w-4xl mx-auto px-4 sm:px-8 py-6 sm:py-8 rounded-2xl sm:rounded-3xl shadow-xl relative overflow-hidden">
+        <!-- Luxury Concierge Badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full luxury-badge text-slate-800 text-[10px] sm:text-xs font-black tracking-widest uppercase mb-3.5 sm:mb-4 shadow-xs">
+          <span class="text-amber-500 font-bold text-xs sm:text-sm leading-none">✦</span>
+          <span>Bespoke AI Travel Architecture &bull; Incredible India</span>
+          <span class="flex h-2 w-2 relative ml-0.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+        </div>
+        
+        <!-- Luxury Responsive Headline -->
+        <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-heading tracking-tight text-slate-900 leading-[1.18] sm:leading-[1.12]">
+          SEARCH YOUR DREAM DESTINATION &amp; <span class="luxury-gold-shimmer font-black">UNLOCK ADVENTURE</span>
+        </h1>
+        
+        <!-- Elegant Subtitle -->
+        <p class="mt-2.5 sm:mt-3.5 text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto px-1">
+          Type any destination in India. Our AI maps the location, identifies all popular tourist spots nearby, clusters them logically by road distance, and drafts a day-by-day timetable in Indian Rupees (₹).
+        </p>
+
+        <!-- Sleek Luxury Feature Highlights (Clean & Distraction-Free) -->
+        <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-4 pt-3.5 border-t border-slate-200/60 text-xs font-semibold text-slate-600">
+          <span class="inline-flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-600"></i> Live GPS Radar</span>
+          <span class="text-slate-300 hidden sm:inline">&bull;</span>
+          <span class="inline-flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-600"></i> Instant Schedule</span>
+          <span class="text-slate-300 hidden sm:inline">&bull;</span>
+          <span class="inline-flex items-center gap-1.5"><i data-lucide="wallet" class="w-3.5 h-3.5 text-amber-600"></i> Exact ₹ INR Budget</span>
+          <span class="text-slate-300 hidden sm:inline">&bull;</span>
+          <span class="inline-flex items-center gap-1.5"><i data-lucide="hotel" class="w-3.5 h-3.5 text-purple-600"></i> Curated Stays</span>
+        </div>
+      </div>
+
+      <!-- MAIN PLANNER CARD (ELEVATED & EYE-CATCHING) -->
+      <div id="plannerForm" class="ui-card p-4 sm:p-8 bg-white/95 border border-slate-200/90 shadow-2xl shadow-slate-900/10 relative overflow-hidden rounded-2xl sm:rounded-3xl">
+        <!-- Top Gradient Accent Bar: Liquid Gold Sheen -->
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600"></div>
+        
+        <form id="tripPlannerForm" onsubmit="handleFormSubmit(event)" class="space-y-7">
+          
+          <!-- FIELD 1: Search Indian Destination -->
+          <div>
+            <label class="block text-sm font-bold text-slate-800 mb-1.5 flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <i data-lucide="search" class="w-4 h-4 text-blue-600"></i>
+                Enter your dream Location / City / Hill Station in India:
+              </span>
+              <span class="text-xs text-blue-600 font-semibold flex items-center gap-1">
+                <i data-lucide="crosshair" class="w-3.5 h-3.5"></i> Auto-identifies nearby attractions
+              </span>
+            </label>
+            
+            <div class="relative">
+              <input 
+                type="text" 
+                id="destinationInput" 
+                required
+                placeholder="e.g. Manali, Goa, Munnar, Jaipur, Rishikesh, Udaipur, Ooty, Hampi, Varanasi, Leh..." 
+                class="w-full px-4 py-3.5 sm:py-4 rounded-xl ui-input text-base text-slate-900 font-bold pl-11 pr-28 sm:pr-44 shadow-2xs"
+                autocomplete="off"
+              />
+              <i data-lucide="map-pin" class="w-5 h-5 text-blue-600 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+              <button 
+                type="button" 
+                onclick="setRandomIndianDestination()" 
+                class="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-xs font-bold rounded-lg btn-white flex items-center gap-1.5 shadow-xs border border-slate-200"
+                title="Pick a random Indian destination"
+              >
+                <i data-lucide="dices" class="w-3.5 h-3.5 text-blue-600"></i>
+                <span class="hidden sm:inline">Random Place</span>
+                <span class="sm:hidden">Surprise</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- FIELD 2: Duration & Map Radius Exploration -->
+          <div class="pt-2 border-t border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-5">
+            <!-- Duration -->
+            <div class="md:col-span-7">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                  <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
+                  Trip Duration (Days)
+                </label>
+                <span id="durationLabel" class="text-xs sm:text-sm font-black text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200 shadow-2xs">4 Days</span>
+              </div>
+              
+              <div class="bg-slate-50/90 rounded-2xl p-3.5 border border-slate-200/90">
+                <input 
+                  type="range" 
+                  id="durationRange" 
+                  min="1" 
+                  max="10" 
+                  value="4" 
+                  oninput="updateDurationLabel(this.value)"
+                  class="w-full accent-blue-600 cursor-pointer"
+                />
+                <!-- Quick 1-Tap Shortcut Pills for Mobile Touch Browsers -->
+                <div class="grid grid-cols-4 gap-1.5 mt-2.5 pt-2 border-t border-slate-200/80 text-center">
+                  <button type="button" onclick="setTripDays(2)" class="px-1.5 py-1.5 rounded-lg text-[11px] font-bold bg-white hover:bg-blue-50 active:bg-blue-600 active:text-white text-slate-700 border border-slate-200 shadow-2xs transition">2d Weekend</button>
+                  <button type="button" onclick="setTripDays(4)" class="px-1.5 py-1.5 rounded-lg text-[11px] font-bold bg-white hover:bg-blue-50 active:bg-blue-600 active:text-white text-slate-700 border border-slate-200 shadow-2xs transition">4d Short</button>
+                  <button type="button" onclick="setTripDays(6)" class="px-1.5 py-1.5 rounded-lg text-[11px] font-bold bg-white hover:bg-blue-50 active:bg-blue-600 active:text-white text-slate-700 border border-slate-200 shadow-2xs transition">6d Week</button>
+                  <button type="button" onclick="setTripDays(8)" class="px-1.5 py-1.5 rounded-lg text-[11px] font-bold bg-white hover:bg-blue-50 active:bg-blue-600 active:text-white text-slate-700 border border-slate-200 shadow-2xs transition">8d+ Grand</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nearby Exploration Radius on Map -->
+            <div class="md:col-span-5">
+              <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
+                <i data-lucide="radar" class="w-4 h-4 text-emerald-600"></i>
+                Nearby Places Map Radius
+              </label>
+              <select id="mapRadiusSelect" class="w-full px-3 py-3 rounded-xl ui-input text-sm sm:text-base text-slate-800 font-semibold">
+                <option value="15">Within 15 km (City Center &amp; Local Sights)</option>
+                <option value="35" selected>Within 35 km (Standard Day Excursions)</option>
+                <option value="60">Within 60 km (Deep Excursions &amp; Neighboring Valleys)</option>
+              </select>
+              <p class="text-[11px] text-slate-500 mt-1">Our map algorithm clusters nearby spots within this driving radius.</p>
+            </div>
+          </div>
+
+          <!-- FIELD 3: MANUAL BUDGET COLUMN / TARGET BUDGET (₹ INR) -->
+          <div class="pt-2 border-t border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-5">
+            
+            <!-- Manual Budget Input -->
+            <div class="md:col-span-7 bg-blue-50/60 rounded-xl p-4 border border-blue-100">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-bold text-blue-900 flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">₹</span>
+                  <span>Target Budget (Per Person in INR)</span>
+                </label>
+                <span class="text-[11px] text-blue-700 font-semibold">Optional / Editable</span>
+              </div>
+              
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-base">₹</span>
+                <input 
+                  type="number" 
+                  id="manualTargetBudgetInput" 
+                  oninput="clearBudgetError()"
+                  placeholder="e.g. 15000, 25000, 40000" 
+                  step="1000"
+                  class="w-full pl-8 pr-4 py-2.5 rounded-lg ui-input text-base text-slate-900 font-bold transition"
+                />
+              </div>
+            </div>
+
+            <!-- Travel Tier -->
+            <div class="md:col-span-5 flex flex-col justify-between">
+              <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i>
+                Travel Tier
+              </label>
+              <div class="grid grid-cols-3 gap-2">
+                <label class="chip px-3 py-2.5 rounded-xl text-center flex flex-col items-center justify-center gap-0.5" data-group="budget" data-val="Economy">
+                  <input type="radio" name="budget" value="Economy" class="hidden" />
+                  <span class="text-xs font-bold">Budget</span>
+                  <span class="text-[10px] opacity-75">Backpacker / Bus</span>
+                </label>
+                <label class="chip px-3 py-2.5 rounded-xl text-center flex flex-col items-center justify-center gap-0.5 active" data-group="budget" data-val="Moderate">
+                  <input type="radio" name="budget" value="Moderate" checked class="hidden" />
+                  <span class="text-xs font-bold">Standard</span>
+                  <span class="text-[10px] opacity-75">3★ / Private Cab</span>
+                </label>
+                <label class="chip px-3 py-2.5 rounded-xl text-center flex flex-col items-center justify-center gap-0.5" data-group="budget" data-val="Luxury">
+                  <input type="radio" name="budget" value="Luxury" class="hidden" />
+                  <span class="text-xs font-bold">Luxury</span>
+                  <span class="text-[10px] opacity-75">5★ Heritage Resorts</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- FIELD 4: Companions & Indian Dining Habits -->
+          <div class="pt-2 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Companions -->
+            <div>
+              <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                Traveling Party
+              </label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+                <label class="chip px-2.5 py-3 rounded-xl text-center flex flex-col items-center justify-center gap-1 active" data-group="companion" data-val="Solo">
+                  <input type="radio" name="companion" value="Solo" checked class="hidden" />
+                  <i data-lucide="user" class="w-4 h-4"></i>
+                  <span class="text-xs font-bold">Solo</span>
+                </label>
+                <label class="chip px-2.5 py-3 rounded-xl text-center flex flex-col items-center justify-center gap-1" data-group="companion" data-val="Couple">
+                  <input type="radio" name="companion" value="Couple" class="hidden" />
+                  <i data-lucide="heart" class="w-4 h-4 text-pink-500"></i>
+                  <span class="text-xs font-bold">Couple</span>
+                </label>
+                <label class="chip px-2.5 py-3 rounded-xl text-center flex flex-col items-center justify-center gap-1" data-group="companion" data-val="Family">
+                  <input type="radio" name="companion" value="Family" class="hidden" />
+                  <i data-lucide="baby" class="w-4 h-4 text-amber-500"></i>
+                  <span class="text-xs font-bold">Family</span>
+                </label>
+                <label class="chip px-2.5 py-3 rounded-xl text-center flex flex-col items-center justify-center gap-1" data-group="companion" data-val="Friends">
+                  <input type="radio" name="companion" value="Friends" class="hidden" />
+                  <i data-lucide="sparkles" class="w-4 h-4 text-indigo-500"></i>
+                  <span class="text-xs font-bold">Friends</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Food Preferences -->
+            <div>
+              <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <i data-lucide="utensils" class="w-4 h-4 text-blue-600"></i>
+                Dining &amp; Dietary Preferences
+              </label>
+              <select id="dietaryPref" class="w-full px-3 py-2.5 rounded-lg ui-input text-sm text-slate-800 font-medium">
+                <option value="Pure Vegetarian" selected>Pure Vegetarian (Shuddh Shakahari)</option>
+                <option value="Jain Food">Jain Friendly (No Onion, Garlic, Root Veg)</option>
+                <option value="Multi-Cuisine / Non-Veg">Standard / Multi-Cuisine &amp; Non-Veg</option>
+                <option value="Local Regional Thali">Regional Authentic Specialties &amp; Thalis</option>
+                <option value="Halal">Halal Certified Dining</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- FIELD 5: Indian Trip Styles -->
+          <div class="pt-2 border-t border-slate-100">
+            <label class="block text-sm font-bold text-slate-800 mb-2 flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <i data-lucide="compass" class="w-4 h-4 text-blue-600"></i>
+                Trip Interests (Select Any)
+              </span>
+            </label>
+            <div class="flex flex-wrap gap-2" id="interestChipsContainer">
+              <button type="button" class="interest-chip active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-blue-600 bg-blue-600 text-white flex items-center gap-1.5 shadow-sm transition" data-interest="Temples &amp; Spirituality">
+                <span>🛕</span> Temples &amp; Ghats
+              </button>
+              <button type="button" class="interest-chip active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-blue-600 bg-blue-600 text-white flex items-center gap-1.5 shadow-sm transition" data-interest="Forts &amp; Royal Heritage">
+                <span>🏰</span> Forts &amp; Palaces
+              </button>
+              <button type="button" class="interest-chip active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-blue-600 bg-blue-600 text-white flex items-center gap-1.5 shadow-sm transition" data-interest="Scenic Valleys &amp; Waterfalls">
+                <span>🏔️</span> Scenic Valleys &amp; Snow
+              </button>
+              <button type="button" class="interest-chip px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-slate-300 bg-white text-slate-700 hover:border-slate-400 flex items-center gap-1.5 transition" data-interest="Beaches &amp; Backwaters">
+                <span>🏖️</span> Beaches &amp; Houseboats
+              </button>
+              <button type="button" class="interest-chip px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-slate-300 bg-white text-slate-700 hover:border-slate-400 flex items-center gap-1.5 transition" data-interest="Trekking &amp; Adventure">
+                <span>🧗</span> River Rafting &amp; Treks
+              </button>
+              <button type="button" class="interest-chip px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-slate-300 bg-white text-slate-700 hover:border-slate-400 flex items-center gap-1.5 transition" data-interest="Local Bazaars &amp; Crafts">
+                <span>🛍️</span> Local Bazaars &amp; Spices
+              </button>
+              <button type="button" class="interest-chip px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium border border-slate-300 bg-white text-slate-700 hover:border-slate-400 flex items-center gap-1.5 transition" data-interest="Wildlife &amp; Safari">
+                <span>🐅</span> Tiger Safari &amp; National Parks
+              </button>
+            </div>
+          </div>
+
+          
+          <!-- FIELD 6: Must-Visit Sights, Places to Avoid & Accessibility (Phase 2 & 6) -->
+          <div class="pt-2 border-t border-slate-100">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <div class="md:col-span-6">
+                <label class="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+                  <i data-lucide="pin" class="w-3.5 h-3.5 text-blue-600"></i>
+                  Must-Visit Places / Activities (Optional):
+                </label>
+                <input 
+                  type="text" 
+                  id="mustVisitInput" 
+                  placeholder="e.g. Tiger Hill sunrise, Living Root Bridge, Scuba diving, Shikara ride..." 
+                  class="w-full px-3 py-2 rounded-xl ui-input text-xs text-slate-800 font-medium"
+                />
+              </div>
+              <div class="md:col-span-6">
+                <label class="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+                  <i data-lucide="shield-ban" class="w-3.5 h-3.5 text-rose-600"></i>
+                  Places to Avoid / Travel Limitations (Optional):
+                </label>
+                <input 
+                  type="text" 
+                  id="placesAvoidInput" 
+                  placeholder="e.g. Steep stair treks, long drives > 4 hours, noisy clubs..." 
+                  class="w-full px-3 py-2 rounded-xl ui-input text-xs text-slate-800 font-medium"
+                />
+              </div>
+            </div>
+
+            <!-- Accessibility & Pace Chips -->
+            <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+              <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Pacing &amp; Accessibility:</span>
+              <label class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 border border-slate-200 cursor-pointer text-slate-700 text-xs font-semibold select-none">
+                <input type="checkbox" id="seniorFriendlyCb" class="rounded accent-blue-600" />
+                <span>👴 Senior Citizen Friendly (Minimal stairs &amp; elevator stays)</span>
+              </label>
+              <label class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 border border-slate-200 cursor-pointer text-slate-700 text-xs font-semibold select-none">
+                <input type="checkbox" id="childFriendlyCb" class="rounded accent-blue-600" />
+                <span>👶 Child Friendly (Safe parks &amp; mild pacing)</span>
+              </label>
+              <label class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 border border-slate-200 cursor-pointer text-slate-700 text-xs font-semibold select-none">
+                <input type="checkbox" id="mountainPacingCb" class="rounded accent-blue-600" />
+                <span>🏔️ High-Altitude Easy Pacing</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- INSUFFICIENT BUDGET VALIDATION ALERT (PREVENTS ADVANCING TO NEXT PAGE) -->
+          <div id="formBudgetErrorBox" class="hidden p-4 sm:p-5 rounded-2xl bg-rose-50 border-2 border-rose-300 text-rose-950 shadow-md transition-all">
+            <div class="flex items-start gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0 font-black text-xl shadow-2xs">
+                ⚠️
+              </div>
+              <div class="flex-grow">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                  <h4 class="text-sm sm:text-base font-extrabold text-rose-900">
+                    Budget is Insufficient for this Trip
+                  </h4>
+                  <span id="formBudgetMinBadge" class="text-xs font-bold text-rose-900 bg-rose-200/90 px-3 py-1 rounded-full border border-rose-300 w-fit">
+                    Minimum Amount Needed
+                  </span>
+                </div>
+                <p id="formBudgetReasonText" class="text-xs sm:text-sm text-rose-900/90 mt-1.5 leading-relaxed font-medium">
+                  The amount you entered isn't sufficient to cover baseline expenses (verified stays, dedicated cab/transit, meals, and tickets).
+                </p>
+                <div class="mt-3.5 pt-3 border-t border-rose-200 flex flex-wrap items-center justify-between gap-3">
+                  <div class="text-xs font-bold text-rose-800">
+                    <span>Minimum Amount Needed: </span>
+                    <span id="formBudgetMinAmount" class="text-base font-black text-rose-950 font-heading">₹8,500</span>
+                    <span class="text-[11px] font-normal text-rose-700"> / person</span>
+                  </div>
+                  <button 
+                    type="button" 
+                    id="applyMinBudgetBtn" 
+                    onclick="applyMinimumBudgetAndProceed()" 
+                    class="btn-gradient px-4 py-2 text-xs font-bold rounded-xl shadow-md text-white flex items-center gap-1.5 active:scale-[0.98] transition-all cursor-pointer"
+                  >
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-300"></i>
+                    <span id="applyMinBudgetBtnText">Set Budget to Minimum &amp; Continue</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRIMARY SUBMIT BUTTON -->
+          <div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100">
+            <div class="text-xs text-slate-500 flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+              <span>Live geocoding of location + nearby tourist attractions plotted with exact km</span>
+            </div>
+
+            <button 
+              type="submit" 
+              id="generateBtn"
+              class="w-full sm:w-auto px-8 py-4 rounded-xl btn-gradient text-white font-black flex items-center justify-center gap-2.5 text-base shadow-lg shadow-blue-600/30 active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <i data-lucide="sparkles" class="w-5 h-5 text-amber-300 animate-pulse"></i>
+              <span>Locate on Map &amp; Build Itinerary</span>
+              <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div id="loadingSection" class="hidden my-12 sm:my-16 text-center max-w-md mx-auto ui-card p-6 sm:p-8 bg-white border border-slate-200/90 shadow-xl rounded-2xl sm:rounded-3xl relative overflow-hidden">
+      <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-50 to-indigo-100 text-blue-600 border border-blue-200/80 flex items-center justify-center mx-auto mb-4 pulse-glow">
+        <i data-lucide="compass" class="w-10 h-10 animate-spin-slow"></i>
+      </div>
+      <h3 id="loadingTitle" class="text-xl sm:text-2xl font-black font-heading text-slate-900 mb-1.5">Tripmozy is Scanning India's Map</h3>
+      <p id="loadingSubtitle" class="text-xs sm:text-sm text-slate-600 mb-5 min-h-[20px]">Pinpointing location and finding nearby tourist places...</p>
+      
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200/80 mb-2.5 p-0.5">
+        <div id="progressBar" class="h-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400 transition-all duration-300 w-12 shadow-xs"></div>
+      </div>
+      <div class="flex justify-between text-xs text-slate-500 font-bold">
+        <span id="loadingStep">Step 1 of 4</span>
+        <span id="loadingPercent" class="text-blue-600 font-black">25%</span>
+      </div>
+    </div>
+
+    <!-- RESULTS ITINERARY DASHBOARD -->
+    <div id="itineraryDashboard" class="hidden space-y-6">
+      
+      <!-- INSUFFICIENT BUDGET NOTICE BANNER -->
+      <div id="insufficientBudgetBanner" class="hidden p-4 sm:p-5 rounded-2xl bg-amber-50/95 border-2 border-amber-300 text-amber-950 shadow-sm transition-all">
+        <div class="flex items-start gap-3.5">
+          <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 font-bold text-lg shadow-2xs">
+            ⚠️
+          </div>
+          <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+              <h4 class="text-sm sm:text-base font-extrabold text-amber-900 flex items-center gap-2">
+                <span>Budget Adjustment Notice: Entered Budget is Insufficient</span>
+              </h4>
+              <span id="insufficientBudgetMinBadge" class="text-xs font-bold text-amber-900 bg-amber-200/90 px-2.5 py-0.5 rounded-full border border-amber-300 w-fit">
+                Realistic Minimum Required
+              </span>
+            </div>
+            <p id="insufficientBudgetText" class="text-xs sm:text-sm text-amber-900/90 mt-1 leading-relaxed">
+              The amount you entered isn't sufficient for this trip, so please increase it to the amount calculated below. Here is your itinerary planned with the realistic minimum amount needed.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SUMMARY HERO CARD -->
+      <div class="ui-card p-6 sm:p-7 bg-white border border-slate-200 shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-2.5">
+              <span id="dashDestinationBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3 h-3"></i>
+                <span id="badgeCity">Manali, Himachal Pradesh</span>
+              </span>
+              <span id="dashDaysBadge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">4 Days</span>
+              <span id="dashStyleBadge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">Standard Tier</span>
+              <span id="dashPartyBadge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">Couple</span>
+              <span id="dashNearbyCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">12 Nearby Places Mapped</span>
+            </div>
+
+            <h2 id="dashTripTitle" class="text-2xl sm:text-3xl font-black font-heading text-slate-900 mb-1">
+              Himalayan Peaks & Valleys: 4 Days in Manali
+            </h2>
+            <p id="dashTripSubtitle" class="text-slate-600 text-xs sm:text-sm max-w-2xl leading-relaxed">
+              Explore snow-capped Solang Valley, historic Hadimba Devi Temple, hot springs of Vashisht, and serene Old Manali cafes.
+            </p>
+          </div>
+
+          <!-- Total Budget & Action Buttons -->
+          <div class="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-3 shrink-0">
+            <div class="bg-blue-50/80 px-4 py-2.5 rounded-xl border border-blue-100 text-right w-full sm:w-auto">
+              <span class="text-[11px] text-slate-500 block font-medium">Tour Budget (per person)</span>
+              <span id="dashTotalBudget" class="text-2xl font-black text-blue-700 font-heading">₹18,500</span>
+            </div>
+
+            <div class="grid grid-cols-3 sm:flex items-center gap-2 w-full sm:w-auto">
+              <button onclick="downloadItineraryPDF()" class="btn-gradient px-3 py-2 sm:py-1.5 text-xs font-bold flex items-center justify-center gap-1.5 rounded-xl shadow-xs text-white" title="Download clean official PDF itinerary with TripMozy details">
+                <i data-lucide="file-down" class="w-3.5 h-3.5"></i>
+                <span>Download PDF</span>
+              </button>
+              <button onclick="shareTrip()" class="btn-white px-2.5 sm:px-3 py-2 sm:py-1.5 text-xs font-semibold flex items-center justify-center gap-1.5 rounded-xl shadow-2xs">
+                <i data-lucide="share-2" class="w-3.5 h-3.5 text-slate-600"></i>
+                <span>Share</span>
+              </button>
+              <button onclick="resetToPlanner()" class="btn-blue px-2.5 sm:px-3.5 py-2 sm:py-1.5 text-xs font-semibold flex items-center justify-center gap-1.5 rounded-xl shadow-2xs">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                <span>Edit</span>
+              </button>
+            </div>
+            
+            <!-- TRIPMOZY OFFICIAL COMMERCIAL ACTIONS (PHASE 9) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full mt-2">
+              <button
+                type="button"
+                onclick="openTripmozyWhatsApp()"
+                class="px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 text-white shadow-md active:scale-[0.98] transition-all cursor-pointer"
+                style="background: #25d366;"
+                title="Chat with TripMozy official reservation desk"
+              >
+                <i data-lucide="message-circle" class="w-4 h-4 text-white"></i>
+                <span>Chat with TripMozy (+91 9641866181)</span>
+              </button>
+              <button
+                type="button"
+                onclick="openQuoteModal()"
+                class="px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 text-white shadow-md active:scale-[0.98] transition-all cursor-pointer"
+                style="background: linear-gradient(135deg, #1967d2, #3b82f6);"
+                title="Request customized quotation with confirmed room allocation"
+              >
+                <i data-lucide="file-check" class="w-4 h-4"></i>
+                <span>Get Official TripMozy Quote</span>
+              </button>
+            </div>
+
+            <!-- BOOK NOW BUTTON -->
+            <button
+              id="bookNowHeroBtn"
+              onclick="openBookNowOnTripmozy()"
+              class="w-full px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2.5 shadow-lg active:scale-[0.98] transition-all"
+              style="background: linear-gradient(135deg, #16a34a, #15803d); color: white; box-shadow: 0 4px 14px rgba(22,163,74,0.35);"
+            >
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              <span>Book Now on Tripmozy.com</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DUAL-PLAN COMPARISON CARD (TRIPMOZY RECOMMENDED VS USER TARGET BUDGET) -->
+      <div id="dualPlanComparisonBanner" class="hidden p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-emerald-50/90 border border-blue-200/90 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-blue-200/80">
+          <div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white shadow-2xs">
+              <i data-lucide="scale" class="w-3.5 h-3.5"></i>
+              <span>Dual-Plan Analysis: TripMozy Preference vs Your Budget</span>
+            </span>
+            <h3 id="dualPlanHeading" class="text-base sm:text-lg font-black text-slate-900 mt-1">
+              Comparing TripMozy Preference with Your Budget Limit
+            </h3>
+          </div>
+          <span class="text-xs text-slate-600 font-semibold bg-white/80 px-3 py-1 rounded-full border border-blue-100 shadow-2xs">
+            👉 Tap either option to select it:
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3.5">
+          <!-- Option 1: TripMozy Recommended Choice -->
+          <div onclick="selectActiveBudgetPlan('recommended')" id="planCardRecommended" class="p-4 rounded-2xl border-2 border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-blue-700 flex items-center gap-1.5">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-600"></i>
+                <span>TripMozy Recommended Choice</span>
+              </span>
+              <span id="badgePlanRecommended" class="hidden text-[10px] font-black bg-blue-600 text-white px-2 py-0.5 rounded-full">ACTIVE</span>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span id="dualCostRecommended" class="text-2xl font-black text-slate-900 font-heading">₹14,500</span>
+              <span class="text-xs text-slate-500 font-bold">/ person</span>
+            </div>
+            <p id="dualDescRecommended" class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              Standard 3★ AC Hotel Rooms, dedicated private cab, fuel, tolls, meals, and full sightseeing.
+            </p>
+          </div>
+
+          <!-- Option 2: User Target Budget Plan -->
+          <div onclick="selectActiveBudgetPlan('target')" id="planCardTarget" class="p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/40 cursor-pointer transition-all hover:shadow-md relative">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+                <i data-lucide="target" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <span id="dualTitleTarget">Custom Plan (Under Your Limit)</span>
+              </span>
+              <span id="badgePlanTarget" class="text-[10px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-full">ACTIVE</span>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span id="dualCostTarget" class="text-2xl font-black text-emerald-700 font-heading">₹9,800</span>
+              <span class="text-xs text-slate-500 font-bold">/ person</span>
+            </div>
+            <p id="dualDescTarget" class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              Optimized to stay strictly under your budget: verified clean homestays, smart local transit, and regional dining.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GEMINI AI INSIGHTS & LOCAL INTELLIGENCE CARD -->
+      <div id="geminiAiInsightsCard" class="hidden p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-purple-50/90 via-indigo-50/80 to-blue-50/90 border-2 border-indigo-200/90 text-indigo-950 shadow-sm transition-all">
+        <div class="flex items-start gap-3 sm:gap-3.5">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center shrink-0 font-bold text-base sm:text-lg shadow-sm">
+            ✨
+          </div>
+          <div class="flex-grow min-w-0">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
+              <h4 class="text-sm sm:text-base font-extrabold text-indigo-950 flex items-center gap-2 flex-wrap">
+                <span>TripMozy AI Intelligence</span>
+                <span class="text-[10px] font-black uppercase tracking-wider bg-purple-200/90 text-purple-900 px-2 py-0.5 rounded-full border border-purple-300">Live Gemini AI</span>
+              </h4>
+              <span class="text-[11px] font-semibold text-indigo-700 bg-white/90 px-2.5 py-0.5 rounded-full border border-indigo-100 shadow-2xs w-fit">
+                Personalized Local Advice
+              </span>
+            </div>
+            <div id="geminiAiInsightsContent" class="text-xs sm:text-sm text-slate-800 leading-relaxed">
+              <!-- Rendered dynamically from Gemini API or hidden if offline -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI GENERATED ITINERARY DISCLAIMER -->
+      <div class="p-3.5 sm:p-4 bg-amber-50/95 border-2 border-amber-300/80 rounded-2xl flex items-start gap-3 text-xs text-amber-950 shadow-sm">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-600 text-white flex items-center justify-center shrink-0 font-bold text-sm shadow-xs mt-0.5">
+          🤖
+        </div>
+        <div class="leading-relaxed">
+          <strong class="text-amber-900 font-bold block sm:inline text-xs sm:text-[13px] mb-0.5 sm:mb-0">AI-Generated Itinerary Disclaimer:</strong>
+          This travel itinerary, timetable, and route suggestions are generated by Artificial Intelligence (AI) for planning and informational purposes. Real-world road conditions, sightseeing timings, weather, and local entry requirements may vary. For guaranteed room allotments, private vehicle allocation, and customized bookings, contact <strong>TripMozy Private Limited</strong> directly at <strong>+91 9641866181</strong> or click "Get Official TripMozy Quote".
+        </div>
+      </div>
+
+      <!-- TABS BAR (MAP & NEARBY PLACES ARE ELEVATED TO FRONT) -->
+      <div class="flex border-b border-slate-200 overflow-x-auto space-x-2 py-1.5 scrollbar-none bg-white px-2.5 rounded-2xl shadow-xs" style="-webkit-overflow-scrolling: touch;">
+        <button onclick="switchTab('map')" id="tab-map" class="tab-btn px-4 py-2.5 text-sm font-bold text-blue-600 border-b-2 border-blue-600 flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="map" class="w-4 h-4 text-blue-600"></i>
+          <span>GPS Map &amp; Nearby Tourist Places</span>
+          <span id="tabNearbyPill" class="text-[11px] bg-blue-100 text-blue-800 font-extrabold px-1.5 py-0.2 rounded-full">12</span>
+        </button>
+        <button onclick="switchTab('itinerary')" id="tab-itinerary" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="calendar" class="w-4 h-4 text-slate-600"></i>
+          <span>Day-by-Day Schedule</span>
+        </button>
+        <button onclick="switchTab('hotels')" id="tab-hotels" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="building-2" class="w-4 h-4 text-green-600"></i>
+          <span>Hotels &amp; Stays</span>
+          <span id="tabHotelsPill" class="text-[11px] bg-green-100 text-green-800 font-extrabold px-1.5 py-0.5 rounded-full">Live</span>
+        </button>
+        <button onclick="switchTab('budget')" id="tab-budget" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i>
+          <span>Budget &amp; Manual Column (₹)</span>
+        </button>
+        <button onclick="switchTab('packing')" id="tab-packing" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="check-square" class="w-4 h-4 text-purple-600"></i>
+          <span>Packing List</span>
+        </button>
+        <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="book-open" class="w-4 h-4 text-amber-600"></i>
+          <span>Travel Guide &amp; Transits</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: GPS ROUTE MAP & NEARBY ATTRACTIONS RADAR (MAIN MAP TAB) -->
+      <div id="view-map" class="tab-view space-y-4">
+        
+        <!-- Controls & Route Filter -->
+        <div class="ui-card p-4 bg-white border border-slate-200">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="navigation" class="w-4 h-4 text-blue-600"></i>
+                <span>Map Route &amp; Nearby Tourist Attractions</span>
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">
+                Stops are chronologically routed on the map with real driving distances from <span id="mapCenterCityText" class="font-bold text-slate-800">your searched location</span>.
+              </p>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <button onclick="fitMapBounds()" class="btn-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1.5">
+                <i data-lucide="maximize-2" class="w-3.5 h-3.5 text-slate-600"></i>
+                <span>Fit All Pins</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Day Route Filter Buttons on Map -->
+          <div class="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none border-t border-slate-100 pt-3" id="mapDayFilterButtons">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- 2-Column Map Layout: Map on Left, Nearby Attractions Explorer on Right -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3">
+            
+            <!-- Map Viewport -->
+            <div class="lg:col-span-8">
+              <div id="mapContainer" class="w-full h-[320px] sm:h-[420px] lg:h-[540px] rounded-xl sm:rounded-2xl shadow-inner border border-slate-200"></div>
+            </div>
+
+            <!-- Nearby Tourist Attractions List (With Distance in km) -->
+            <div class="lg:col-span-4 flex flex-col h-[340px] sm:h-[420px] lg:h-[540px] bg-slate-50/90 border border-slate-200 rounded-xl sm:rounded-2xl p-3.5 overflow-hidden">
+              <div class="pb-2 border-b border-slate-200 mb-2 flex items-center justify-between">
+                <div>
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-600"></i>
+                    <span>Nearby Tourist Places</span>
+                  </h4>
+                  <span class="text-[10px] text-slate-500">Sorted by distance from base</span>
+                </div>
+                <span id="nearbyCountPill" class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">12 Spots</span>
+              </div>
+
+              <!-- Budget Filter Pills for Tourist Places -->
+              <div class="pb-2 mb-2 border-b border-slate-200/80">
+                <div class="flex items-center justify-between text-[10px] font-bold text-slate-600 mb-1.5">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="filter" class="w-2.5 h-2.5 text-blue-600"></i> Filter by Budget:
+                  </span>
+                  <button type="button" onclick="filterAttractionsByBudget('sort_cost')" class="text-blue-600 hover:underline flex items-center gap-0.5 font-bold">
+                    <i data-lucide="arrow-down-up" class="w-2.5 h-2.5"></i> Price: Low to High
+                  </button>
+                </div>
+                <div class="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-none" id="attractionsBudgetFilter">
+                  <button type="button" id="budgetFilterBtn-all" onclick="filterAttractionsByBudget('all')" class="budget-filter-pill active px-2 py-0.5 rounded-md text-[10px] bg-blue-600 text-white font-bold transition whitespace-nowrap shadow-xs">All Spots</button>
+                  <button type="button" id="budgetFilterBtn-free" onclick="filterAttractionsByBudget('free')" class="budget-filter-pill px-2 py-0.5 rounded-md text-[10px] bg-white text-emerald-700 border border-slate-200 hover:border-emerald-500 font-semibold transition whitespace-nowrap">🟢 Free Entry</button>
+                  <button type="button" id="budgetFilterBtn-budget" onclick="filterAttractionsByBudget('budget')" class="budget-filter-pill px-2 py-0.5 rounded-md text-[10px] bg-white text-amber-800 border border-slate-200 hover:border-amber-500 font-semibold transition whitespace-nowrap">🟡 Under ₹100</button>
+                  <button type="button" id="budgetFilterBtn-moderate" onclick="filterAttractionsByBudget('moderate')" class="budget-filter-pill px-2 py-0.5 rounded-md text-[10px] bg-white text-blue-700 border border-slate-200 hover:border-blue-500 font-semibold transition whitespace-nowrap">🔵 ₹100-₹500</button>
+                  <button type="button" id="budgetFilterBtn-premium" onclick="filterAttractionsByBudget('premium')" class="budget-filter-pill px-2 py-0.5 rounded-md text-[10px] bg-white text-purple-700 border border-slate-200 hover:border-purple-500 font-semibold transition whitespace-nowrap">🟣 ₹500+</button>
+                </div>
+              </div>
+
+              <!-- Scrollable Attractions List -->
+              <div class="flex-grow overflow-y-auto space-y-2 pr-1" id="nearbyAttractionsList">
+                <!-- Dynamically rendered nearby places cards -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Daily Distance Summary Banner -->
+          <div class="mt-3 p-3 rounded-xl bg-blue-50/70 border border-blue-100 flex flex-wrap items-center justify-between text-xs text-blue-900 gap-2">
+            <div class="flex items-center gap-2">
+              <i data-lucide="route" class="w-4 h-4 text-blue-600"></i>
+              <span id="routeDistanceSummary">Calculated transit: Geographically clustered daily loops to minimize travel time in hills and cities.</span>
+            </div>
+            <span class="font-bold text-blue-800">🇮🇳 Verified Indian Roads & Scenic Byways</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 2: DAY-BY-DAY SCHEDULE TIMELINE -->
+      <div id="view-itinerary" class="tab-view hidden space-y-6">
+        
+        <!-- Action Header: Day Filter Pills + Add Custom Tourist Place Button -->
+        <div class="p-3 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none flex-grow" id="dayFilterChips">
+            <!-- Dynamically populated day filter chips -->
+          </div>
+          <div class="flex items-center gap-2 shrink-0 self-start md:self-auto">
+            <button type="button" onclick="downloadItineraryPDF()" class="btn-white px-3.5 py-2 text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 border border-slate-300 hover:border-blue-400 text-slate-800" title="Download clean PDF itinerary with official TripMozy details">
+              <i data-lucide="file-down" class="w-4 h-4 text-blue-600"></i>
+              <span>Download PDF</span>
+            </button>
+            <button type="button" onclick="toggleCustomPlaceForm()" id="toggleCustomPlaceBtn" class="btn-gradient px-4 py-2 text-xs font-bold rounded-xl shadow-md flex items-center justify-center gap-1.5">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span>Add Custom Tourist Place</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Collapsible Custom Tourist Place Form Modal / Drawer -->
+        <div id="customPlaceFormCard" class="hidden ui-card p-5 sm:p-6 bg-gradient-to-br from-blue-50/90 via-white to-emerald-50/90 border-2 border-blue-200 rounded-2xl shadow-lg transition-all">
+          <div class="flex items-start justify-between gap-3 pb-3 border-b border-slate-200/80 mb-4">
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-xs">📍</span>
+                <span>Add Custom Tourist Place to Itinerary</span>
+              </h3>
+              <p class="text-xs text-slate-600 mt-0.5">
+                Put your own spots, local dhabas, viewpoints, or adventure activities directly into any day.
+              </p>
+            </div>
+            <button type="button" onclick="toggleCustomPlaceForm(false)" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <form id="addCustomSpotForm" onsubmit="handleCustomPlaceSubmit(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Tourist Place Name <span class="text-rose-600">*</span></label>
+                <input 
+                  type="text" 
+                  id="customPlaceName" 
+                  required 
+                  placeholder="e.g. Solang Snow Quad Bike / Cafe 1947" 
+                  class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Select Day <span class="text-rose-600">*</span></label>
+                <select 
+                  id="customPlaceDay" 
+                  required
+                  class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                >
+                  <option value="1">Day 1</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Preferred Time Slot</label>
+                <select 
+                  id="customPlaceTime"
+                  class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                >
+                  <option value="09:30 AM">Morning (09:30 AM)</option>
+                  <option value="12:30 PM">Afternoon (12:30 PM)</option>
+                  <option value="03:30 PM" selected>Late Afternoon (03:30 PM)</option>
+                  <option value="06:30 PM">Sunset / Evening (06:30 PM)</option>
+                  <option value="08:30 PM">Night / Dinner (08:30 PM)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Category</label>
+                <select 
+                  id="customPlaceCategory"
+                  class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                >
+                  <option value="Sightseeing">Sightseeing &amp; Attractions</option>
+                  <option value="Temple">Temple / Spiritual Shrine</option>
+                  <option value="Nature">Nature Viewpoint &amp; Forest</option>
+                  <option value="Heritage">Fort / Heritage Palace</option>
+                  <option value="Adventure">Adventure &amp; Snow Activity</option>
+                  <option value="Dining">Dining, Cafe &amp; Dhabba</option>
+                  <option value="Shopping">Local Bazaars &amp; Handicrafts</option>
+                  <option value="Relaxation">Relaxation &amp; Sunset Walk</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Cost / Entry Fee (₹) (Optional)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">₹</span>
+                  <input 
+                    type="number" 
+                    id="customPlaceCost" 
+                    min="0" 
+                    step="50" 
+                    placeholder="0 (Free Entry)" 
+                    class="w-full text-xs font-semibold pl-7 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Insider Tip / Notes (Optional)</label>
+                <input 
+                  type="text" 
+                  id="customPlaceTip" 
+                  placeholder="e.g. Great sunset views, arrive by 5 PM" 
+                  class="w-full text-xs font-medium px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500 bg-white"
+                />
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2.5 pt-2">
+              <button type="button" onclick="toggleCustomPlaceForm(false)" class="btn-white px-4 py-2 text-xs font-semibold rounded-xl">
+                Cancel
+              </button>
+              <button type="submit" class="btn-gradient px-5 py-2 text-xs font-bold rounded-xl shadow-md flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                <span>Add to Itinerary</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ITINERARY AI-GENERATED DISCLAIMER BADGE -->
+        <div class="p-3 sm:p-3.5 rounded-xl bg-amber-50/90 border border-amber-200/90 flex items-center gap-2.5 text-xs text-amber-900 shadow-2xs">
+          <span class="text-base shrink-0">🤖</span>
+          <span class="leading-relaxed"><strong>AI-Generated Itinerary:</strong> This day-by-day timetable and sightseeing route are generated by AI for planning purposes. Real-world travel times, local permits, weather, and venue hours may vary.</span>
+        </div>
+
+        <!-- Days timeline container -->
+        <div id="itineraryDaysContainer" class="space-y-6">
+          <!-- Days rendered here -->
+        </div>
+      </div>
+      <!-- TAB HOTELS: LIVE TRIPMOZY HOTELS & TOURS -->
+      <div id="view-hotels" class="tab-view hidden space-y-6">
+
+        <!-- Hotels Section Header -->
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-xs">🏨</span>
+              <span>Live Hotels from Tripmozy.com — Book Instantly</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Real-time hotel prices for <strong id="hotelsCityLabel">this destination</strong> from tripmozy.com. Click any hotel to book directly.
+            </p>
+          </div>
+          <a href="https://tripmozy.com/hotel" target="_blank" class="btn-blue px-4 py-2 text-xs font-bold flex items-center gap-1.5 shrink-0 rounded-xl no-underline">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            View All Hotels
+          </a>
+        </div>
+
+        <!-- Hotels Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="hotelsGridContainer">
+          <!-- Dynamically populated by renderHotelsTab() -->
+        </div>
+
+        <!-- Tour Packages Section -->
+        <div class="mt-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="map" class="w-4 h-4 text-blue-600"></i>
+              <span>Latest Tripmozy Tour Packages &amp; Treks</span>
+            </h3>
+            <a href="https://tripmozy.com/tour" target="_blank" class="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1">
+              All Tours <i data-lucide="external-link" class="w-3 h-3"></i>
+            </a>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="toursGridContainer">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Big Book Now Banner -->
+        <div class="mt-4 p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4" style="background: linear-gradient(135deg, #16a34a, #15803d);">
+          <div class="text-white">
+            <h3 class="text-lg font-black">Ready to Book Your Dream Trip?</h3>
+            <p class="text-sm text-green-100 mt-0.5">Your full itinerary + budget summary will be carried to Tripmozy checkout.</p>
+          </div>
+          <button onclick="openBookNowOnTripmozy()" class="px-6 py-3 rounded-xl bg-white font-black text-green-800 text-sm flex items-center gap-2 shadow-lg whitespace-nowrap hover:scale-105 transition-transform">
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            Book Now on Tripmozy
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- TAB 3: BUDGET & MANUAL BUDGET COLUMN -->
+      <div id="view-budget" class="tab-view hidden space-y-6">
+        
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">₹</span>
+              <span>Indian Rupee (₹ INR) Expense Forecast & Manual Budget Column</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Edit the <strong>Manual Budget Column</strong> to set your own spending targets for hotels, food, local transport, and tickets.
+            </p>
+          </div>
+          <button onclick="resetManualBudgetToAI()" class="btn-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1.5 shrink-0">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-blue-600"></i>
+            Reset to AI Estimate
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Doughnut Chart Column -->
+          <div class="lg:col-span-5 ui-card p-6 bg-white border border-slate-200 flex flex-col items-center justify-center">
+            <h4 class="text-sm font-bold text-slate-800 mb-3 w-full flex items-center gap-2">
+              <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
+              Expense Share
+            </h4>
+            <div class="w-full max-w-[260px] h-[260px] relative">
+              <canvas id="budgetChartCanvas"></canvas>
+            </div>
+            
+            <!-- Variance Box -->
+            <div id="budgetVarianceBanner" class="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs w-full text-center">
+              <span class="text-slate-500">Manual Budget Variance: </span>
+              <span id="varianceValue" class="font-bold text-emerald-600">Exact match with AI recommendation</span>
+            </div>
+          </div>
+
+          <!-- Itemized Table with Manual Budget Column -->
+          <div class="lg:col-span-7 ui-card p-6 bg-white border border-slate-200 space-y-4">
+            
+            <div class="flex items-center justify-between pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-500">
+              <div class="w-1/2">Category</div>
+              <div class="w-1/4 text-right">AI Estimate (₹)</div>
+              <div class="w-1/4 text-right text-blue-600">Manual Budget (₹)</div>
+            </div>
+
+            <!-- Category list with editable manual inputs -->
+            <div class="space-y-3" id="budgetCategoriesList">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Totals Comparison Footer -->
+            <div class="pt-4 border-t border-slate-200 flex items-center justify-between text-base font-bold">
+              <div>
+                <span class="text-slate-800 block text-xs font-bold">Total Budget</span>
+                <span class="text-slate-500 text-[11px] font-normal">Per person in INR (₹)</span>
+              </div>
+              <div class="text-right flex items-center gap-6">
+                <div>
+                  <span class="text-[11px] text-slate-400 block font-normal">AI Total</span>
+                  <span id="budgetGrandTotal" class="text-slate-700 text-sm font-bold">₹18,500</span>
+                </div>
+                <div>
+                  <span class="text-[11px] text-blue-600 block font-bold">Manual Total</span>
+                  <span id="manualGrandTotal" class="text-blue-600 text-xl font-heading font-black">₹18,500</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: PACKING CHECKLIST -->
+      <div id="view-packing" class="tab-view hidden space-y-4">
+        <div class="ui-card p-6 bg-white border border-slate-200">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-4 border-b border-slate-100">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2 font-heading">
+                <i data-lucide="luggage" class="w-5 h-5 text-blue-600"></i>
+                Packing Checklist for Indian Destinations
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">Customized for regional Indian climate, temple rules, and treks.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-right">
+                <span class="text-xs text-slate-500 block">Progress</span>
+                <span id="packingProgressCount" class="text-xs font-bold text-blue-600">0 Packed</span>
+              </div>
+              <div class="w-24 bg-slate-100 rounded-full h-2 border border-slate-200">
+                <div id="packingProgressBar" class="bg-blue-600 h-2 rounded-full w-0 transition-all duration-300"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="packingListContainer">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: LOCAL TRAVEL GUIDE -->
+      <div id="view-guide" class="tab-view hidden space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="localGuideContainer">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      
+      <!-- QUICK 1-TAP ITINERARY REFINEMENT CHIPS (PHASE 8) -->
+      <div class="ui-card p-3 bg-white border border-slate-200 rounded-xl flex items-center gap-2 overflow-x-auto scrollbar-none text-xs">
+        <span class="text-blue-900 font-bold uppercase text-[10px] tracking-wider shrink-0 flex items-center gap-1 pl-1">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-600"></i>
+          <span>1-Tap Refine:</span>
+        </span>
+        <button type="button" onclick="handleQuickRefine('reduce_budget')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">💰 Reduce Budget by 15%</button>
+        <button type="button" onclick="handleQuickRefine('relaxed')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">🧘 More Relaxed Pacing</button>
+        <button type="button" onclick="handleQuickRefine('child_friendly')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-pink-50 hover:text-pink-700 hover:border-pink-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">👨‍👩‍👧‍👦 Child &amp; Senior Friendly</button>
+        <button type="button" onclick="handleQuickRefine('luxury')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">✨ Upgrade to Luxury 5★</button>
+        <button type="button" onclick="handleQuickRefine('add_nature')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-green-50 hover:text-green-700 hover:border-green-300 border border-slate-200 font-bold whitespace-nowrap transition flex items-center gap-1.5">🌲 Add Nature &amp; Waterfalls</button>
+      </div>
+
+      <!-- AI REFINE PROMPT BAR -->
+      <div id="aiRefineBox" class="ui-card p-4 bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <div class="flex items-center gap-2 text-slate-700 shrink-0 text-xs sm:text-sm font-semibold">
+          <i data-lucide="wand-2" class="w-4 h-4 text-blue-600"></i>
+          <span>Modify Itinerary:</span>
+        </div>
+        <div class="flex-grow">
+          <input 
+            type="text" 
+            id="refinePromptInput"
+            placeholder="e.g. 'Add Solang valley snow sports on Day 2', 'Include a riverside cafe in Kasol', 'Add paragliding'..."
+            class="w-full px-3.5 py-2 rounded-lg ui-input text-xs sm:text-sm text-slate-900"
+            onkeydown="if(event.key === 'Enter') handleRefinePlan()"
+          />
+        </div>
+        <button 
+          onclick="handleRefinePlan()"
+          class="btn-blue px-4 py-2 text-xs sm:text-sm flex items-center justify-center gap-1.5 shrink-0"
+        >
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>Update Plan</span>
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- CLEAN LUXURY FOOTER (100% INDIA) -->
+  <footer class="bg-[#0a121e] border-t border-amber-900/30 py-10 sm:py-12 mt-16 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Brand Description -->
+        <div class="space-y-3">
+          <div class="flex items-center space-x-2">
+            <img src="logo.png" alt="TripMozy" class="h-9 w-auto object-contain brightness-110" />
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Incredible India Luxury AI Travel Planner. Geocoding tourist destinations across India, identifying nearby attractions, and building day-by-day itineraries with exact Indian Rupee (₹) budgets.
+          </p>
+          <div class="text-amber-400 font-semibold text-[11px] flex items-center gap-1">
+            <span>🇮🇳 Exclusively for Indian Tourist Destinations</span>
+          </div>
+          <div class="pt-2 text-slate-300 space-y-1">
+            <div class="flex items-center gap-2 text-xs">
+              <i data-lucide="phone" class="w-3.5 h-3.5 text-amber-400"></i>
+              <a href="tel:+919641866181" class="hover:text-amber-400 font-semibold transition">+91 9641866181</a>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <i data-lucide="mail" class="w-3.5 h-3.5 text-amber-400"></i>
+              <a href="mailto:tripmozy@gmail.com" class="hover:text-amber-400 font-semibold transition">tripmozy@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- North & Himalayan Destinations -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <span class="text-amber-400">✦</span> North India &amp; Mountains
+          </h4>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('manali')" class="hover:text-amber-400 transition">Manali &amp; Solang Valley</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('kashmir')" class="hover:text-amber-400 transition">Srinagar, Gulmarg &amp; Pahalgam</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('ladakh')" class="hover:text-amber-400 transition">Leh &amp; Pangong Tso (Ladakh)</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('rishikesh')" class="hover:text-amber-400 transition">Rishikesh &amp; Mussoorie</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Shimla, Himachal Pradesh')" class="hover:text-amber-400 transition">Shimla &amp; Kufri</a></li>
+          </ul>
+        </div>
+
+        <!-- South & Coastal Destinations -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <span class="text-amber-400">✦</span> South &amp; Coastal India
+          </h4>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('goa')" class="hover:text-amber-400 transition">Goa Beaches &amp; Heritage Forts</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('kerala')" class="hover:text-amber-400 transition">Kerala Backwaters &amp; Munnar</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('ooty')" class="hover:text-amber-400 transition">Ooty &amp; Coonoor Nilgiris</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('hampi')" class="hover:text-amber-400 transition">Hampi UNESCO Ruins</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Coorg, Karnataka')" class="hover:text-amber-400 transition">Coorg Coffee Plantations</a></li>
+          </ul>
+        </div>
+
+        <!-- Heritage & East/Northeast -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <span class="text-amber-400">✦</span> Heritage &amp; Northeast
+          </h4>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('rajasthan')" class="hover:text-amber-400 transition">Jaipur &amp; Royal Rajasthan</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('varanasi')" class="hover:text-amber-400 transition">Varanasi Ghats &amp; Kashi Vishwanath</a></li>
+            <li><a href="javascript:void(0)" onclick="loadIndianCircuit('darjeeling')" class="hover:text-amber-400 transition">Darjeeling &amp; Gangtok (Sikkim)</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Shillong, Meghalaya')" class="hover:text-amber-400 transition">Meghalaya &amp; Living Root Bridges</a></li>
+            <li><a href="javascript:void(0)" onclick="setDestination('Kaziranga, Assam')" class="hover:text-amber-400 transition">Kaziranga National Park (Assam)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
+        <div>
+          &copy; 2026 TripMozy.com. Dedicated to Incredible India Luxury Tourism.
+        </div>
+        <div class="flex items-center space-x-4">
+          <span class="text-amber-400 font-semibold">&bull; TripMozy: +91 9641866181</span>
+          <span>&bull;</span>
+          <span>GPS Map Routing</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LIVE ACTIVE USER COUNTER CORNER WIDGET -->
+  <aside id="liveUserCounterWidget" aria-label="Live Active Travelers Counter" class="fixed bottom-4 left-4 sm:bottom-5 sm:left-5 z-40 no-print transition-all duration-300">
+    <div class="luxury-glass-card flex items-center gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full border border-amber-900/15 shadow-xl shadow-slate-900/10 backdrop-blur-md bg-white/95 text-slate-800 text-xs font-semibold select-none cursor-default group hover:shadow-2xl hover:border-amber-500/50 transition-all">
+      <!-- Pulsing Live Emerald Beacon -->
+      <span class="relative flex h-2 sm:h-2.5 w-2 sm:w-2.5 shrink-0" title="Active live session">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 sm:h-2.5 w-2 sm:w-2.5 bg-emerald-500 shadow-xs"></span>
+      </span>
+      
+      <!-- Users Icon & Live Count -->
+      <div class="flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
+        <i data-lucide="users" class="w-3.5 h-3.5 text-blue-600 group-hover:scale-110 transition-transform"></i>
+        <span id="liveUserCounterNumber" class="font-extrabold text-slate-900 font-heading text-xs sm:text-sm tracking-tight">--</span>
+        <span class="text-slate-600 font-medium text-[11px] sm:text-xs">viewers online</span>
+      </div>
+
+      <!-- Pulse Activity Indicator (small pill) -->
+      <span class="hidden sm:inline-flex items-center text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/80 tracking-wider">
+        LIVE
+      </span>
+    </div>
+  </aside>
+
+  <!-- App Script -->
+  <script src="tripmozy_catalog.js"></script>
+  <script src="india_travel_engine.js"></script>
+  <script src="app.js?v=2.2"></script>
+
+  <!-- TRIPMOZY OFFICIAL QUOTE MODAL (PHASE 9) -->
+  <div id="quoteModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative border border-slate-200 max-h-[92vh] overflow-y-auto">
+      <button type="button" onclick="closeQuoteModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+      
+      <div class="flex items-center gap-2.5 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 font-bold text-lg">
+          <i data-lucide="file-check" class="w-5 h-5 text-blue-600"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-black font-heading text-slate-900 leading-tight">Request Official TripMozy Quote</h3>
+          <p class="text-xs text-slate-500">TripMozy Private Limited &middot; WhatsApp: +91 9641866181 &middot; Email: tripmozy@gmail.com</p>
+        </div>
+      </div>
+
+      <form onsubmit="submitTripmozyQuote(event)" class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Destination</label>
+            <input type="text" id="quoteDest" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-800" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Duration</label>
+            <input type="text" id="quoteDuration" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-800" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Travelers &amp; Party</label>
+            <input type="text" id="quotePax" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-800" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Trip Budget</label>
+            <input type="text" id="quoteBudget" readonly class="w-full px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold text-blue-700" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-1">Your Full Name *</label>
+          <input type="text" id="quoteName" required placeholder="e.g. Rahul Sharma" class="w-full px-3.5 py-2.5 rounded-xl ui-input text-sm text-slate-800 font-semibold" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1">WhatsApp / Mobile Number *</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-500">+91</span>
+              <input type="tel" id="quotePhone" required placeholder="98765 43210" maxlength="12" class="w-full pl-11 pr-3 py-2.5 rounded-xl ui-input text-sm text-slate-800 font-bold" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1">Email Address</label>
+            <input type="email" id="quoteEmail" placeholder="you@example.com" class="w-full px-3.5 py-2.5 rounded-xl ui-input text-sm text-slate-800" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-1">Custom Notes / Special Requirements</label>
+          <textarea id="quoteNotes" rows="2" placeholder="e.g. Vegetarian meals only, ground floor room for senior parents, hotel with mountain view..." class="w-full px-3.5 py-2 rounded-xl ui-input text-xs text-slate-800"></textarea>
+        </div>
+
+        <!-- Privacy & Consent Checkbox -->
+        <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer pt-1">
+          <input type="checkbox" id="quoteConsent" checked required class="mt-0.5 rounded accent-blue-600" />
+          <span>I consent to TripMozy Private Limited contacting me regarding this customized quotation and travel arrangements. Your personal information is protected.</span>
+        </label>
+
+        <div class="pt-3 flex items-center justify-between gap-2 border-t border-slate-100">
+          <button type="button" onclick="viewSavedQuoteLeads()" class="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
+            <i data-lucide="folder-clock" class="w-3.5 h-3.5"></i>
+            <span>View Saved Quotes</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closeQuoteModal()" class="btn-white px-3.5 py-2 text-xs font-semibold rounded-xl">Cancel</button>
+            <button type="submit" class="btn-blue px-4 sm:px-5 py-2 text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md shadow-blue-600/20">
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+              <span>Submit &amp; Send to WhatsApp</span>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- COLLAPSIBLE SAVED QUOTES LOG -->
+      <div id="savedLeadsBox" class="hidden mt-4 pt-3 border-t border-slate-200">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+            <i data-lucide="history" class="w-3.5 h-3.5 text-blue-600"></i>
+            Stored TripMozy Quotation Leads
+          </span>
+          <button type="button" onclick="clearSavedQuoteLeads()" class="text-[11px] text-rose-600 hover:underline">Clear History</button>
+        </div>
+        <div id="savedLeadsList" class="space-y-2 max-h-48 overflow-y-auto text-xs text-slate-600"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEDICATED OFFICIAL PRINTABLE ITINERARY (SHOWN ONLY DURING PRINT / PDF DOWNLOAD) -->
+  <div id="printableItineraryDoc"></div>
+</body>
+</html>
