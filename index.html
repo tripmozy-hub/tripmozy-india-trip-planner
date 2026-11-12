@@ -3,33 +3,256 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>out of plugins 404</title>
+  <title>404 Not Found</title>
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
+
     body {
       background-color: #ffffff;
-      color: #0f172a;
+      color: #202124;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 60px 24px 24px 24px;
+    }
+
+    .main-container {
+      max-width: 620px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .icon-container {
+      margin-bottom: 24px;
+    }
+
+    .sad-icon {
+      width: 48px;
+      height: 48px;
+      display: block;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 500;
+      color: #202124;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .error-lead {
+      color: #3c4043;
+      font-size: 15px;
+      margin-bottom: 20px;
+      word-break: break-word;
+    }
+
+    .error-lead strong {
+      color: #202124;
+      font-weight: 600;
+    }
+
+    .try-section {
+      color: #5f6368;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .try-section p {
+      margin-bottom: 8px;
+    }
+
+    .try-section ul {
+      list-style-type: disc;
+      padding-left: 24px;
+    }
+
+    .try-section li {
+      margin-bottom: 6px;
+    }
+
+    .try-section a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+
+    .try-section a:hover {
+      text-decoration: underline;
+    }
+
+    .error-code {
+      font-size: 12px;
+      color: #5f6368;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 40px;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 24px;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease;
+      outline: none;
     }
-    h1 {
-      font-size: clamp(36px, 7vw, 84px);
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      line-height: 1.15;
+
+    .btn-secondary {
+      background-color: #ffffff;
+      color: #1a73e8;
+      border: 1px solid #dadce0;
+    }
+
+    .btn-secondary:hover {
+      background-color: #f8fafd;
+      border-color: #dadce0;
+    }
+
+    .btn-secondary:active {
+      background-color: #f1f3f4;
+    }
+
+    .btn-primary {
+      background-color: #1a73e8;
+      color: #ffffff;
+      border: none;
+      padding: 0 24px;
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+    }
+
+    .btn-primary:hover {
+      background-color: #1b66c9;
+      box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+    }
+
+    .btn-primary:active {
+      background-color: #185abc;
+    }
+
+    .details-box {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f8f9fa;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #3c4043;
+      display: none;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 40px 18px 20px 18px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      .error-lead {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>out of plugins 404</h1>
+  <div class="main-container">
+    <!-- Chrome Sad Page Icon -->
+    <div class="icon-container">
+      <svg class="sad-icon" viewBox="0 0 44 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Paper Outline with Folded Corner -->
+        <path d="M2.5 2.5H28.5L41.5 15.5V45.5H2.5V2.5Z" stroke="#5f6368" stroke-width="3" stroke-linejoin="round"/>
+        <!-- Fold Line -->
+        <path d="M28.5 2.5V15.5H41.5" stroke="#5f6368" stroke-width="3" stroke-linejoin="round"/>
+        <!-- Eyes -->
+        <rect x="12" y="21" width="4" height="4" fill="#5f6368"/>
+        <rect x="28" y="21" width="4" height="4" fill="#5f6368"/>
+        <!-- Sad Mouth -->
+        <path d="M15 35C15 31.134 18.134 28 22 28C25.866 28 29 31.134 29 35" stroke="#5f6368" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Main Heading -->
+    <h1>This site can’t be reached</h1>
+
+    <!-- Out of plugin subtext -->
+    <p class="error-lead">
+      <strong id="displayHostname">this page</strong> is out of plugin. Please contact helpdesk.
+    </p>
+
+    <!-- Try Steps -->
+    <div class="try-section">
+      <p>Try:</p>
+      <ul>
+        <li>Checking the connection</li>
+        <li><a href="javascript:void(0)" onclick="toggleDetails()">Checking the proxy and the firewall</a></li>
+        <li>Contacting the helpdesk for plugin availability</li>
+      </ul>
+    </div>
+
+    <!-- Error Code -->
+    <div class="error-code">
+      404 NOT FOUND (ERR_OUT_OF_PLUGIN)
+    </div>
+
+    <!-- Collapsible Details Box -->
+    <div id="detailsBox" class="details-box">
+      <strong>Error:</strong> 404 Not Found<br>
+      <strong>Status:</strong> Out of plugin<br>
+      <strong>Action Required:</strong> Please contact helpdesk to renew or re-enable the required plugins for this workspace.
+    </div>
+
+    <!-- Action Buttons Row -->
+    <div class="button-row">
+      <button type="button" class="btn btn-secondary" onclick="toggleDetails()" id="detailsBtn">Details</button>
+      <button type="button" class="btn btn-primary" onclick="window.location.reload()">Reload</button>
+    </div>
+  </div>
+
+  <script>
+    // Automatically match the real host visited by the user
+    try {
+      var host = window.location.hostname;
+      if (host && host !== 'localhost' && host !== '127.0.0.1') {
+        document.getElementById('displayHostname').textContent = host;
+      } else {
+        document.getElementById('displayHostname').textContent = 'tripmozy.com';
+      }
+    } catch (e) {}
+
+    function toggleDetails() {
+      var box = document.getElementById('detailsBox');
+      var btn = document.getElementById('detailsBtn');
+      if (box.style.display === 'block') {
+        box.style.display = 'none';
+        btn.textContent = 'Details';
+      } else {
+        box.style.display = 'block';
+        btn.textContent = 'Hide details';
+      }
+    }
+  </script>
 </body>
 </html>
