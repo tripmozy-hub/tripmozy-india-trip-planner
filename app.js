@@ -3540,42 +3540,98 @@ function switchTab(tabName) {
   }
 }
 
-// AI REFINE MODIFICATION
-function handleRefinePlan() {
+// AI REFINE MODIFICATION (POWERED BY GEMINI AI)
+async function handleRefinePlan() {
   const input = document.getElementById('refinePromptInput');
   const prompt = input.value.trim();
   if (!prompt || !currentTrip) return;
 
-  const btn = event?.currentTarget;
-  if (btn) btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Updating...`;
+  const btn = typeof event !== 'undefined' && event ? event.currentTarget : null;
+  if (btn) btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Consulting Gemini...`;
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
 
-  setTimeout(() => {
-    const newStop = {
+  const key = getTripMozyGeminiKey();
+  let addedStops = [];
+  let summaryMsg = '';
+
+  if (key && typeof fetch === 'function') {
+    try {
+      const dest = currentTrip.destination || 'India';
+      const dur = currentTrip.days || 3;
+      const budget = currentTrip.costPerPerson ? ('₹' + currentTrip.costPerPerson) : 'Standard';
+      const aiPrompt = 'You are TripMozy AI Travel Assistant. The user is planning a ' + dur + '-day trip to ' + dest + ' (budget ' + budget + '/person).\n' +
+        'The traveler requests: "' + prompt + '".\n' +
+        'Suggest 1-2 curated stops matching this request. Respond ONLY with a valid JSON array of objects with keys: "time" (e.g. "03:30 PM"), "name" (title of place or activity), "category" (e.g. "Cafe", "Scenic", "Culture", "Adventure"), "duration" (e.g. "1.5h"), "desc" (1-2 sentence description), "tip" (practical local or budget tip). Return ONLY raw JSON array, without markdown formatting or codeblocks.';
+
+      const models = ['gemini-3.8-flash', 'gemini-3.5-flash'];
+      for (let i = 0; i < models.length; i++) {
+        try {
+          const timeoutCtrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+          const timer = timeoutCtrl ? setTimeout(() => timeoutCtrl.abort(), 6000) : null;
+          const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + models[i] + ':generateContent?key=' + key, {
+            method: 'POST',
+            signal: timeoutCtrl ? timeoutCtrl.signal : undefined,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: aiPrompt }] }] })
+          });
+          if (timer) clearTimeout(timer);
+          if (res.ok) {
+            const data = await res.json();
+            const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (rawText) {
+              const cleaned = rawText.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+              const parsed = JSON.parse(cleaned);
+              if (Array.isArray(parsed) && parsed.length > 0) {
+                addedStops = parsed;
+                summaryMsg = '✨ Updated via Gemini AI! Added ' + parsed.map(s => s.name).join(' and ') + ' to your itinerary.';
+                break;
+              }
+            }
+          }
+        } catch (e) {
+          // fallback to next model or local generator
+        }
+      }
+    } catch (err) {
+      console.warn('Gemini refine fallback:', err);
+    }
+  }
+
+  // Resilient Heuristic Fallback if Gemini is offline or rate-limited
+  if (addedStops.length === 0) {
+    addedStops = [{
       time: "03:30 PM",
       name: `Custom Stop: ${prompt}`,
       category: "Special",
-      cost: "₹650",
       duration: "2h",
       desc: `Special recommendation added based on your request: "${prompt}".`,
-      tip: "Verified by Tripmozy India travel engine.",
-      coords: [currentTrip.coords[0] + 0.008, currentTrip.coords[1] + 0.008]
-    };
+      tip: "Verified by Tripmozy India travel engine."
+    }];
+    summaryMsg = `✨ Updated! Added "${prompt}" to your itinerary and mapped it on the GPS route.`;
+  }
 
-    if (currentTrip.daysPlan[0] && currentTrip.daysPlan[0].stops) {
-      currentTrip.daysPlan[0].stops.splice(2, 0, newStop);
+  const baseCoords = (currentTrip.coords && currentTrip.coords.length === 2) ? currentTrip.coords : [28.6139, 77.2090];
+  addedStops.forEach((stop, index) => {
+    stop.coords = [
+      baseCoords[0] + 0.007 * (index + 1),
+      baseCoords[1] + 0.007 * (index + 1)
+    ];
+    if (currentTrip.daysPlan && currentTrip.daysPlan[0] && currentTrip.daysPlan[0].stops) {
+      currentTrip.daysPlan[0].stops.splice(2 + index, 0, stop);
     }
+  });
 
-    renderItineraryTimeline(currentTrip.daysPlan);
-    renderMapAndNearbyAttractions(currentTrip);
-    lucide.createIcons();
+  if (typeof renderItineraryTimeline === 'function') renderItineraryTimeline(currentTrip.daysPlan);
+  if (typeof renderMapAndNearbyAttractions === 'function') renderMapAndNearbyAttractions(currentTrip);
+  if (typeof renderPrintableItineraryDoc === 'function') renderPrintableItineraryDoc(currentTrip);
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
 
-    input.value = '';
-    if (btn) btn.innerHTML = `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span>Update Plan</span>`;
-    lucide.createIcons();
-    switchTab('map');
+  input.value = '';
+  if (btn) btn.innerHTML = `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span>Update Plan</span>`;
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+  if (typeof switchTab === 'function') switchTab('map');
 
-    alert(`✨ Updated! Added "${prompt}" to your itinerary and mapped it on the GPS route.`);
-  }, 500);
+  alert(summaryMsg);
 }
 
 function resetToPlanner() {
@@ -4715,7 +4771,7 @@ function getTripMozyGeminiKey() {
     if (stored) return stored;
   }
   try {
-    var enc = 'QVEuQWI4Uk42SUNreGdxUWkyMmltTDdidTV0U0p0QWtXY0E3MDhMWmhiaXlRZFVsZFFtdmc=';
+    var enc = 'QVEuQWI4Uk42SVBhTzl2VVZsdWw5WUxJVE1lak41RUtEaEc5SFJYM25ZSGIwellaS0hxdXc=';
     if (typeof atob === 'function') return atob(enc);
     if (typeof Buffer !== 'undefined') return Buffer.from(enc, 'base64').toString('utf8');
   } catch (e) {}
@@ -4767,7 +4823,7 @@ async function fetchGeminiAIInsights(trip) {
   card.classList.remove('hidden');
   contentEl.innerHTML = '<div class="flex items-center gap-2 text-slate-500 py-1">' +
     '<span class="inline-block w-3.5 h-3.5 rounded-full border-2 border-indigo-600 border-t-transparent animate-spin"></span>' +
-    '<span class="text-xs font-medium">Consulting TripMozy Gemini AI for live insider tips...</span>' +
+    '<span class="text-xs font-medium">Consulting TripMozy Gemini AI for live insider tips & budget advice...</span>' +
   '</div>';
 
   try {
@@ -4775,13 +4831,14 @@ async function fetchGeminiAIInsights(trip) {
     const dur = trip.days || 4;
     const party = trip.party || 'Travelers';
     const budget = trip.costPerPerson ? '₹' + trip.costPerPerson + '/person' : 'Budget';
-    const prompt = "You are TripMozy's Indian Travel Specialist. For a " + dur + "-day trip to " + dest + " for " + party + " (" + budget + "), provide 3 short bullet points:\n" +
+    const prompt = "You are TripMozy's Indian Travel Specialist. For a " + dur + "-day trip to " + dest + " for " + party + " (" + budget + "), provide 4 short bullet points:\n" +
       "- Hidden Gem: (one secret place or view not crowded)\n" +
       "- Local Food: (one authentic local dish/place to try)\n" +
       "- Smart Travel Hack: (one practical timing or transport tip)\n" +
+      "- Budget Advice: (one money-saving or smart budget allocation tip for this trip)\n" +
       "Keep each bullet point under 25 words.";
 
-    const models = ['gemini-3-flash-preview', 'gemini-3.5-flash-lite'];
+    const models = ['gemini-3.8-flash', 'gemini-3.5-flash'];
     let outputText = null;
 
     for (var i = 0; i < models.length; i++) {
@@ -4789,20 +4846,30 @@ async function fetchGeminiAIInsights(trip) {
       try {
         const timeoutController = typeof AbortController !== 'undefined' ? new AbortController() : null;
         const timer = timeoutController ? setTimeout(function() { timeoutController.abort(); }, 6000) : null;
-        const res = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
+        
+        // Primary: standard generateContent endpoint
+        const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + key, {
           method: 'POST',
           signal: timeoutController ? timeoutController.signal : undefined,
           headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': key
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ model: model, input: prompt })
+          body: JSON.stringify({
+            contents: [{
+              parts: [{ text: prompt }]
+            }]
+          })
         });
         if (timer) clearTimeout(timer);
         if (res.ok) {
           const json = await res.json();
-          const step = json.steps ? json.steps.find(function(s) { return s.type === 'model_output'; }) : null;
-          const txt = step && step.content && step.content[0] ? step.content[0].text : null;
+          let txt = null;
+          if (json.candidates && json.candidates[0] && json.candidates[0].content && json.candidates[0].content.parts && json.candidates[0].content.parts[0]) {
+            txt = json.candidates[0].content.parts[0].text;
+          } else if (json.steps) {
+            const step = json.steps.find(function(s) { return s.type === 'model_output'; });
+            txt = step && step.content && step.content[0] ? step.content[0].text : null;
+          }
           if (txt && txt.trim().length > 10) {
             outputText = txt;
             break;

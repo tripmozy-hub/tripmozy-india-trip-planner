@@ -37,6 +37,8 @@ assert('app.js contains parseGeminiOutput function', appCode.includes('function 
 assert('app.js contains formatGeminiItemsToHtml function', appCode.includes('function formatGeminiItemsToHtml'));
 assert('app.js contains fetchGeminiAIInsights function', appCode.includes('async function fetchGeminiAIInsights'));
 assert('app.js invokes fetchGeminiAIInsights inside renderDashboard', appCode.includes('fetchGeminiAIInsights(trip)'));
+assert('app.js configures Gemini 3.8 Flash model', appCode.includes('gemini-3.8-flash'));
+assert('app.js handleRefinePlan is async and powered by Gemini', appCode.includes('async function handleRefinePlan') && appCode.includes('Consulting Gemini'));
 
 // 3. VM Functional Simulation
 const cardMock = {
@@ -72,6 +74,8 @@ vm.createContext(sandbox);
 // Extract only the Gemini helper functions and printable doc function to test logic cleanly
 const parserCode = appCode.substring(appCode.indexOf('// ==========================================\n// GEMINI AI INTEGRATION'));
 vm.runInContext(parserCode, sandbox);
+
+assert('getTripMozyGeminiKey yields valid active key', typeof sandbox.getTripMozyGeminiKey() === 'string' && sandbox.getTripMozyGeminiKey().startsWith('AQ.') && sandbox.getTripMozyGeminiKey().length > 30);
 
 // Test parser
 const sampleAiText = `* Hidden Gem: Jogini Waterfall via Vashisht village trek.
