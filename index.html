@@ -270,6 +270,9 @@
                 <span class="hidden sm:inline">Random Place</span>
                 <span class="sm:hidden">Surprise</span>
               </button>
+
+              <!-- Live Geoapify Autocomplete Dropdown -->
+              <div id="destinationAutocompleteDropdown" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-2xl z-50 overflow-hidden divide-y divide-slate-100 max-h-72 overflow-y-auto"></div>
             </div>
           </div>
 
@@ -814,9 +817,12 @@
         <div class="ui-card p-4 bg-white border border-slate-200">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
             <div>
-              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2 flex-wrap">
                 <i data-lucide="navigation" class="w-4 h-4 text-blue-600"></i>
                 <span>Map Route &amp; Nearby Tourist Attractions</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                  <i data-lucide="satellite" class="w-3 h-3"></i> Geoapify Live Radar
+                </span>
               </h3>
               <p class="text-xs text-slate-500 mt-0.5">
                 Stops are chronologically routed on the map with real driving distances from <span id="mapCenterCityText" class="font-bold text-slate-800">your searched location</span>.

@@ -22,6 +22,13 @@ let manualBudgetState = {
   shopping: 0
 };
 
+// GEOAPIFY LOCATION SERVICES CONFIGURATION
+// Covers: Destination Search & Autocomplete, Geocoding, Nearby Tourist Places, HD Maps
+const GEOAPIFY_API_KEY = '6dbe70a8f6134228930e932efb7ca268';
+if (typeof window !== 'undefined') {
+  window.GEOAPIFY_API_KEY = GEOAPIFY_API_KEY;
+}
+
 // Indian Numbering Formatter
 function formatINR(val) {
   const num = Math.round(Number(val) || 0);
@@ -1618,6 +1625,89 @@ function setupEventListeners() {
       }
     });
   });
+
+  setupDestinationAutocomplete();
+}
+
+// ============================================================================
+// GEOAPIFY DESTINATION SEARCH & AUTOCOMPLETE
+// ============================================================================
+function setupDestinationAutocomplete() {
+  const input = document.getElementById('destinationInput');
+  const dropdown = document.getElementById('destinationAutocompleteDropdown');
+  if (!input || !dropdown) return;
+
+  let debounceTimer = null;
+
+  input.addEventListener('input', () => {
+    const query = input.value.trim();
+    if (debounceTimer) clearTimeout(debounceTimer);
+
+    if (query.length < 2) {
+      dropdown.innerHTML = '';
+      dropdown.classList.add('hidden');
+      return;
+    }
+
+    debounceTimer = setTimeout(async () => {
+      try {
+        const apiKey = (typeof window !== 'undefined' && window.GEOAPIFY_API_KEY) ? window.GEOAPIFY_API_KEY : '6dbe70a8f6134228930e932efb7ca268';
+        const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&filter=countrycode:in&limit=6&apiKey=${apiKey}`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (!data.features || data.features.length === 0) {
+          dropdown.innerHTML = '';
+          dropdown.classList.add('hidden');
+          return;
+        }
+
+        dropdown.innerHTML = '';
+        data.features.forEach(feat => {
+          const prop = feat.properties;
+          const mainText = prop.city || prop.name || (prop.formatted ? prop.formatted.split(',')[0] : query);
+          const subText = [prop.state, prop.country].filter(Boolean).join(', ');
+
+          const item = document.createElement('div');
+          item.className = 'px-4 py-2.5 hover:bg-blue-50 cursor-pointer flex items-center justify-between text-left transition';
+          item.innerHTML = `
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 text-xs">📍</span>
+              <div>
+                <strong class="text-xs sm:text-sm text-slate-900 block">${mainText}</strong>
+                <span class="text-[11px] text-slate-500">${subText || prop.formatted}</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">Select</span>
+          `;
+
+          item.addEventListener('click', () => {
+            input.value = prop.formatted || mainText;
+            if (typeof window !== 'undefined') {
+              window.selectedGeoapifyCoords = [prop.lat, prop.lon];
+              window.selectedGeoapifyDest = input.value;
+            }
+            dropdown.innerHTML = '';
+            dropdown.classList.add('hidden');
+          });
+
+          dropdown.appendChild(item);
+        });
+
+        dropdown.classList.remove('hidden');
+      } catch (e) {
+        console.warn('Destination autocomplete warning:', e);
+      }
+    }, 250);
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.add('hidden');
+    }
+  });
 }
 
 function updateDurationLabel(val) {
@@ -1810,13 +1900,20 @@ async function handleFormSubmit(e) {
   const baseCoords = await resolveIndianCoordinates(destination);
   await sleep(350);
 
-  // Step 2: Nearby attractions scan
+  // Step 2: Nearby attractions scan (Powered by Geoapify Places API)
   document.getElementById('loadingTitle').textContent = `Discovering Nearby Tourist Places in ${destination}...`;
   document.getElementById('loadingSubtitle').textContent = `Scanning within ${mapRadius} km radius for temples, viewpoints, forts & waterfalls...`;
   document.getElementById('progressBar').style.width = '55%';
   document.getElementById('loadingStep').textContent = "Step 2 of 4";
   document.getElementById('loadingPercent').textContent = "55%";
-  await sleep(400);
+
+  let livePlaces = [];
+  try {
+    livePlaces = await fetchGeoapifyNearbyPlaces(baseCoords[0], baseCoords[1], mapRadius);
+  } catch (geoPlacesErr) {
+    console.warn("Live Geoapify places scan bypassed:", geoPlacesErr);
+  }
+  await sleep(350);
 
   // Step 3: Route clustering
   document.getElementById('loadingTitle').textContent = "Clustering Sights by Driving Proximity...";
@@ -1842,6 +1939,7 @@ async function handleFormSubmit(e) {
       startDate,
       endDate,
       baseCoords,
+      livePlaces,
       days,
       adults,
       children,
@@ -1895,25 +1993,110 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// RESOLVE REAL GEOGRAPHIC COORDINATES IN INDIA
+// ============================================================================
+// GEOAPIFY NEARBY TOURIST PLACES SCANNER
+// ============================================================================
+async function fetchGeoapifyNearbyPlaces(lat, lon, radiusKm = 25) {
+  const apiKey = (typeof window !== 'undefined' && window.GEOAPIFY_API_KEY) ? window.GEOAPIFY_API_KEY : '6dbe70a8f6134228930e932efb7ca268';
+  if (!apiKey || typeof fetch === 'undefined') return [];
+
+  const radiusMeters = Math.min(50000, Math.max(5000, (radiusKm || 25) * 1000));
+  const categories = 'tourism.sights,tourism.attraction,heritage,entertainment.culture,leisure.park,tourism';
+  const url = `https://api.geoapify.com/v2/places?categories=${categories}&filter=circle:${lon},${lat},${radiusMeters}&bias=proximity:${lon},${lat}&limit=25&apiKey=${apiKey}`;
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3500);
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    if (!res.ok) return [];
+    const json = await res.json();
+    if (!json.features || !json.features.length) return [];
+
+    return json.features.map(f => {
+      const p = f.properties;
+      let name = p.name;
+      if (!name && p.formatted) {
+        name = p.formatted.split(',')[0];
+      }
+      if (!name) name = "Scenic Tourist Spot";
+
+      let category = 'Sightseeing';
+      const cats = (p.categories || []).join(' ');
+      if (cats.includes('temple') || cats.includes('place_of_worship') || cats.includes('religion')) category = 'Temple';
+      else if (cats.includes('fort') || cats.includes('castle') || cats.includes('heritage')) category = 'Heritage';
+      else if (cats.includes('park') || cats.includes('natural') || cats.includes('waterfall') || cats.includes('viewpoint')) category = 'Nature';
+      else if (cats.includes('museum') || cats.includes('culture')) category = 'Culture';
+      else if (cats.includes('shopping') || cats.includes('marketplace')) category = 'Shopping';
+      else if (cats.includes('scenic') || cats.includes('viewpoint')) category = 'Scenic';
+
+      const dist = getDistanceKm(lat, lon, p.lat, p.lon);
+      const desc = p.formatted || `${name} located in ${p.city || p.county || 'the region'}.`;
+
+      return {
+        name: name,
+        category: category,
+        coords: [p.lat, p.lon],
+        ticketCost: "Free Entry",
+        costValue: 0,
+        budgetTier: "free",
+        desc: desc,
+        tip: p.city ? `Located in ${p.city}. Recommended to explore during daytime.` : "Carry water and camera for scenic views.",
+        distKm: dist,
+        isGeoapifyLive: true
+      };
+    }).filter(poi => poi.name && poi.name.length > 2);
+  } catch (err) {
+    console.warn("Geoapify places fetch failed, using local attractions:", err);
+    return [];
+  }
+}
+
+// RESOLVE REAL GEOGRAPHIC COORDINATES IN INDIA (GEOAPIFY + LOCAL FALLBACK)
 async function resolveIndianCoordinates(destQuery) {
   const clean = destQuery.toLowerCase();
 
-  // 1. Direct match with preset keys
+  // 1. Check if user selected coordinates via Geoapify autocomplete
+  if (typeof window !== 'undefined' && window.selectedGeoapifyCoords && window.selectedGeoapifyDest === destQuery) {
+    return window.selectedGeoapifyCoords;
+  }
+
+  // 2. Direct match with preset keys
   for (const key in INDIA_DESTINATIONS) {
     if (clean.includes(key)) {
       return INDIA_DESTINATIONS[key].coords;
     }
   }
 
-  // 2. Direct match with Indian lookup table
+  // 3. Direct match with Indian lookup table
   for (const name in INDIAN_COORDS_LOOKUP) {
     if (clean.includes(name)) {
       return INDIAN_COORDS_LOOKUP[name];
     }
   }
 
-  // 3. Fallback to OpenStreetMap Nominatim Live Geocoding API with 2.5s timeout
+  // 4. Primary Live Geocoding via Geoapify API
+  const apiKey = (typeof window !== 'undefined' && window.GEOAPIFY_API_KEY) ? window.GEOAPIFY_API_KEY : '6dbe70a8f6134228930e932efb7ca268';
+  if (apiKey && typeof fetch !== 'undefined') {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+      const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(destQuery + ", India")}&filter=countrycode:in&limit=1&apiKey=${apiKey}`;
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.features && data.features.length > 0) {
+          const prop = data.features[0].properties;
+          return [prop.lat, prop.lon];
+        }
+      }
+    } catch (geoapifyErr) {
+      console.warn("Geoapify live geocoding warning, falling back:", geoapifyErr);
+    }
+  }
+
+  // 5. Fallback to OpenStreetMap Nominatim Live Geocoding API with 2.5s timeout
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 2500);
@@ -2130,17 +2313,31 @@ function createDynamicIndianCityPlan(params) {
     }
   }
 
-  // Generate realistic nearby tourist attractions with real computed distances
-  const nearbyAttractions = matchedCityPois ? JSON.parse(JSON.stringify(matchedCityPois)) : [
-    { name: `${dest} Historic Fort & Heritage Ramparts`, category: "Fort", coords: [coords[0] + 0.018, coords[1] + 0.012], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: `Historic ramparts guarding the heritage center of ${dest}.`, tip: "Arrive in the morning to beat the queues." },
-    { name: `${dest} Sacred Ancient Temple & Teerth Kund`, category: "Temple", coords: [coords[0] - 0.014, coords[1] + 0.018], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Century-old stone temple revered by pilgrims across ${dest}.`, tip: "Dress modestly covering shoulders and knees." },
-    { name: `${dest} Valley Viewpoint & Sunset Ridge`, category: "Scenic", coords: [coords[0] + 0.038, coords[1] - 0.025], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Elevated panoramic ridge looking over surrounding hills and valleys of ${dest}.`, tip: "Best photography light starts 45 mins before sunset." },
-    { name: `${dest} Cascading Forest Waterfall & Nature Trail`, category: "Nature", coords: [coords[0] - 0.045, coords[1] - 0.035], ticketCost: "₹30", costValue: 30, budgetTier: "budget", desc: `Natural mountain stream cascading into rock pools amidst dense greenery.`, tip: "Wear trekking shoes with good grip." },
-    { name: `${dest} Central Heritage Bazaar & Clock Tower`, category: "Shopping", coords: [coords[0] + 0.003, coords[1] + 0.004], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Bustling market arcades with regional spices, handicrafts, and sweet shops.`, tip: "Try hot local snacks and traditional sweets." },
-    { name: `${dest} Botanical Lake Promenade & Boating Club`, category: "Nature", coords: [coords[0] + 0.022, coords[1] - 0.012], ticketCost: "₹100", costValue: 100, budgetTier: "budget", desc: `Lush manicured gardens with paddle boats and walking trails.`, tip: "Ideal for a relaxing afternoon stroll." },
-    { name: `${dest} Royal Palace & Archaeological Museum`, category: "Heritage", coords: [coords[0] - 0.025, coords[1] + 0.030], ticketCost: "₹75", costValue: 75, budgetTier: "budget", desc: `Palace architecture showcasing royal palanquins, armor, and miniature art.`, tip: "Audio guide is recommended." },
-    { name: `${dest} Riverfront Ghat & Evening Aarti Spot`, category: "Culture", coords: [coords[0] + 0.012, coords[1] + 0.024], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Stone steps leading to the sacred river where evening lamps are floated.`, tip: "Experience the mesmerizing brass lamp aarti ceremony." }
-  ];
+  // Generate realistic nearby tourist attractions with real computed distances (Geoapify Places + Local database)
+  let nearbyAttractions = [];
+  if (params.livePlaces && params.livePlaces.length > 0) {
+    nearbyAttractions = params.livePlaces.slice();
+    if (matchedCityPois) {
+      matchedCityPois.forEach(poi => {
+        if (!nearbyAttractions.some(p => p.name.toLowerCase() === poi.name.toLowerCase())) {
+          nearbyAttractions.push(JSON.parse(JSON.stringify(poi)));
+        }
+      });
+    }
+  } else if (matchedCityPois) {
+    nearbyAttractions = JSON.parse(JSON.stringify(matchedCityPois));
+  } else {
+    nearbyAttractions = [
+      { name: `${dest} Historic Fort & Heritage Ramparts`, category: "Fort", coords: [coords[0] + 0.018, coords[1] + 0.012], ticketCost: "₹50", costValue: 50, budgetTier: "budget", desc: `Historic ramparts guarding the heritage center of ${dest}.`, tip: "Arrive in the morning to beat the queues." },
+      { name: `${dest} Sacred Ancient Temple & Teerth Kund`, category: "Temple", coords: [coords[0] - 0.014, coords[1] + 0.018], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Century-old stone temple revered by pilgrims across ${dest}.`, tip: "Dress modestly covering shoulders and knees." },
+      { name: `${dest} Valley Viewpoint & Sunset Ridge`, category: "Scenic", coords: [coords[0] + 0.038, coords[1] - 0.025], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Elevated panoramic ridge looking over surrounding hills and valleys of ${dest}.`, tip: "Best photography light starts 45 mins before sunset." },
+      { name: `${dest} Cascading Forest Waterfall & Nature Trail`, category: "Nature", coords: [coords[0] - 0.045, coords[1] - 0.035], ticketCost: "₹30", costValue: 30, budgetTier: "budget", desc: `Natural mountain stream cascading into rock pools amidst dense greenery.`, tip: "Wear trekking shoes with good grip." },
+      { name: `${dest} Central Heritage Bazaar & Clock Tower`, category: "Shopping", coords: [coords[0] + 0.003, coords[1] + 0.004], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Bustling market arcades with regional spices, handicrafts, and sweet shops.`, tip: "Try hot local snacks and traditional sweets." },
+      { name: `${dest} Botanical Lake Promenade & Boating Club`, category: "Nature", coords: [coords[0] + 0.022, coords[1] - 0.012], ticketCost: "₹100", costValue: 100, budgetTier: "budget", desc: `Lush manicured gardens with paddle boats and walking trails.`, tip: "Ideal for a relaxing afternoon stroll." },
+      { name: `${dest} Royal Palace & Archaeological Museum`, category: "Heritage", coords: [coords[0] - 0.025, coords[1] + 0.030], ticketCost: "₹75", costValue: 75, budgetTier: "budget", desc: `Palace architecture showcasing royal palanquins, armor, and miniature art.`, tip: "Audio guide is recommended." },
+      { name: `${dest} Riverfront Ghat & Evening Aarti Spot`, category: "Culture", coords: [coords[0] + 0.012, coords[1] + 0.024], ticketCost: "Free Entry", costValue: 0, budgetTier: "free", desc: `Stone steps leading to the sacred river where evening lamps are floated.`, tip: "Experience the mesmerizing brass lamp aarti ceremony." }
+    ];
+  }
 
   nearbyAttractions.forEach(poi => {
     poi.distKm = getDistanceKm(coords[0], coords[1], poi.coords[0], poi.coords[1]);
@@ -2523,16 +2720,21 @@ function renderMapAndNearbyAttractions(trip) {
   // Safely check if Leaflet (L) library is available
   if (typeof L === 'undefined') return;
 
-  // Initialize or Center Leaflet Map
+  // Initialize or Center Leaflet Map with Geoapify Map Tiles
   if (!leafletMap) {
     leafletMap = L.map('mapContainer', {
       zoomControl: true,
       scrollWheelZoom: true
     }).setView(trip.coords, 12);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      maxZoom: 19
+    const apiKey = (typeof window !== 'undefined' && window.GEOAPIFY_API_KEY) ? window.GEOAPIFY_API_KEY : '6dbe70a8f6134228930e932efb7ca268';
+    const tileUrl = apiKey
+      ? `https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?apiKey=${apiKey}`
+      : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    L.tileLayer(tileUrl, {
+      attribution: 'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
+      maxZoom: 20
     }).addTo(leafletMap);
   } else {
     leafletMap.setView(trip.coords, 12);
