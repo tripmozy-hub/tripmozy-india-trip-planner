@@ -1,0 +1,21 @@
+{
+  "name": "TripMozy — India AI Trip Planner",
+  "short_name": "TripMozy",
+  "description": "Incredible India AI Trip Planner & Nearby Tourist Attractions Map",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1967d2",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
