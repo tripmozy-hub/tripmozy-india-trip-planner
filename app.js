@@ -1481,8 +1481,10 @@ function initLiveUserCounter() {
   if (!counterEl) return;
 
   const STORAGE_KEY = 'tripmozy_live_user_counter';
-  const MIN_RANDOM_BASE = 118;
-  const MAX_RANDOM_BASE = 174;
+  const MIN_RANDOM_BASE = 18;
+  const MAX_RANDOM_BASE = 42;
+  const ABSOLUTE_MIN = 1;
+  const ABSOLUTE_MAX = 50;
 
   let storedCount = 0;
   try {
@@ -1493,14 +1495,13 @@ function initLiveUserCounter() {
     storedCount = 0;
   }
 
-  // Requirement: "show random number if the number is 0"
-  if (storedCount === 0) {
+  // Requirement: "show random number if the number is 0" or if previously stored exceeded 50
+  if (storedCount === 0 || storedCount > ABSOLUTE_MAX || storedCount < ABSOLUTE_MIN) {
     storedCount = Math.floor(Math.random() * (MAX_RANDOM_BASE - MIN_RANDOM_BASE + 1)) + MIN_RANDOM_BASE;
   }
 
-  // Requirement: "increase 1 everytime i visit or anybody"
-  // "and increase the number of viewers everytime i visit here"
-  storedCount += 1;
+  // Requirement: "increase 1 everytime i visit or anybody" (kept between 1 to 50)
+  storedCount = Math.min(ABSOLUTE_MAX, Math.max(ABSOLUTE_MIN, storedCount + 1));
 
   try {
     localStorage.setItem(STORAGE_KEY, storedCount.toString());
@@ -1513,16 +1514,15 @@ function initLiveUserCounter() {
   window.addEventListener('storage', (event) => {
     if (event.key === STORAGE_KEY && event.newValue) {
       const val = parseInt(event.newValue, 10);
-      if (!isNaN(val) && val > 0) {
-        liveActiveUserCount = val;
+      if (!isNaN(val) && val >= ABSOLUTE_MIN) {
+        liveActiveUserCount = Math.min(ABSOLUTE_MAX, Math.max(ABSOLUTE_MIN, val));
         renderLiveUserCounter(liveActiveUserCount, true);
       }
     }
   });
 
   // Requirement: "to see how many peoples are using this ai right now"
-  // "also decrese the live viewers online count sometime"
-  // Gentle ambient simulation of active sessions joining and departing
+  // "also decrese the live viewers online count sometime" (always strictly between 1 to 50)
   if (!liveCounterInterval) {
     liveCounterInterval = setInterval(() => {
       // Natural fluctuation: decreases (-1, -2, -3) and increases (+1, +2, +3)
@@ -1530,9 +1530,7 @@ function initLiveUserCounter() {
       const delta = deltas[Math.floor(Math.random() * deltas.length)];
       if (delta === 0) return;
 
-      const minFloor = Math.max(24, storedCount - 18);
-      const maxCeil = storedCount + 22;
-      const newCount = Math.min(maxCeil, Math.max(minFloor, liveActiveUserCount + delta));
+      const newCount = Math.min(ABSOLUTE_MAX, Math.max(ABSOLUTE_MIN, liveActiveUserCount + delta));
       if (newCount !== liveActiveUserCount) {
         const direction = newCount < liveActiveUserCount ? 'down' : 'up';
         liveActiveUserCount = newCount;
@@ -1546,7 +1544,8 @@ function renderLiveUserCounter(count, animate = true, direction = 'up') {
   const counterEl = document.getElementById('liveUserCounterNumber');
   if (!counterEl) return;
 
-  counterEl.textContent = Number(count).toLocaleString('en-IN');
+  const clamped = Math.min(50, Math.max(1, parseInt(count, 10) || 1));
+  counterEl.textContent = clamped.toString();
 
   if (animate) {
     counterEl.classList.remove('counter-num-pop', 'counter-num-drop');
@@ -1570,22 +1569,21 @@ function incrementLiveUserCounter(amount = 1) {
   try {
     stored = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
   } catch(e) {}
-  if (!stored) {
-    stored = Math.floor(Math.random() * (174 - 118 + 1)) + 118;
+  if (!stored || stored > 50 || stored < 1) {
+    stored = Math.floor(Math.random() * (42 - 18 + 1)) + 18;
   }
-  stored += inc;
+  stored = Math.min(50, Math.max(1, stored + inc));
   try {
     localStorage.setItem(STORAGE_KEY, stored.toString());
   } catch(e) {}
-  liveActiveUserCount = Math.max(liveActiveUserCount + inc, stored);
+  liveActiveUserCount = Math.min(50, Math.max(liveActiveUserCount + inc, stored));
   renderLiveUserCounter(liveActiveUserCount, true, 'up');
   return liveActiveUserCount;
 }
 
 function decrementLiveUserCounter(amount = 1) {
   const dec = Math.max(1, parseInt(amount, 10) || 1);
-  const minFloor = 24;
-  liveActiveUserCount = Math.max(minFloor, liveActiveUserCount - dec);
+  liveActiveUserCount = Math.max(1, liveActiveUserCount - dec);
   renderLiveUserCounter(liveActiveUserCount, true, 'down');
   return liveActiveUserCount;
 }

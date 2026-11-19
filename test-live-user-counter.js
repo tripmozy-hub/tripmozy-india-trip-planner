@@ -2,13 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const PROJECT_DIR = 'C:\\Users\\user\\.gemini\\antigravity\\scratch\\ai-trip-planner';
+const PROJECT_DIR = __dirname;
 const indexHtml = fs.readFileSync(path.join(PROJECT_DIR, 'index.html'), 'utf8');
 const stylesCss = fs.readFileSync(path.join(PROJECT_DIR, 'styles.css'), 'utf8');
 const appJs = fs.readFileSync(path.join(PROJECT_DIR, 'app.js'), 'utf8');
 
 console.log('================================================================');
-console.log(' TEST SUITE: TripMozy Live User Counter Corner Widget');
+console.log(' TEST SUITE: TripMozy Live User Counter Corner Widget (1-50 Range)');
 console.log('================================================================\n');
 
 let passed = 0;
@@ -87,7 +87,7 @@ function createMockEnvironment(initialStorageValue = null) {
   return { sandbox, store, mockElement };
 }
 
-// Test Case A: First visit (Stored count is 0 / null) -> Generates random number & increments by 1
+// Test Case A: First visit (Stored count is 0 / null) -> Generates random number between 1 and 50
 {
   const { sandbox, store, mockElement } = createMockEnvironment(null);
   
@@ -98,11 +98,42 @@ function createMockEnvironment(initialStorageValue = null) {
   vm.runInNewContext(counterCode, sandbox);
 
   const savedCount = parseInt(store['tripmozy_live_user_counter'], 10);
-  assert('First visit (when 0): Generates a random number > 100', savedCount >= 119 && savedCount <= 175, `Actual: ${savedCount}`);
-  assert('First visit: Sets textContent in DOM', parseInt(mockElement.textContent.replace(/,/g, ''), 10) === savedCount, `Actual: ${mockElement.textContent}`);
+  assert('First visit (when 0): Generates a number between 1 and 50', savedCount >= 1 && savedCount <= 50, `Actual: ${savedCount}`);
+  assert('First visit: Sets textContent in DOM within 1 to 50', parseInt(mockElement.textContent, 10) === savedCount && savedCount <= 50, `Actual: ${mockElement.textContent}`);
 }
 
-// Test Case B: Repeat visit (Stored count is e.g. 150) -> Increments exactly by 1 to 151, then tests increment & decrement
+// Test Case B: Repeat visit (Stored count is e.g. 35) -> Increments by 1 to 36, then tests increment & decrement
+{
+  const { sandbox, store, mockElement } = createMockEnvironment(35);
+  
+  const startIdx = appJs.indexOf('let liveActiveUserCount = 0;');
+  const endIdx = appJs.indexOf('function setupEventListeners()');
+  const counterCode = appJs.substring(startIdx, endIdx) + '\ninitLiveUserCounter();';
+
+  vm.runInNewContext(counterCode, sandbox);
+
+  const savedCount = parseInt(store['tripmozy_live_user_counter'], 10);
+  assert('Subsequent visit: Increments counter by 1 (35 -> 36)', savedCount === 36, `Actual: ${savedCount}`);
+  assert('Subsequent visit: Updates DOM element to 36', mockElement.textContent === '36', `Actual: ${mockElement.textContent}`);
+
+  // Test manual incrementLiveUserCounter function
+  vm.runInNewContext('incrementLiveUserCounter()', sandbox);
+  assert('Manual increment: Increments counter to 37', sandbox.getLiveUserCount() === 37, `Actual: ${sandbox.getLiveUserCount()}`);
+  assert('Manual increment: Applies pop animation class', mockElement.classList.contains('counter-num-pop'));
+
+  // Test manual decrementLiveUserCounter function
+  vm.runInNewContext('decrementLiveUserCounter(1)', sandbox);
+  assert('Manual decrement: Decreases counter from 37 to 36', sandbox.getLiveUserCount() === 36, `Actual: ${sandbox.getLiveUserCount()}`);
+  assert('Manual decrement: Updates DOM textContent to 36', mockElement.textContent === '36', `Actual: ${mockElement.textContent}`);
+  assert('Manual decrement: Applies drop animation class', mockElement.classList.contains('counter-num-drop'));
+
+  // Multi-unit decrement test
+  vm.runInNewContext('decrementLiveUserCounter(3)', sandbox);
+  assert('Multi-unit decrement: Decreases counter by 3 to 33', sandbox.getLiveUserCount() === 33, `Actual: ${sandbox.getLiveUserCount()}`);
+  assert('Multi-unit decrement: Updates DOM textContent to 33', mockElement.textContent === '33', `Actual: ${mockElement.textContent}`);
+}
+
+// Test Case C: Legacy high stored count (> 50, e.g. 150) -> Safely clamps to <= 50
 {
   const { sandbox, store, mockElement } = createMockEnvironment(150);
   
@@ -112,25 +143,24 @@ function createMockEnvironment(initialStorageValue = null) {
 
   vm.runInNewContext(counterCode, sandbox);
 
-  const savedCount = parseInt(store['tripmozy_live_user_counter'], 10);
-  assert('Subsequent visit: Increments counter by exactly 1 (150 -> 151)', savedCount === 151, `Actual: ${savedCount}`);
-  assert('Subsequent visit: Updates DOM element to 151', mockElement.textContent === '151', `Actual: ${mockElement.textContent}`);
+  const currentCount = sandbox.getLiveUserCount();
+  assert('Legacy count > 50 is automatically normalized between 1 and 50', currentCount >= 1 && currentCount <= 50, `Actual: ${currentCount}`);
+  assert('DOM textContent reflects clamped value <= 50', parseInt(mockElement.textContent, 10) <= 50, `Actual: ${mockElement.textContent}`);
+}
 
-  // Test manual incrementLiveUserCounter function
-  vm.runInNewContext('incrementLiveUserCounter()', sandbox);
-  assert('Manual increment: Increments counter to 152', sandbox.getLiveUserCount() === 152, `Actual: ${sandbox.getLiveUserCount()}`);
-  assert('Manual increment: Applies pop animation class', mockElement.classList.contains('counter-num-pop'));
+// Test Case D: Boundary limits (Cannot exceed 50 or drop below 1)
+{
+  const { sandbox, store, mockElement } = createMockEnvironment(50);
+  const startIdx = appJs.indexOf('let liveActiveUserCount = 0;');
+  const endIdx = appJs.indexOf('function setupEventListeners()');
+  const counterCode = appJs.substring(startIdx, endIdx) + '\ninitLiveUserCounter();';
+  vm.runInNewContext(counterCode, sandbox);
 
-  // Test manual decrementLiveUserCounter function (user request: "also decrese the live viewers online count sometime")
-  vm.runInNewContext('decrementLiveUserCounter(1)', sandbox);
-  assert('Manual decrement: Decreases counter from 152 to 151', sandbox.getLiveUserCount() === 151, `Actual: ${sandbox.getLiveUserCount()}`);
-  assert('Manual decrement: Updates DOM textContent to 151', mockElement.textContent === '151', `Actual: ${mockElement.textContent}`);
-  assert('Manual decrement: Applies drop animation class', mockElement.classList.contains('counter-num-drop'));
+  vm.runInNewContext('incrementLiveUserCounter(5)', sandbox);
+  assert('Upper boundary: Counter capped at maximum 50', sandbox.getLiveUserCount() <= 50, `Actual: ${sandbox.getLiveUserCount()}`);
 
-  // Multi-unit decrement test
-  vm.runInNewContext('decrementLiveUserCounter(3)', sandbox);
-  assert('Multi-unit decrement: Decreases counter by 3 to 148', sandbox.getLiveUserCount() === 148, `Actual: ${sandbox.getLiveUserCount()}`);
-  assert('Multi-unit decrement: Updates DOM textContent to 148', mockElement.textContent === '148', `Actual: ${mockElement.textContent}`);
+  vm.runInNewContext('decrementLiveUserCounter(100)', sandbox);
+  assert('Lower boundary: Counter floored at minimum 1', sandbox.getLiveUserCount() >= 1, `Actual: ${sandbox.getLiveUserCount()}`);
 }
 
 console.log('\n================================================================');
