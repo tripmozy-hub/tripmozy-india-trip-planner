@@ -30,6 +30,8 @@ assert('HTML contains #formBudgetErrorBox', indexHtml.includes('id="formBudgetEr
 assert('HTML contains #formBudgetReasonText', indexHtml.includes('id="formBudgetReasonText"'));
 assert('HTML contains #formBudgetMinAmount', indexHtml.includes('id="formBudgetMinAmount"'));
 assert('HTML contains #applyMinBudgetBtn', indexHtml.includes('id="applyMinBudgetBtn"'));
+assert('HTML contains #inlineBudgetError under budget input', indexHtml.includes('id="inlineBudgetError"'));
+assert('HTML contains #inlineBudgetErrorText', indexHtml.includes('id="inlineBudgetErrorText"'));
 assert('HTML input has oninput="clearBudgetError()"', indexHtml.includes('oninput="clearBudgetError()"'));
 
 // 2. Prepare full mock DOM environment
@@ -131,6 +133,19 @@ assert('Hero / planner form section remains visible',
 assert('#formBudgetErrorBox is revealed (hidden class removed)', 
   getOrCreateMock('formBudgetErrorBox').classList.contains('hidden') === false
 );
+assert('#inlineBudgetError is revealed under input', 
+  getOrCreateMock('inlineBudgetError').classList.contains('hidden') === false
+);
+const titleText = getOrCreateMock('formBudgetErrorTitle').textContent;
+assert('Title text says amount entered isn\'t sufficient and asks to enter needed amount', 
+  titleText.includes("The amount you entered isn't sufficient for the trip, please enter"),
+  titleText
+);
+const inlineText = getOrCreateMock('inlineBudgetErrorText').textContent;
+assert('Inline error text under input prompts user to enter needed amount', 
+  inlineText.includes("The amount you entered isn't sufficient for the trip, please enter"),
+  inlineText
+);
 const reasonText = getOrCreateMock('formBudgetReasonText').textContent;
 assert('Reason text is displayed explaining why ₹2,000 is insufficient', 
   reasonText.includes("2,000") && (reasonText.includes("insufficient") || reasonText.includes("baseline")),
@@ -145,7 +160,21 @@ assert('Input field is highlighted in red',
   getOrCreateMock('manualTargetBudgetInput').classList.contains('border-rose-500') === true
 );
 
-// CASE 2: User clicks "Set Budget to Minimum & Continue"
+// CASE 2: User enters budget below moderate tier cost (e.g. ₹14,000 for Manali Moderate 4-day costing ~₹18,868)
+getOrCreateMock('loadingSection').classList.add('hidden');
+getOrCreateMock('itineraryDashboard').classList.add('hidden');
+getOrCreateMock('manualTargetBudgetInput').value = '14000';
+sandbox.handleFormSubmit({ preventDefault: () => {} });
+
+assert('Below-tier budget also blocks advancing to loading screen',
+  getOrCreateMock('loadingSection').classList.contains('hidden') === true
+);
+assert('Below-tier budget displays needed tier amount',
+  sandbox.window.lastCalculatedMinAmount >= 17000,
+  `Calculated: ${sandbox.window.lastCalculatedMinAmount}`
+);
+
+// CASE 3: User clicks "Set Budget to Minimum & Continue"
 const minAmtCalculated = sandbox.window.lastCalculatedMinAmount;
 assert('lastCalculatedMinAmount was captured', minAmtCalculated > 2000, `Min: ${minAmtCalculated}`);
 

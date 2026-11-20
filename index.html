@@ -65,7 +65,7 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <!-- Custom Clean Light CSS -->
-  <link rel="stylesheet" href="styles.css?v=2.5" />
+  <link rel="stylesheet" href="styles.css?v=2.6" />
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen travel-hero-mesh flex flex-col justify-between selection:bg-blue-600 selection:text-white">
 
@@ -351,6 +351,17 @@
                   class="w-full pl-8 pr-4 py-2.5 rounded-lg ui-input text-base text-slate-900 font-bold transition"
                 />
               </div>
+
+              <!-- INLINE INSUFFICIENT BUDGET ALERT (DIRECTLY UNDER INPUT) -->
+              <div id="inlineBudgetError" class="hidden mt-2.5 p-3 rounded-xl bg-rose-50 border-2 border-rose-300 text-rose-950 text-xs font-bold flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs transition-all">
+                <div class="flex items-center gap-2">
+                  <span class="text-base shrink-0">⚠️</span>
+                  <span id="inlineBudgetErrorText" class="leading-snug">The amount you entered isn't sufficient for the trip, please enter this amount.</span>
+                </div>
+                <button type="button" onclick="applyMinimumBudgetAndProceed()" class="self-end sm:self-auto px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-extrabold text-xs shadow-xs active:scale-[0.98] transition cursor-pointer whitespace-nowrap">
+                  Set to <span id="inlineBudgetErrorMin">Minimum</span> &amp; Continue
+                </button>
+              </div>
             </div>
 
             <!-- Travel Tier -->
@@ -516,8 +527,8 @@
               </div>
               <div class="flex-grow">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                  <h4 class="text-sm sm:text-base font-extrabold text-rose-900">
-                    Budget is Insufficient for this Trip
+                  <h4 id="formBudgetErrorTitle" class="text-sm sm:text-base font-extrabold text-rose-900">
+                    The amount you entered isn't sufficient for the trip, please enter the needed amount
                   </h4>
                   <span id="formBudgetMinBadge" class="text-xs font-bold text-rose-900 bg-rose-200/90 px-3 py-1 rounded-full border border-rose-300 w-fit">
                     Minimum Amount Needed
@@ -1363,7 +1374,7 @@
   <!-- App Script -->
   <script src="tripmozy_catalog.js"></script>
   <script src="india_travel_engine.js"></script>
-  <script src="app.js?v=2.5"></script>
+  <script src="app.js?v=2.6"></script>
 
   <!-- TRIPMOZY OFFICIAL QUOTE MODAL (PHASE 9) -->
   <div id="quoteModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">

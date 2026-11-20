@@ -1873,9 +1873,38 @@ async function handleFormSubmit(e) {
         })
       : null;
 
-    if (preCheck && preCheck.budgetAnalysis && preCheck.budgetAnalysis.isInsufficient) {
-      showFormBudgetError(preCheck.budgetAnalysis, destination, days, adults + children);
-      return; // STOP! Do not let the user advance to the next page!
+    if (preCheck) {
+      const minRequired = preCheck.budgetAnalysis?.minRequiredPerPerson || 0;
+      const tierCost = preCheck.costPerPerson || 0;
+      const isBelowMin = manualBudgetInput < minRequired;
+      const isBelowTier = (budgetTier !== 'Budget' && manualBudgetInput < tierCost);
+      const isInsufficient = (preCheck.budgetAnalysis && preCheck.budgetAnalysis.isInsufficient) || isBelowMin || isBelowTier;
+
+      if (isInsufficient) {
+        const requiredAmount = isBelowMin ? minRequired : tierCost;
+        const analysis = Object.assign({}, preCheck.budgetAnalysis, {
+          isInsufficient: true,
+          minimumAmountNeeded: requiredAmount,
+          minRequiredPerPerson: minRequired,
+          targetPerPerson: manualBudgetInput,
+          calculatedPerPerson: tierCost,
+          insufficientReason: `The amount you entered (${formatINR(manualBudgetInput)}) isn't sufficient for the trip to ${destination} (${days} Days). Please enter ${formatINR(requiredAmount)} this amount.`
+        });
+        showFormBudgetError(analysis, destination, days, adults + children);
+        return; // STOP! Do not let the user advance to the next page!
+      }
+    } else {
+      const fallbackMinPerPerson = Math.round(days * (budgetTier === 'Luxury' ? 6500 : (budgetTier === 'Moderate' ? 3800 : 2500)));
+      if (manualBudgetInput < fallbackMinPerPerson) {
+        showFormBudgetError({
+          isInsufficient: true,
+          minimumAmountNeeded: fallbackMinPerPerson,
+          targetPerPerson: manualBudgetInput,
+          calculatedPerPerson: fallbackMinPerPerson,
+          insufficientReason: `The amount you entered (${formatINR(manualBudgetInput)}) isn't sufficient for the trip to ${destination} (${days} Days). Please enter ${formatINR(fallbackMinPerPerson)} this amount.`
+        }, destination, days, adults + children);
+        return; // STOP! Do not let the user advance to the next page!
+      }
     }
   }
 
@@ -4719,22 +4748,39 @@ window.lastCalculatedMinAmount = 0;
 function showFormBudgetError(analysis, destination, days, totalPax) {
   const errorBox = document.getElementById('formBudgetErrorBox');
   const inputEl = document.getElementById('manualTargetBudgetInput');
+  const titleEl = document.getElementById('formBudgetErrorTitle');
   const reasonEl = document.getElementById('formBudgetReasonText');
   const minAmtEl = document.getElementById('formBudgetMinAmount');
   const minBadgeEl = document.getElementById('formBudgetMinBadge');
   const btnTextEl = document.getElementById('applyMinBudgetBtnText');
 
-  const minAmt = analysis.minimumAmountNeeded || analysis.calculatedPerPerson || 8500;
-  const targetAmt = analysis.targetPerPerson || 0;
-  const reason = analysis.insufficientReason || analysis.insufficientNote || 
-    `The amount of ${formatINR(targetAmt)} per person is insufficient to cover baseline expenses (verified stays, dedicated cab/transit, 3 daily meals, and entry tickets) for a ${days}-day trip to ${destination}. Minimum needed is ${formatINR(minAmt)} per person.`;
+  // Inline error notice directly under budget input
+  const inlineBox = document.getElementById('inlineBudgetError');
+  const inlineText = document.getElementById('inlineBudgetErrorText');
+  const inlineMin = document.getElementById('inlineBudgetErrorMin');
+
+  const minAmt = analysis.minimumAmountNeeded || analysis.minRequiredPerPerson || analysis.calculatedPerPerson || 8500;
+  const targetAmt = analysis.targetPerPerson || (inputEl ? Number(inputEl.value) : 0);
+
+  const formattedMin = formatINR(minAmt);
+  const formattedTarget = formatINR(targetAmt);
+
+  const primaryMsg = `The amount you entered isn't sufficient for the trip, please enter ${formattedMin} this amount`;
+  const detailedReason = `The amount you entered (${formattedTarget}) isn't sufficient for the trip to ${destination} (${days} Days). Essential baseline expenses (stays, vehicle/transit, meals, and tickets) require at least ${formattedMin} per person. Please enter ${formattedMin} this amount to proceed.`;
 
   window.lastCalculatedMinAmount = minAmt;
 
-  if (reasonEl) reasonEl.textContent = reason;
-  if (minAmtEl) minAmtEl.textContent = formatINR(minAmt);
-  if (minBadgeEl) minBadgeEl.textContent = "Minimum " + formatINR(minAmt) + " Needed";
-  if (btnTextEl) btnTextEl.textContent = `Set Budget to ${formatINR(minAmt)} & Continue`;
+  if (titleEl) titleEl.textContent = primaryMsg;
+  if (reasonEl) reasonEl.textContent = detailedReason;
+  if (minAmtEl) minAmtEl.textContent = formattedMin;
+  if (minBadgeEl) minBadgeEl.textContent = "Please Enter " + formattedMin;
+  if (btnTextEl) btnTextEl.textContent = `Set Budget to ${formattedMin} & Continue`;
+
+  if (inlineBox) {
+    inlineBox.classList.remove('hidden');
+    if (inlineText) inlineText.textContent = primaryMsg;
+    if (inlineMin) inlineMin.textContent = formattedMin;
+  }
 
   if (errorBox) {
     errorBox.classList.remove('hidden');
@@ -4757,8 +4803,10 @@ function showFormBudgetError(analysis, destination, days, totalPax) {
 
 function clearBudgetError() {
   const errorBox = document.getElementById('formBudgetErrorBox');
+  const inlineBox = document.getElementById('inlineBudgetError');
   const inputEl = document.getElementById('manualTargetBudgetInput');
   if (errorBox) errorBox.classList.add('hidden');
+  if (inlineBox) inlineBox.classList.add('hidden');
   if (inputEl) {
     inputEl.classList.remove('border-rose-500', 'bg-rose-50/50', 'ring-2', 'ring-rose-200');
   }
