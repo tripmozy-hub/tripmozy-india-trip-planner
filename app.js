@@ -2228,11 +2228,15 @@ function scaleIndianDaysPlan(originalDays, targetDays, destination, baseCoords) 
     return originalDays.slice(0, targetDays);
   }
 
+  const safeCoords = (baseCoords && Array.isArray(baseCoords) && baseCoords.length === 2 && !isNaN(baseCoords[0]))
+    ? baseCoords
+    : [28.6139, 77.2090];
+
   const extended = [...originalDays];
   for (let d = originalDays.length + 1; d <= targetDays; d++) {
     const latOffset = (Math.sin(d) * 0.025);
     const lngOffset = (Math.cos(d) * 0.025);
-    const dayCoords = [baseCoords[0] + latOffset, baseCoords[1] + lngOffset];
+    const dayCoords = [safeCoords[0] + latOffset, safeCoords[1] + lngOffset];
 
     extended.push({
       day: d,
@@ -2249,10 +2253,27 @@ function scaleIndianDaysPlan(originalDays, targetDays, destination, baseCoords) 
 }
 
 function createDynamicIndianCityPlan(params) {
-  const dest = params.destination;
-  const days = params.days;
-  const coords = params.baseCoords;
-  const radius = params.radius;
+  const dest = params.destination || 'India';
+  const cleanDest = dest.toLowerCase();
+  const days = params.days || 4;
+  const radius = params.radius || 35;
+  
+  let coords = (params.baseCoords && Array.isArray(params.baseCoords) && params.baseCoords.length === 2 && !isNaN(params.baseCoords[0]))
+    ? params.baseCoords
+    : null;
+    
+  if (!coords) {
+    for (const key in INDIAN_COORDS_LOOKUP) {
+      if (cleanDest.includes(key)) {
+        coords = INDIAN_COORDS_LOOKUP[key];
+        break;
+      }
+    }
+  }
+  if (!coords) {
+    coords = [23.2599, 77.4126];
+  }
+  params.baseCoords = coords;
 
   const budgetMultiplier = params.budgetTier === 'Luxury' ? 2.2 : (params.budgetTier === 'Economy' ? 0.6 : 1.0);
   let baseCost = Math.round(4800 * days * budgetMultiplier);
@@ -2303,7 +2324,6 @@ function createDynamicIndianCityPlan(params) {
 
   // Check if destination matches any known city
   let matchedCityPois = null;
-  const cleanDest = dest.toLowerCase();
   for (const cName in INDIAN_CITY_REAL_ATTRACTIONS) {
     if (cleanDest.includes(cName)) {
       matchedCityPois = INDIAN_CITY_REAL_ATTRACTIONS[cName];
@@ -2338,7 +2358,8 @@ function createDynamicIndianCityPlan(params) {
   }
 
   nearbyAttractions.forEach(poi => {
-    poi.distKm = getDistanceKm(coords[0], coords[1], poi.coords[0], poi.coords[1]);
+    const pCoords = (poi.coords && Array.isArray(poi.coords) && poi.coords.length === 2) ? poi.coords : coords;
+    poi.distKm = getDistanceKm(coords[0], coords[1], pCoords[0], pCoords[1]);
   });
   nearbyAttractions.sort((a, b) => a.distKm - b.distKm);
 
@@ -2377,7 +2398,7 @@ function createDynamicIndianCityPlan(params) {
           duration: "2.5h",
           desc: poi1.desc,
           tip: poi1.tip,
-          coords: poi1.coords
+          coords: (poi1.coords && Array.isArray(poi1.coords) && poi1.coords.length === 2) ? poi1.coords : coords
         },
         {
           time: "12:30 PM",
@@ -2387,7 +2408,7 @@ function createDynamicIndianCityPlan(params) {
           duration: "1.5h",
           desc: `Enjoy hot regional specialties cooked in traditional local spices.`,
           tip: "Ask for the fresh seasonal thali.",
-          coords: [poi1.coords[0] + 0.002, poi1.coords[1] + 0.002]
+          coords: [(poi1.coords && poi1.coords[0] ? poi1.coords[0] : coords[0]) + 0.002, (poi1.coords && poi1.coords[1] ? poi1.coords[1] : coords[1]) + 0.002]
         },
         {
           time: "03:00 PM",
@@ -2397,7 +2418,7 @@ function createDynamicIndianCityPlan(params) {
           duration: "2.5h",
           desc: poi2.desc,
           tip: poi2.tip,
-          coords: poi2.coords
+          coords: (poi2.coords && Array.isArray(poi2.coords) && poi2.coords.length === 2) ? poi2.coords : coords
         },
         {
           time: "06:30 PM",
@@ -2407,7 +2428,7 @@ function createDynamicIndianCityPlan(params) {
           duration: "2h",
           desc: `Watch evening fall over ${dest} with hot ginger chai and regional sweets.`,
           tip: "Keep camera ready for sunset colors.",
-          coords: [poi2.coords[0] - 0.003, poi2.coords[1] + 0.003]
+          coords: [(poi2.coords && poi2.coords[0] ? poi2.coords[0] : coords[0]) - 0.003, (poi2.coords && poi2.coords[1] ? poi2.coords[1] : coords[1]) + 0.003]
         }
       ]
     });
@@ -3627,7 +3648,7 @@ async function handleRefinePlan() {
   input.value = '';
   if (btn) btn.innerHTML = `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span>Update Plan</span>`;
   if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
-  if (typeof switchTab === 'function') switchTab('map');
+  if (typeof switchTab === 'function') switchTab('itinerary');
 
   alert(summaryMsg);
 }
