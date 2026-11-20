@@ -65,7 +65,7 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <!-- Custom Clean Light CSS -->
-  <link rel="stylesheet" href="styles.css?v=2.2" />
+  <link rel="stylesheet" href="styles.css?v=2.5" />
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen travel-hero-mesh flex flex-col justify-between selection:bg-blue-600 selection:text-white">
 
@@ -784,16 +784,16 @@
         </div>
       </div>
 
-      <!-- TABS BAR (MAP & NEARBY PLACES ARE ELEVATED TO FRONT) -->
+      <!-- TABS BAR (DAY-BY-DAY ITINERARY DEFAULT ACTIVE) -->
       <div class="flex border-b border-slate-200 overflow-x-auto space-x-2 py-1.5 scrollbar-none bg-white px-2.5 rounded-2xl shadow-xs" style="-webkit-overflow-scrolling: touch;">
-        <button onclick="switchTab('map')" id="tab-map" class="tab-btn px-4 py-2.5 text-sm font-bold text-blue-600 border-b-2 border-blue-600 flex items-center gap-2 whitespace-nowrap transition">
-          <i data-lucide="map" class="w-4 h-4 text-blue-600"></i>
+        <button onclick="switchTab('itinerary')" id="tab-itinerary" class="tab-btn px-4 py-2.5 text-sm font-bold text-blue-600 border-b-2 border-blue-600 flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
+          <span>Day-by-Day Itinerary</span>
+        </button>
+        <button onclick="switchTab('map')" id="tab-map" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
+          <i data-lucide="map" class="w-4 h-4 text-slate-600"></i>
           <span>GPS Map &amp; Nearby Tourist Places</span>
           <span id="tabNearbyPill" class="text-[11px] bg-blue-100 text-blue-800 font-extrabold px-1.5 py-0.2 rounded-full">12</span>
-        </button>
-        <button onclick="switchTab('itinerary')" id="tab-itinerary" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
-          <i data-lucide="calendar" class="w-4 h-4 text-slate-600"></i>
-          <span>Day-by-Day Itinerary</span>
         </button>
         <button onclick="switchTab('hotels')" id="tab-hotels" class="tab-btn px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap transition">
           <i data-lucide="building-2" class="w-4 h-4 text-green-600"></i>
@@ -814,8 +814,8 @@
         </button>
       </div>
 
-      <!-- TAB 1: GPS ROUTE MAP & NEARBY ATTRACTIONS RADAR (MAIN MAP TAB) -->
-      <div id="view-map" class="tab-view space-y-4">
+      <!-- TAB 1: GPS ROUTE MAP & NEARBY ATTRACTIONS RADAR -->
+      <div id="view-map" class="tab-view hidden space-y-4">
         
         <!-- Controls & Route Filter -->
         <div class="ui-card p-4 bg-white border border-slate-200">
@@ -907,7 +907,7 @@
       </div>
 
       <!-- TAB 2: DAY-BY-DAY SCHEDULE TIMELINE -->
-      <div id="view-itinerary" class="tab-view hidden space-y-6">
+      <div id="view-itinerary" class="tab-view space-y-6">
         
         <!-- Action Header: Day Filter Pills + Add Custom Tourist Place Button -->
         <div class="p-3 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
@@ -1363,7 +1363,7 @@
   <!-- App Script -->
   <script src="tripmozy_catalog.js"></script>
   <script src="india_travel_engine.js"></script>
-  <script src="app.js?v=2.2"></script>
+  <script src="app.js?v=2.5"></script>
 
   <!-- TRIPMOZY OFFICIAL QUOTE MODAL (PHASE 9) -->
   <div id="quoteModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">

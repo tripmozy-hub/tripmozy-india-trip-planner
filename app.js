@@ -1980,8 +1980,13 @@ async function handleFormSubmit(e) {
       lucide.createIcons();
     }
     switchTab('itinerary'); // Switch directly to itinerary so user immediately sees their real locations & custom spot tool!
-    const dashEl = document.getElementById('itineraryDashboard');
-    if (dashEl) dashEl.scrollIntoView({ behavior: 'smooth' });
+    const itinView = document.getElementById('view-itinerary');
+    if (itinView) {
+      itinView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      const dashEl = document.getElementById('itineraryDashboard');
+      if (dashEl) dashEl.scrollIntoView({ behavior: 'smooth' });
+    }
   } catch (enhancementErr) {
     console.warn("Post-render enhancement warning:", enhancementErr);
   }
