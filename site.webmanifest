@@ -8,13 +8,13 @@
   "theme_color": "#1967d2",
   "icons": [
     {
-      "src": "/logo.png",
+      "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/logo.png",
-      "sizes": "512x512",
+      "src": "/tripmozy-favicon.png",
+      "sizes": "500x500",
       "type": "image/png"
     }
   ]
