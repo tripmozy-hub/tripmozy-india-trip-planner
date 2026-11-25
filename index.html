@@ -66,7 +66,7 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <!-- Custom Clean Light CSS -->
-  <link rel="stylesheet" href="styles.css?v=2.8" />
+  <link rel="stylesheet" href="styles.css?v=2.9" />
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen travel-hero-mesh flex flex-col justify-between selection:bg-blue-600 selection:text-white">
 
@@ -1418,15 +1418,25 @@
   <!-- App Script -->
   <script src="tripmozy_catalog.js"></script>
   <script src="india_travel_engine.js"></script>
-  <script src="app.js?v=2.8"></script>
+  <script src="app.js?v=2.9"></script>
 
-  <!-- PROMOTIONAL TOUR OFFER AD MODAL (POPUP AD WITH CLOSE BUTTON ON TOP-RIGHT CORNER OF IMAGE) -->
-  <div id="promoAdModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+  <!-- WELCOMING TOUR OFFER AD MODAL (DISPLAYED TO EVERYONE ENTERING THE WEBSITE) -->
+  <div id="promoAdModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <!-- Click outside backdrop to close -->
     <div class="fixed inset-0" onclick="closePromoAdModal()"></div>
     
-    <div class="relative max-w-lg w-full bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-700/60 z-10 my-auto transform transition-all duration-300">
+    <div class="relative max-w-lg w-full bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-700/80 z-10 my-auto transform transition-all duration-300 animate-in fade-in zoom-in-95">
       
+      <!-- Welcoming Header Badge -->
+      <div class="px-4 py-2.5 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border-b border-slate-700/80 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-1.5 font-bold text-white">
+          <span class="text-base">👋</span>
+          <span class="text-amber-400 font-extrabold uppercase tracking-wider text-[11px]">Welcome to TripMozy!</span>
+          <span class="text-slate-300 hidden sm:inline">&bull; Exclusive Departure Offer</span>
+        </div>
+        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold">Limited Seats</span>
+      </div>
+
       <!-- Ad Image Container -->
       <div class="relative group">
         <!-- Close Button Directly on the Right Corner of the Image -->
@@ -1434,7 +1444,7 @@
           type="button" 
           onclick="closePromoAdModal()" 
           class="absolute top-3 right-3 sm:top-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-slate-800 hover:text-rose-600 shadow-2xl border border-slate-200/90 flex items-center justify-center text-2xl font-black transition-all hover:scale-110 active:scale-95 cursor-pointer z-30"
-          title="Close Advertisement"
+          title="Close Welcome Ad & Enter Site"
           aria-label="Close Advertisement"
         >
           &times;
@@ -1442,7 +1452,7 @@
 
         <!-- Clickable Ad Link to WhatsApp with Pre-filled Message -->
         <a 
-          href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20saw%20the%2013-day%20Shimla-Kalpa-Manali%20Himalayan%20Kinnaur%20Odyssey%20Tour%20(₹26,300/person)%20and%20want%20to%20book!" 
+          href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20saw%20the%2013-day%20Shimla-Kalpa-Manali%20Himalayan%20Kinnaur%20Odyssey%20Tour%20(₹26,300/person)%20welcoming%20offer%20and%20want%20to%20book!" 
           target="_blank" 
           rel="noopener noreferrer"
           class="block cursor-pointer"
@@ -1451,7 +1461,7 @@
           <img 
             src="tripmozy_tour_ad.jpg" 
             alt="TripMozy Himalayan Kinnaur Odyssey 13-Day Group Tour" 
-            class="w-full h-auto max-h-[72vh] object-contain mx-auto block hover:opacity-95 transition-opacity" 
+            class="w-full h-auto max-h-[70vh] object-contain mx-auto block hover:opacity-95 transition-opacity" 
           />
         </a>
 
@@ -1459,8 +1469,8 @@
         <div class="p-3 sm:p-4 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div class="text-left text-xs text-slate-300">
             <span class="text-amber-400 font-extrabold flex items-center gap-1">
-              <span>🔥 Exclusive Tour Offer</span>
-              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">13 Days &bull; ₹26,300</span>
+              <span>🔥 13-Day Kinnaur Odyssey Tour</span>
+              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">₹26,300/person</span>
             </span>
             <span class="text-[11px] text-slate-400 block mt-0.5">Fixed Departure: 16/03/2027 &bull; Cab, Stays &amp; Meals</span>
           </div>
@@ -1468,18 +1478,18 @@
             <button 
               type="button" 
               onclick="closePromoAdModal()" 
-              class="flex-1 sm:flex-none px-3.5 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition cursor-pointer"
+              class="flex-1 sm:flex-none px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition cursor-pointer"
             >
-              Close
+              Enter Site ✕
             </button>
             <a 
-              href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20saw%20the%2013-day%20Shimla-Kalpa-Manali%20Himalayan%20Kinnaur%20Odyssey%20Tour%20(₹26,300/person)%20and%20want%20to%20book!" 
+              href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20saw%20the%2013-day%20Shimla-Kalpa-Manali%20Himalayan%20Kinnaur%20Odyssey%20Tour%20(₹26,300/person)%20welcoming%20offer%20and%20want%20to%20book!" 
               target="_blank" 
               rel="noopener noreferrer"
               class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/30 transition cursor-pointer"
             >
               <i data-lucide="message-circle" class="w-4 h-4"></i>
-              <span>Book via WhatsApp</span>
+              <span>Book on WhatsApp</span>
             </a>
           </div>
         </div>

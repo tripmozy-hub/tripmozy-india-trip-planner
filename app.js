@@ -1469,19 +1469,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (leafletMap) setTimeout(() => leafletMap.invalidateSize(), 250);
   });
 
-  // Auto-display promotional tour ad modal on initial visit
+  // Auto-display welcoming promotional tour ad to everyone entering the website
   try {
-    const adDismissed = sessionStorage.getItem('tripmozy_promo_ad_dismissed');
-    if (!adDismissed) {
-      setTimeout(() => {
-        openPromoAdModal();
-      }, 950);
-    }
-    const inpageDismissed = sessionStorage.getItem('tripmozy_inpage_ad_dismissed');
-    if (inpageDismissed) {
-      const inPageAd = document.getElementById('inPagePromoAdBanner');
-      if (inPageAd) inPageAd.classList.add('hidden');
-    }
+    openPromoAdModal();
   } catch (e) {}
 
   // Escape key closes modals
@@ -4047,9 +4037,6 @@ function closePromoAdModal() {
   if (modal) {
     modal.classList.add('hidden');
     document.body.classList.remove('overflow-hidden');
-    try {
-      sessionStorage.setItem('tripmozy_promo_ad_dismissed', '1');
-    } catch (e) {}
   }
 }
 
