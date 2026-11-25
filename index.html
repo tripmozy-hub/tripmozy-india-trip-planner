@@ -66,7 +66,7 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <!-- Custom Clean Light CSS -->
-  <link rel="stylesheet" href="styles.css?v=3.0" />
+  <link rel="stylesheet" href="styles.css?v=3.1" />
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen travel-hero-mesh flex flex-col justify-between selection:bg-blue-600 selection:text-white">
 
@@ -1421,7 +1421,7 @@
   <!-- App Script -->
   <script src="tripmozy_catalog.js"></script>
   <script src="india_travel_engine.js"></script>
-  <script src="app.js?v=3.0"></script>
+  <script src="app.js?v=3.1"></script>
 
   <!-- WELCOMING TOUR OFFER AD MODAL (DISPLAYED TO EVERYONE ENTERING THE WEBSITE ACROSS ALL BROWSERS) -->
   <div id="promoAdModal" class="welcome-ad-overlay" role="dialog" aria-modal="true" aria-label="Welcome Tour Offer">
@@ -1431,7 +1431,7 @@
     <div class="welcome-ad-card z-10 my-auto">
       
       <!-- Welcoming Header Badge -->
-      <div class="px-4 py-2 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border-b border-slate-700/80 flex items-center justify-between text-xs">
+      <div class="px-4 py-2.5 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border-b border-slate-700/80 flex items-center justify-between text-xs shrink-0">
         <div class="flex items-center gap-1.5 font-bold text-white">
           <span class="text-base">👋</span>
           <span class="text-amber-400 font-extrabold uppercase tracking-wider text-[11px]">Welcome to TripMozy!</span>
@@ -1441,7 +1441,7 @@
       </div>
 
       <!-- Ad Image Container -->
-      <div class="relative group">
+      <div class="relative group bg-slate-950 flex-1 min-h-0 flex items-center justify-center">
         <!-- Close Button Directly on the Right Corner of the Image -->
         <button 
           type="button" 
@@ -1458,8 +1458,8 @@
           href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20saw%20the%2013-day%20Shimla-Kalpa-Manali%20Himalayan%20Kinnaur%20Odyssey%20Tour%20(₹26,300/person)%20welcoming%20offer%20and%20want%20to%20book!" 
           target="_blank" 
           rel="noopener noreferrer"
-          class="block cursor-pointer"
-          title="Click to Book 13-Day Kinnaur Odyssey Tour on WhatsApp"
+          class="block cursor-pointer w-full text-center"
+          title="Click image to Book 13-Day Kinnaur Odyssey Tour on WhatsApp"
         >
           <img 
             src="tripmozy_kinnaur_tour_offer.jpg" 
@@ -1470,34 +1470,48 @@
             decoding="async"
           />
         </a>
+      </div>
 
-        <!-- Bottom Action Strip -->
-        <div class="p-3 sm:p-3.5 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-          <div class="text-left text-xs text-slate-300">
-            <span class="text-amber-400 font-extrabold flex items-center gap-1">
+      <!-- Bottom Action Strip (Engineered for PC & Mobile - Never Squeezed or Truncated) -->
+      <div class="p-3 sm:p-3.5 bg-slate-900 border-t border-slate-800 shrink-0">
+        <!-- Row 1: Tour Info & Price Badge -->
+        <div class="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-slate-800/80">
+          <div class="text-left min-w-0">
+            <span class="text-amber-400 font-extrabold flex items-center gap-1.5 text-xs sm:text-[13px] truncate">
               <span>🔥 13-Day Kinnaur Odyssey Tour</span>
-              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">₹26,300/person</span>
             </span>
-            <span class="text-[11px] text-slate-400 block mt-0.5">Fixed Departure: 16/03/2027 &bull; Cab, Stays &amp; Meals</span>
+            <span class="text-[11px] text-slate-400 block mt-0.5 truncate">Fixed Departure: 16/03/2027 &bull; Cab, Stays &amp; Meals</span>
           </div>
-          <div class="flex items-center gap-2 w-full sm:w-auto">
-            <button 
-              type="button" 
-              onclick="closePromoAdModal()" 
-              class="flex-1 sm:flex-none px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition cursor-pointer"
-            >
-              Enter Site ✕
-            </button>
-            <a 
-              href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20saw%20the%2013-day%20Shimla-Kalpa-Manali%20Himalayan%20Kinnaur%20Odyssey%20Tour%20(₹26,300/person)%20welcoming%20offer%20and%20want%20to%20book!" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/30 transition cursor-pointer"
-            >
-              <i data-lucide="message-circle" class="w-4 h-4"></i>
-              <span>Book on WhatsApp</span>
-            </a>
+          <div class="shrink-0 text-right">
+            <span class="text-[11px] sm:text-xs font-black bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-500/40 inline-flex items-center gap-1 shadow-xs">
+              <span>₹26,300</span><span class="text-[10px] text-slate-400 font-normal">/person</span>
+            </span>
           </div>
+        </div>
+
+        <!-- Row 2: Full-Width Prominent Actions (Unclipped on All PC & Mobile Viewports) -->
+        <div class="flex items-center gap-2 sm:gap-2.5">
+          <button 
+            type="button" 
+            onclick="closePromoAdModal()" 
+            class="px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 active:bg-slate-800 rounded-xl transition cursor-pointer border border-slate-700/60 shrink-0 whitespace-nowrap"
+            title="Close this Offer & Explore Trip Planner"
+          >
+            Enter Site ✕
+          </button>
+          <a 
+            href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20saw%20the%2013-day%20Shimla-Kalpa-Manali%20Himalayan%20Kinnaur%20Odyssey%20Tour%20(₹26,300/person)%20welcoming%20offer%20and%20want%20to%20book!" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="flex-1 py-2.5 px-3.5 sm:px-4 text-xs sm:text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50 hover:shadow-emerald-600/30 transition-all cursor-pointer whitespace-nowrap group shrink-0 min-w-0"
+            title="Chat & Book with Official TripMozy Desk on WhatsApp"
+          >
+            <!-- Official WhatsApp Vector Icon (Always renders instantly, zero icon font failure) -->
+            <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current text-white shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+            <span class="tracking-wide">Book on WhatsApp</span>
+          </a>
         </div>
       </div>
     </div>

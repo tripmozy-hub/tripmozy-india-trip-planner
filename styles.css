@@ -571,15 +571,17 @@ input[type=number] {
 .welcome-ad-card {
   position: relative;
   width: 100%;
-  max-width: 512px;
+  max-width: 550px;
   max-height: 94vh;
   max-height: 94dvh;
+  display: flex;
+  flex-direction: column;
   background-color: #0f172a;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-  -webkit-box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(51, 65, 85, 0.8);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(51, 65, 85, 0.85);
   margin: auto;
   animation: welcomeAdPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   -webkit-animation: welcomeAdPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -609,16 +611,17 @@ input[type=number] {
   }
 }
 
-/* Ad Image Sizing Across All Screen Sizes */
+/* Ad Image Sizing Across All Screen Sizes (Mobile, Tablet, and PC) */
 .welcome-ad-img {
   width: 100%;
   height: auto;
-  max-height: 68vh;
-  max-height: 68dvh;
+  max-height: 58vh;
+  max-height: 58dvh;
   object-fit: contain;
   -o-object-fit: contain;
   display: block;
   margin: 0 auto;
+  background-color: #080d1a;
   -webkit-user-drag: none;
   user-select: none;
   -webkit-user-select: none;
