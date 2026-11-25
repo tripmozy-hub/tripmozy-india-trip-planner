@@ -66,7 +66,7 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <!-- Custom Clean Light CSS -->
-  <link rel="stylesheet" href="styles.css?v=2.9" />
+  <link rel="stylesheet" href="styles.css?v=3.0" />
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen travel-hero-mesh flex flex-col justify-between selection:bg-blue-600 selection:text-white">
 
@@ -598,7 +598,7 @@
           <button 
             type="button" 
             onclick="dismissInPagePromoAd()" 
-            class="absolute top-3 right-3 sm:top-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-slate-800 hover:text-rose-600 shadow-2xl border border-slate-200/90 flex items-center justify-center text-2xl font-black transition-all hover:scale-110 active:scale-95 cursor-pointer z-20"
+            class="welcome-ad-close-btn"
             title="Close Advertisement"
             aria-label="Close Advertisement"
           >
@@ -613,9 +613,12 @@
             title="Click to Book this 13-Day Tour Offer on WhatsApp"
           >
             <img 
-              src="tripmozy_tour_ad.jpg" 
+              src="tripmozy_kinnaur_tour_offer.jpg" 
+              onerror="this.onerror=null;this.src='tripmozy_tour_ad.jpg';"
               alt="TripMozy Shimla Kalpa Manali 13-Day Group Tour Special Offer" 
               class="w-full h-auto max-h-[520px] object-contain rounded-2xl mx-auto block hover:opacity-95 transition" 
+              loading="lazy"
+              decoding="async"
             />
           </a>
         </div>
@@ -1418,17 +1421,17 @@
   <!-- App Script -->
   <script src="tripmozy_catalog.js"></script>
   <script src="india_travel_engine.js"></script>
-  <script src="app.js?v=2.9"></script>
+  <script src="app.js?v=3.0"></script>
 
-  <!-- WELCOMING TOUR OFFER AD MODAL (DISPLAYED TO EVERYONE ENTERING THE WEBSITE) -->
-  <div id="promoAdModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+  <!-- WELCOMING TOUR OFFER AD MODAL (DISPLAYED TO EVERYONE ENTERING THE WEBSITE ACROSS ALL BROWSERS) -->
+  <div id="promoAdModal" class="welcome-ad-overlay" role="dialog" aria-modal="true" aria-label="Welcome Tour Offer">
     <!-- Click outside backdrop to close -->
-    <div class="fixed inset-0" onclick="closePromoAdModal()"></div>
+    <div class="fixed inset-0" onclick="closePromoAdModal()" aria-hidden="true"></div>
     
-    <div class="relative max-w-lg w-full bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-700/80 z-10 my-auto transform transition-all duration-300 animate-in fade-in zoom-in-95">
+    <div class="welcome-ad-card z-10 my-auto">
       
       <!-- Welcoming Header Badge -->
-      <div class="px-4 py-2.5 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border-b border-slate-700/80 flex items-center justify-between text-xs">
+      <div class="px-4 py-2 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border-b border-slate-700/80 flex items-center justify-between text-xs">
         <div class="flex items-center gap-1.5 font-bold text-white">
           <span class="text-base">👋</span>
           <span class="text-amber-400 font-extrabold uppercase tracking-wider text-[11px]">Welcome to TripMozy!</span>
@@ -1443,7 +1446,7 @@
         <button 
           type="button" 
           onclick="closePromoAdModal()" 
-          class="absolute top-3 right-3 sm:top-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-slate-800 hover:text-rose-600 shadow-2xl border border-slate-200/90 flex items-center justify-center text-2xl font-black transition-all hover:scale-110 active:scale-95 cursor-pointer z-30"
+          class="welcome-ad-close-btn"
           title="Close Welcome Ad & Enter Site"
           aria-label="Close Advertisement"
         >
@@ -1459,14 +1462,17 @@
           title="Click to Book 13-Day Kinnaur Odyssey Tour on WhatsApp"
         >
           <img 
-            src="tripmozy_tour_ad.jpg" 
+            src="tripmozy_kinnaur_tour_offer.jpg" 
+            onerror="this.onerror=null;this.src='tripmozy_tour_ad.jpg';"
             alt="TripMozy Himalayan Kinnaur Odyssey 13-Day Group Tour" 
-            class="w-full h-auto max-h-[70vh] object-contain mx-auto block hover:opacity-95 transition-opacity" 
+            class="welcome-ad-img" 
+            loading="eager"
+            decoding="async"
           />
         </a>
 
         <!-- Bottom Action Strip -->
-        <div class="p-3 sm:p-4 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="p-3 sm:p-3.5 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2.5">
           <div class="text-left text-xs text-slate-300">
             <span class="text-amber-400 font-extrabold flex items-center gap-1">
               <span>🔥 13-Day Kinnaur Odyssey Tour</span>

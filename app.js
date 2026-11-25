@@ -4028,6 +4028,7 @@ function openPromoAdModal() {
   if (modal) {
     modal.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
+    document.body.style.overflow = 'hidden';
     if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
   }
 }
@@ -4037,6 +4038,7 @@ function closePromoAdModal() {
   if (modal) {
     modal.classList.add('hidden');
     document.body.classList.remove('overflow-hidden');
+    document.body.style.overflow = '';
   }
 }
 
