@@ -66,7 +66,7 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <!-- Custom Clean Light CSS -->
-  <link rel="stylesheet" href="styles.css?v=2.7" />
+  <link rel="stylesheet" href="styles.css?v=2.8" />
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen travel-hero-mesh flex flex-col justify-between selection:bg-blue-600 selection:text-white">
 
@@ -119,6 +119,12 @@
 
       <!-- Right Header Actions -->
       <div class="flex items-center space-x-2 sm:space-x-3">
+        <!-- Tour Offer Ad Button -->
+        <button type="button" onclick="openPromoAdModal()" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 shadow-2xs flex items-center gap-1.5 transition cursor-pointer" title="View 13-Day Himalayan Kinnaur Odyssey Tour Special Offer">
+          <span class="animate-pulse">🔥</span>
+          <span class="hidden sm:inline">13-Day</span> <span>Tour Offer</span>
+        </button>
+
         <!-- Sample India Itineraries Dropdown -->
         <div class="relative group hidden sm:block">
           <button class="px-3 py-1.5 rounded-lg text-xs font-semibold btn-white flex items-center space-x-1.5">
@@ -576,6 +582,43 @@
             </button>
           </div>
         </form>
+      </div>
+
+      <!-- SPONSORED TOUR OFFER AD BANNER (WITH CLOSE BUTTON ON TOP-RIGHT CORNER OF IMAGE) -->
+      <div id="inPagePromoAdBanner" class="relative max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-xl border border-slate-200/90 bg-white p-2.5 sm:p-4 my-6 transition-all duration-300">
+        <div class="flex items-center justify-between pb-2 mb-2 px-1 border-b border-slate-100 text-xs">
+          <span class="inline-flex items-center gap-1.5 font-bold text-slate-500 text-[11px] uppercase tracking-wider">
+            <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-extrabold text-[10px] border border-amber-200">Sponsored Ad</span>
+            <span>Featured Tour Package &bull; Special Departure Offer</span>
+          </span>
+          <span class="text-[11px] text-slate-400 hidden sm:inline">Click image to book directly on WhatsApp</span>
+        </div>
+        <div class="relative rounded-2xl overflow-hidden shadow-xs group bg-slate-950">
+          <!-- Close Button Directly on Right Corner of the Image -->
+          <button 
+            type="button" 
+            onclick="dismissInPagePromoAd()" 
+            class="absolute top-3 right-3 sm:top-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-slate-800 hover:text-rose-600 shadow-2xl border border-slate-200/90 flex items-center justify-center text-2xl font-black transition-all hover:scale-110 active:scale-95 cursor-pointer z-20"
+            title="Close Advertisement"
+            aria-label="Close Advertisement"
+          >
+            &times;
+          </button>
+          
+          <a 
+            href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20am%20interested%20in%20the%2013-day%20Shimla%20-%20Kalpa%20-%20Manali%20Group%20Tour%20offer!" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="block cursor-pointer"
+            title="Click to Book this 13-Day Tour Offer on WhatsApp"
+          >
+            <img 
+              src="tripmozy_tour_ad.jpg" 
+              alt="TripMozy Shimla Kalpa Manali 13-Day Group Tour Special Offer" 
+              class="w-full h-auto max-h-[520px] object-contain rounded-2xl mx-auto block hover:opacity-95 transition" 
+            />
+          </a>
+        </div>
       </div>
     </div>
 
@@ -1375,7 +1418,74 @@
   <!-- App Script -->
   <script src="tripmozy_catalog.js"></script>
   <script src="india_travel_engine.js"></script>
-  <script src="app.js?v=2.7"></script>
+  <script src="app.js?v=2.8"></script>
+
+  <!-- PROMOTIONAL TOUR OFFER AD MODAL (POPUP AD WITH CLOSE BUTTON ON TOP-RIGHT CORNER OF IMAGE) -->
+  <div id="promoAdModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <!-- Click outside backdrop to close -->
+    <div class="fixed inset-0" onclick="closePromoAdModal()"></div>
+    
+    <div class="relative max-w-lg w-full bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-700/60 z-10 my-auto transform transition-all duration-300">
+      
+      <!-- Ad Image Container -->
+      <div class="relative group">
+        <!-- Close Button Directly on the Right Corner of the Image -->
+        <button 
+          type="button" 
+          onclick="closePromoAdModal()" 
+          class="absolute top-3 right-3 sm:top-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-slate-800 hover:text-rose-600 shadow-2xl border border-slate-200/90 flex items-center justify-center text-2xl font-black transition-all hover:scale-110 active:scale-95 cursor-pointer z-30"
+          title="Close Advertisement"
+          aria-label="Close Advertisement"
+        >
+          &times;
+        </button>
+
+        <!-- Clickable Ad Link to WhatsApp with Pre-filled Message -->
+        <a 
+          href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20saw%20the%2013-day%20Shimla-Kalpa-Manali%20Himalayan%20Kinnaur%20Odyssey%20Tour%20(₹26,300/person)%20and%20want%20to%20book!" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="block cursor-pointer"
+          title="Click to Book 13-Day Kinnaur Odyssey Tour on WhatsApp"
+        >
+          <img 
+            src="tripmozy_tour_ad.jpg" 
+            alt="TripMozy Himalayan Kinnaur Odyssey 13-Day Group Tour" 
+            class="w-full h-auto max-h-[72vh] object-contain mx-auto block hover:opacity-95 transition-opacity" 
+          />
+        </a>
+
+        <!-- Bottom Action Strip -->
+        <div class="p-3 sm:p-4 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="text-left text-xs text-slate-300">
+            <span class="text-amber-400 font-extrabold flex items-center gap-1">
+              <span>🔥 Exclusive Tour Offer</span>
+              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">13 Days &bull; ₹26,300</span>
+            </span>
+            <span class="text-[11px] text-slate-400 block mt-0.5">Fixed Departure: 16/03/2027 &bull; Cab, Stays &amp; Meals</span>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button 
+              type="button" 
+              onclick="closePromoAdModal()" 
+              class="flex-1 sm:flex-none px-3.5 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition cursor-pointer"
+            >
+              Close
+            </button>
+            <a 
+              href="https://wa.me/919641866181?text=Hi%20TripMozy,%20I%20saw%20the%2013-day%20Shimla-Kalpa-Manali%20Himalayan%20Kinnaur%20Odyssey%20Tour%20(₹26,300/person)%20and%20want%20to%20book!" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/30 transition cursor-pointer"
+            >
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>Book via WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- TRIPMOZY OFFICIAL QUOTE MODAL (PHASE 9) -->
   <div id="quoteModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">

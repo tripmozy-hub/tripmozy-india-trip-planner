@@ -1468,6 +1468,29 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('orientationchange', () => {
     if (leafletMap) setTimeout(() => leafletMap.invalidateSize(), 250);
   });
+
+  // Auto-display promotional tour ad modal on initial visit
+  try {
+    const adDismissed = sessionStorage.getItem('tripmozy_promo_ad_dismissed');
+    if (!adDismissed) {
+      setTimeout(() => {
+        openPromoAdModal();
+      }, 950);
+    }
+    const inpageDismissed = sessionStorage.getItem('tripmozy_inpage_ad_dismissed');
+    if (inpageDismissed) {
+      const inPageAd = document.getElementById('inPagePromoAdBanner');
+      if (inPageAd) inPageAd.classList.add('hidden');
+    }
+  } catch (e) {}
+
+  // Escape key closes modals
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closePromoAdModal();
+      closeQuoteModal();
+    }
+  });
 });
 
 // ============================================================================
@@ -4005,6 +4028,50 @@ function openQuoteModal() {
 function closeQuoteModal() {
   var modal = document.getElementById('quoteModal');
   if (modal) modal.classList.add('hidden');
+}
+
+// ============================================================================
+// PROMOTIONAL TOUR AD & IN-PAGE AD HANDLERS
+// ============================================================================
+function openPromoAdModal() {
+  const modal = document.getElementById('promoAdModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+  }
+}
+
+function closePromoAdModal() {
+  const modal = document.getElementById('promoAdModal');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+    try {
+      sessionStorage.setItem('tripmozy_promo_ad_dismissed', '1');
+    } catch (e) {}
+  }
+}
+
+function dismissInPagePromoAd() {
+  const banner = document.getElementById('inPagePromoAdBanner');
+  if (banner) {
+    banner.style.transition = 'all 0.28s ease-out';
+    banner.style.opacity = '0';
+    banner.style.transform = 'scale(0.96)';
+    setTimeout(() => {
+      banner.classList.add('hidden');
+      try {
+        sessionStorage.setItem('tripmozy_inpage_ad_dismissed', '1');
+      } catch (e) {}
+    }, 280);
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.openPromoAdModal = openPromoAdModal;
+  window.closePromoAdModal = closePromoAdModal;
+  window.dismissInPagePromoAd = dismissInPagePromoAd;
 }
 
 function viewSavedQuoteLeads() {
